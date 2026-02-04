@@ -409,7 +409,7 @@ export default function ChickenAIAdvisor() {
       const patternsData = await patternsRes.json();
 
       // Try to get predictions, but don't fail if it errors
-      let predictData: any = { predictions: [], bettingStrategy: null };
+      let predictData: any = { suggestion: null, ml: null };
       try {
         const predictRes = await fetch('/api/chicken/predict', {
           method: 'POST',
@@ -419,7 +419,7 @@ export default function ChickenAIAdvisor() {
 
         if (predictRes.ok) {
           predictData = await predictRes.json();
-          console.log("Debug: predictData =", predictData);
+          console.log("Debug: ML V5 predictData =", predictData);
         } else {
           console.warn("Predict endpoint returned error:", predictRes.status);
         }
@@ -460,9 +460,10 @@ export default function ChickenAIAdvisor() {
         predictionRules: patternsData.predictionRules || [],
       });
 
-      // Store betting strategy from predictions
-      if (predictData.bettingStrategy) {
-        setBettingStrategy(predictData.bettingStrategy);
+      // Store ML data from ML V5 API
+      if (predictData.ml) {
+        // ML V5 doesn't have bettingStrategy, but we can use the ML stats
+        console.log("ML V5 Stats:", predictData.ml);
       }
 
       // Calculate game stats
@@ -537,16 +538,16 @@ export default function ChickenAIAdvisor() {
 
         // console.log('Predict API response:', predictData);
 
-        // Store betting strategy from response
-        if (predictData.bettingStrategy) {
-          setBettingStrategy(predictData.bettingStrategy);
+        // Store ML data from ML V5 API
+        if (predictData.ml) {
+          console.log("ML V5 Stats:", predictData.ml);
         }
 
-        // Get the top prediction
-        const topPrediction = predictData.predictions[0];
-        if (topPrediction) {
-          // console.log('Best position from API:', topPrediction);
-          setSuggestedPosition(topPrediction.position);
+        // Get the prediction from ML V5 API
+        const suggestion = predictData.suggestion;
+        if (suggestion) {
+          // console.log('Best position from ML V5 API:', suggestion);
+          setSuggestedPosition(suggestion.position);
         }
       } else {
         // Fallback to local calculation
