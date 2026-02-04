@@ -1,4 +1,4 @@
-# Tabla de Condiciones del Predictor V4
+repaticion de posiciones segras en partidas consecurivas # Tabla de Condiciones del Predictor V4
 
 ## 📋 Sistema de Evaluación Completo
 

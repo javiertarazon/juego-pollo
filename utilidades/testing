@@ -1,0 +1,159 @@
+/**
+ * 🧪 PRUEBA DEL SISTEMA DE ENSEMBLE INTELIGENTE
+ * 
+ * Script para probar el sistema de ensemble que combina:
+ * - Modelo de Series Temporales
+ * - Q-Learning Bayesiano
+ * - Modelo de Transición Markoviana
+ */
+
+import { PrismaClient } from '@prisma/client';
+import { EnsembleInteligente } from './ml/algoritmos/ensemble-inteligente';
+
+const prisma = new PrismaClient();
+
+async function main() {
+  console.log('🎯 PRUEBA DEL SISTEMA DE ENSEMBLE INTELIGENTE');
+  console.log('='.repeat(80));
+  console.log('');
+  
+  try {
+    // 1. Cargar datos de entrenamiento
+    console.log('📊 Cargando datos de entrenamiento...');
+    const partidas = await prisma.chickenGame.findMany({
+      where: {
+        isSimulated: false,
+        boneCount: 4
+      },
+      include: {
+        positions: {
+          orderBy: { position: 'asc' }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 500 // Últimas 500 partidas reales
+    });
+    
+    console.log(`✅ Cargadas ${partidas.length} partidas reales con 4 huesos`);
+    console.log('');
+    
+    // Transformar datos al formato esperado
+    const partidas_formateadas = partidas.map(partida => ({
+      id: partida.id,
+      boneCount: partida.boneCount,
+      hitBone: partida.hitBone,
+      bonePositions: partida.positions
+        .filter(p => !p.isChicken)
+        .map(p => p.position),
+      positions: partida.positions
+    }));
+    
+    // 2. Crear y entrenar el ensemble
+    console.log('🎯 Creando sistema de Ensemble...');
+    const ensemble = new EnsembleInteligente();
+    
+    console.log('🔄 Entrenando modelos...');
+    await ensemble.entrenar(partidas_formateadas);
+    console.log('');
+    
+    // 3. Obtener estadísticas del ensemble
+    console.log('📊 ESTADÍSTICAS DEL ENSEMBLE');
+    console.log('-'.repeat(80));
+    const estadisticas = ensemble.obtenerEstadisticas();
+    
+    console.log('\n🎯 Pesos de los modelos:');
+    console.log(`   Series Temporales: ${(estadisticas.pesos_actuales.series_temporales * 100).toFixed(1)}%`);
+    console.log(`   Q-Learning: ${(estadisticas.pesos_actuales.q_learning * 100).toFixed(1)}%`);
+    console.log(`   Markov: ${(estadisticas.pesos_actuales.markov * 100).toFixed(1)}%`);
+    
+    console.log('\n📈 Métricas de rendimiento:');
+    for (const [nombre, metricas] of estadisticas.metricas_modelos.entries()) {
+      console.log(`\n   ${nombre}:`);
+      console.log(`      Precisión: ${(metricas.precision * 100).toFixed(2)}%`);
+      console.log(`      F1-Score: ${(metricas.f1_score * 100).toFixed(2)}%`);
+      console.log(`      Predicciones: ${metricas.total_predicciones}`);
+    }
+    
+    console.log('\n📊 Estadísticas individuales:');
+    console.log(`\n   Series Temporales:`);
+    console.log(`      Secuencias: ${estadisticas.estadisticas_individuales.series_temporales.total_secuencias}`);
+    console.log(`      Ventana: ${estadisticas.estadisticas_individuales.series_temporales.ventana_analisis}`);
+    
+    console.log(`\n   Q-Learning:`);
+    console.log(`      Estados únicos: ${estadisticas.estadisticas_individuales.q_learning.estados_unicos}`);
+    console.log(`      Actualizaciones: ${estadisticas.estadisticas_individuales.q_learning.total_actualizaciones}`);
+    console.log(`      Epsilon: ${estadisticas.estadisticas_individuales.q_learning.epsilon_actual.toFixed(3)}`);
+    
+    console.log(`\n   Markov:`);
+    console.log(`      Transiciones: ${estadisticas.estadisticas_individuales.markov.total_transiciones}`);
+    
+    console.log('');
+    console.log('-'.repeat(80));
+    console.log('');
+    
+    // 4. Realizar predicciones de prueba
+    console.log('🔮 PRUEBAS DE PREDICCIÓN');
+    console.log('-'.repeat(80));
+    
+    // Escenario 1: Inicio de partida (sin posiciones reveladas)
+    console.log('\n📍 Escenario 1: Inicio de partida');
+    const pred1 = await ensemble.predecir([], [], 5);
+    console.log(`   Posiciones recomendadas: ${pred1.posiciones_seguras.join(', ')}`);
+    console.log(`   Confianza global: ${(pred1.confianza_global * 100).toFixed(1)}%`);
+    console.log(`   Contribuciones:`);
+    console.log(`      Series Temporales: ${(pred1.contribuciones_modelos.series_temporales * 100).toFixed(1)}%`);
+    console.log(`      Q-Learning: ${(pred1.contribuciones_modelos.q_learning * 100).toFixed(1)}%`);
+    console.log(`      Markov: ${(pred1.contribuciones_modelos.markov * 100).toFixed(1)}%`);
+    
+    // Mostrar probabilidades
+    console.log(`   Probabilidades:`);
+    for (const pos of pred1.posiciones_seguras.slice(0, 3)) {
+      const prob = pred1.probabilidades_combinadas.get(pos) || 0;
+      const intervalo = pred1.intervalos_confianza.get(pos);
+      console.log(`      Pos ${pos}: ${(prob * 100).toFixed(1)}% (IC: [${(intervalo?.limite_inferior || 0) * 100}%, ${(intervalo?.limite_superior || 0) * 100}%])`);
+    }
+    
+    // Escenario 2: Partida avanzada
+    console.log('\n📍 Escenario 2: Partida avanzada (5 posiciones reveladas)');
+    const posiciones_reveladas = [4, 7, 10, 13, 14];
+    const posiciones_huesos = []; // No conocemos huesos aún
+    const pred2 = await ensemble.predecir(posiciones_reveladas, posiciones_huesos, 5);
+    console.log(`   Posiciones reveladas: ${posiciones_reveladas.join(', ')}`);
+    console.log(`   Posiciones recomendadas: ${pred2.posiciones_seguras.join(', ')}`);
+    console.log(`   Confianza global: ${(pred2.confianza_global * 100).toFixed(1)}%`);
+    
+    // Escenario 3: Con información de huesos
+    console.log('\n📍 Escenario 3: Con información de huesos conocidos');
+    const posiciones_reveladas_3 = [4, 7, 10, 13, 14, 15, 17];
+    const posiciones_huesos_3 = [6, 9]; // Huesos encontrados
+    const pred3 = await ensemble.predecir(posiciones_reveladas_3, posiciones_huesos_3, 5);
+    console.log(`   Posiciones reveladas: ${posiciones_reveladas_3.join(', ')}`);
+    console.log(`   Huesos conocidos: ${posiciones_huesos_3.join(', ')}`);
+    console.log(`   Posiciones recomendadas: ${pred3.posiciones_seguras.join(', ')}`);
+    console.log(`   Confianza global: ${(pred3.confianza_global * 100).toFixed(1)}%`);
+    
+    console.log('');
+    console.log('-'.repeat(80));
+    console.log('');
+    
+    // 5. Exportar estado del ensemble
+    console.log('💾 Exportando estado del ensemble...');
+    const estado = ensemble.exportarEstado();
+    console.log(`   Pesos guardados: ✅`);
+    console.log(`   Métricas guardadas: ${estado.metricas.length} modelos`);
+    console.log(`   Historial: ${estado.historial_size} predicciones`);
+    
+    console.log('');
+    console.log('✅ PRUEBA COMPLETADA EXITOSAMENTE');
+    console.log('='.repeat(80));
+    
+  } catch (error) {
+    console.error('❌ Error en la prueba:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+main()
+  .catch(console.error);

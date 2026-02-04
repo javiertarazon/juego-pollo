@@ -44,7 +44,7 @@ async function analyzeMystakeAdaptation() {
   if (repeatedPatterns.length > 0) {
     console.log('Patrones de huesos que se repiten:');
     repeatedPatterns.slice(0, 5).forEach(([pattern, occurrences]) => {
-      const gaps = [];
+      const gaps: number[] = [];
       for (let i = 1; i < occurrences.length; i++) {
         gaps.push(occurrences[i] - occurrences[i - 1]);
       }
