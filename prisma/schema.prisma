@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChickenGame {
+  id              String      @id @default(cuid())
+  boneCount       Int
+  revealedCount   Int         @default(0)
+  hitBone         Boolean     @default(false)
+  cashOutPosition Int?
+  multiplier      Float?
+  isSimulated     Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  
+  positions       ChickenPosition[]
+}
+
+model ChickenPosition {
+  id        String       @id @default(cuid())
+  gameId    String
+  position  Int
+  isChicken Boolean
+  revealed  Boolean      @default(false)
+  revealOrder Int?
+  
+  game      ChickenGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  
+  @@unique([gameId, position])
+}
+
+model ChickenPositionStats {
+  id           String   @id @default(cuid())
+  position     Int
+  totalGames   Int      @default(0)
+  chickenCount Int      @default(0)
+  boneCount    Int      @default(0)
+  winRate      Float    @default(0.0)
+  isSimulated  Boolean  @default(false)
+
+  @@unique([position, isSimulated])
+}
+
+model ChickenPattern {
+  id          String   @id @default(cuid())
+  pattern     String
+  boneCount   Int
+  frequency   Int      @default(1)
+  nextChicken String?
+  nextBone    String?
+  successRate Float    @default(0.0)
+  lastSeen    DateTime @default(now())
+  
+  @@unique([pattern, boneCount])
+}
+
+model SimulationStats {
+  id                String   @id @default(cuid())
+  targetPositions   Int      // Objetivo de posiciones consecutivas (ej: 4, 5, 6, 7, 8)
+  boneCount         Int      // Cantidad de huesos en el juego
+  totalGames        Int      @default(0)
+  victories         Int      @default(0)
+  defeats           Int      @default(0)
+  winRate           Float    @default(0.0)
+  avgRevealedCount  Float    @default(0.0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@unique([targetPositions, boneCount])
+  @@index([targetPositions])
+  @@index([boneCount])
+}
