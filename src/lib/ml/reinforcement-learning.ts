@@ -1,5 +1,10 @@
 // Sistema de Aprendizaje por Refuerzo para Predicción de Posiciones
 import { db } from '@/lib/db';
+import {
+  analizarUltimasPartidas,
+  calcularScoreSeguridad,
+  detectarRotacionActiva,
+} from './adaptive-pattern-analyzer';
 
 // Zonas frías opuestas (dividir tablero en 2 zonas)
 const COLD_ZONES = {
@@ -21,6 +26,9 @@ interface MLState {
   positionQValues: Record<number, number>; // Q-values por posición (aprendizaje)
   positionSuccessRate: Record<number, { wins: number; total: number }>; // Tasa de éxito
   explorationCount: number; // Contador de exploraciones
+  // NUEVO: Análisis adaptativo
+  lastAdaptiveAnalysis: Date | null;
+  adaptiveScores: Record<number, number>; // Scores adaptativos por posición
 }
 
 // Estado global del ML (en producción, esto debería estar en DB)
@@ -32,14 +40,58 @@ let mlState: MLState = {
   positionQValues: {},
   positionSuccessRate: {},
   explorationCount: 0,
+  // NUEVO
+  lastAdaptiveAnalysis: null,
+  adaptiveScores: {},
 };
 
-// Parámetros de aprendizaje - FASE 2: ULTRA AGRESIVO
+// Parámetros de aprendizaje - FASE 2: ULTRA AGRESIVO + ADAPTATIVO
 const LEARNING_RATE = 0.15; // Alpha: aumentado para aprender más rápido de errores
 const DISCOUNT_FACTOR = 0.85; // Gamma: reducido para priorizar recompensas inmediatas
 const MIN_EPSILON = 0.35; // Epsilon mínimo aumentado a 35% para MÁXIMA exploración
 const EPSILON_DECAY = 0.998; // Degradación más lenta para mantener exploración
 const SAFE_SEQUENCE_LENGTH = 15; // Memoria aumentada a 15 para evitar repeticiones
+const ADAPTIVE_ANALYSIS_INTERVAL = 60000; // Actualizar análisis cada 60 segundos
+const ADAPTIVE_WEIGHT = 0.4; // Peso del análisis adaptativo (40%)
+
+/**
+ * Actualizar análisis adaptativo si es necesario
+ */
+async function actualizarAnalisisAdaptativo(): Promise<void> {
+  const ahora = new Date();
+  const ultimoAnalisis = mlState.lastAdaptiveAnalysis;
+
+  // Actualizar si nunca se ha hecho o si pasó el intervalo
+  if (!ultimoAnalisis || (ahora.getTime() - ultimoAnalisis.getTime()) > ADAPTIVE_ANALYSIS_INTERVAL) {
+    console.log('🔄 Actualizando análisis adaptativo de últimas 10 partidas...');
+    
+    try {
+      // Analizar últimas 10 partidas
+      const analisis = await analizarUltimasPartidas(10);
+      
+      // Actualizar scores adaptativos para cada posición
+      for (let pos = 1; pos <= 25; pos++) {
+        const scoreData = await calcularScoreSeguridad(pos, 10);
+        mlState.adaptiveScores[pos] = scoreData.score / 100; // Normalizar a 0-1
+      }
+
+      // Detectar rotación activa
+      const rotacion = await detectarRotacionActiva(10);
+      if (rotacion.hayRotacion) {
+        console.log(`🔄 Rotación detectada: ${rotacion.descripcion} (${rotacion.confianza.toFixed(1)}% confianza)`);
+      }
+
+      // Mostrar zonas calientes
+      if (analisis.zonasCalientes.length > 0) {
+        console.log(`🔥 Zonas calientes: ${analisis.zonasCalientes.slice(0, 5).map(z => `${z.posicion}(${z.frecuencia.toFixed(0)}%)`).join(', ')}`);
+      }
+
+      mlState.lastAdaptiveAnalysis = ahora;
+    } catch (error) {
+      console.error('❌ Error en análisis adaptativo:', error);
+    }
+  }
+}
 
 /**
  * Inicializar Q-values para todas las posiciones
@@ -52,46 +104,32 @@ export function initializeMLState() {
     if (!mlState.positionSuccessRate[pos]) {
       mlState.positionSuccessRate[pos] = { wins: 0, total: 0 };
     }
+    if (!mlState.adaptiveScores[pos]) {
+      mlState.adaptiveScores[pos] = 0.75; // Score neutral inicial
+    }
   }
 }
 
 /**
  * Obtener posiciones "calientes" (usadas 2+ veces en últimas 5 partidas)
+ * MEJORADO: Integra análisis adaptativo
  */
 async function getHotPositions(): Promise<number[]> {
   try {
-    const ultimas5 = await db.chickenGame.findMany({
-      where: { isSimulated: false },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-      include: { positions: true },
-    });
+    // Actualizar análisis adaptativo si es necesario
+    await actualizarAnalisisAdaptativo();
 
-    const posicionesCalientes = new Map<number, number>();
+    // Obtener zonas calientes del análisis adaptativo
+    const analisis = await analizarUltimasPartidas(10);
+    const zonasCalientes = analisis.zonasCalientes
+      .filter(z => z.frecuencia >= 30) // Mínimo 30% de frecuencia
+      .map(z => z.posicion);
 
-    ultimas5.forEach((partida) => {
-      const primeraPos = partida.positions
-        .filter((p) => p.revealed && p.revealOrder !== null)
-        .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))[0];
-
-      if (primeraPos) {
-        posicionesCalientes.set(
-          primeraPos.position,
-          (posicionesCalientes.get(primeraPos.position) || 0) + 1
-        );
-      }
-    });
-
-    // Retornar posiciones usadas 2+ veces
-    const calientes = Array.from(posicionesCalientes.entries())
-      .filter(([, count]) => count >= 2)
-      .map(([pos]) => pos);
-
-    if (calientes.length > 0) {
-      console.log(`🔥 Posiciones CALIENTES detectadas (evitar): ${calientes.join(', ')}`);
+    if (zonasCalientes.length > 0) {
+      console.log(`🔥 Posiciones CALIENTES detectadas (evitar): ${zonasCalientes.join(', ')}`);
     }
 
-    return calientes;
+    return zonasCalientes;
   } catch (error) {
     console.error('Error obteniendo posiciones calientes:', error);
     return [];
@@ -328,12 +366,18 @@ export async function selectPositionML(
     // EXPLOTACIÓN: Seleccionar mejor Q-value
     strategy = 'EXPLOIT';
     
-    // Calcular score combinado: Q-value + bonus de zona + penalizaciones AGRESIVAS
+    // Actualizar análisis adaptativo si es necesario
+    await actualizarAnalisisAdaptativo();
+    
+    // Calcular score combinado: Q-value + bonus de zona + penalizaciones AGRESIVAS + SCORE ADAPTATIVO
     const positionsWithScores = finalAvailable.map((pos) => {
       const qValue = mlState.positionQValues[pos] || 0.5;
       const usageCount = mlState.positionSuccessRate[pos]?.total || 0;
       const successRate = mlState.positionSuccessRate[pos]?.wins || 0;
       const failureRate = usageCount - successRate;
+      
+      // NUEVO: Score adaptativo basado en últimas 10 partidas
+      const adaptiveScore = mlState.adaptiveScores[pos] || 0.75;
       
       // Bonus por estar en zona objetivo (muy reducido)
       const zoneBonus = zonePositions.includes(pos) ? 0.02 : 0;
@@ -359,13 +403,17 @@ export async function selectPositionML(
       // Bonus por posiciones con éxito reciente
       const recentSuccessBonus = successRate > 0 && usageCount <= 2 ? 0.10 : 0;
       
-      const finalScore = qValue + zoneBonus + diversityPenalty + noveltyBonus + failurePenalty + recentSuccessBonus;
+      // NUEVO: Combinar Q-value con score adaptativo (40% peso adaptativo)
+      const combinedQValue = (qValue * (1 - ADAPTIVE_WEIGHT)) + (adaptiveScore * ADAPTIVE_WEIGHT);
+      
+      const finalScore = combinedQValue + zoneBonus + diversityPenalty + noveltyBonus + failurePenalty + recentSuccessBonus;
       
       return {
         position: pos,
-        qValue,
+        qValue: combinedQValue,
         score: Math.max(0, Math.min(1, finalScore)), // Clamp entre 0-1
         usageCount,
+        adaptiveScore, // Para debug
       };
     });
 

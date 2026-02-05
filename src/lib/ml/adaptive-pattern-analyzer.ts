@@ -1,0 +1,376 @@
+/**
+ * Analizador Adaptativo de Patrones de Mystake
+ * 
+ * Analiza las últimas 10 partidas para detectar:
+ * - Rotación de huesos según posiciones de pollos en 1, 2, 3
+ * - Zonas calientes con huesos (para evitar)
+ * - Frecuencia y rotación de huesos en tiempo real
+ */
+
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+interface PatronRotacion {
+  pollosEn123: string; // Ej: "1,2,3" o "1,2" o "1,3"
+  huesosEncontrados: number[];
+  frecuencia: number;
+}
+
+interface ZonaCaliente {
+  posicion: number;
+  vecesHueso: number;
+  frecuencia: number; // % de veces que es hueso
+  ultimasApariciones: number[]; // IDs de partidas donde apareció
+}
+
+interface AnalisisAdaptativo {
+  ultimasPartidas: number;
+  patronesRotacion: PatronRotacion[];
+  zonasCalientes: ZonaCaliente[];
+  posicionesSeguras: number[];
+  posicionesPeligrosas: number[];
+  recomendaciones: string[];
+  timestamp: Date;
+}
+
+/**
+ * Analiza las últimas N partidas para detectar patrones de rotación
+ */
+export async function analizarUltimasPartidas(limite: number = 10): Promise<AnalisisAdaptativo> {
+  // Obtener últimas partidas reales
+  const partidas = await prisma.chickenGame.findMany({
+    where: {
+      isSimulated: false,
+    },
+    include: {
+      positions: {
+        orderBy: {
+          revealOrder: 'asc',
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: limite,
+  });
+
+  if (partidas.length === 0) {
+    return {
+      ultimasPartidas: 0,
+      patronesRotacion: [],
+      zonasCalientes: [],
+      posicionesSeguras: [],
+      posicionesPeligrosas: [],
+      recomendaciones: ['No hay partidas suficientes para análisis'],
+      timestamp: new Date(),
+    };
+  }
+
+  // Analizar patrones de rotación
+  const patronesMap = new Map<string, { huesos: number[][]; count: number }>();
+  const zonasHuesosMap = new Map<number, { count: number; partidas: number[] }>();
+
+  partidas.forEach((partida, idx) => {
+    const posiciones = partida.positions;
+    
+    // Identificar pollos en posiciones 1, 2, 3
+    const pollosEn123: number[] = [];
+    [1, 2, 3].forEach(pos => {
+      const posicion = posiciones.find(p => p.position === pos);
+      if (posicion && posicion.isChicken) {
+        pollosEn123.push(pos);
+      }
+    });
+
+    // Identificar huesos
+    const huesos = posiciones
+      .filter(p => !p.isChicken)
+      .map(p => p.position)
+      .sort((a, b) => a - b);
+
+    // Registrar patrón de rotación
+    const clave = pollosEn123.join(',') || 'ninguno';
+    if (!patronesMap.has(clave)) {
+      patronesMap.set(clave, { huesos: [], count: 0 });
+    }
+    const patron = patronesMap.get(clave)!;
+    patron.huesos.push(huesos);
+    patron.count++;
+
+    // Registrar zonas calientes
+    huesos.forEach(posHueso => {
+      if (!zonasHuesosMap.has(posHueso)) {
+        zonasHuesosMap.set(posHueso, { count: 0, partidas: [] });
+      }
+      const zona = zonasHuesosMap.get(posHueso)!;
+      zona.count++;
+      zona.partidas.push(idx);
+    });
+  });
+
+  // Procesar patrones de rotación
+  const patronesRotacion: PatronRotacion[] = Array.from(patronesMap.entries())
+    .map(([clave, data]) => {
+      // Calcular huesos más frecuentes para este patrón
+      const huesosFrecuencia = new Map<number, number>();
+      data.huesos.forEach(huesos => {
+        huesos.forEach(h => {
+          huesosFrecuencia.set(h, (huesosFrecuencia.get(h) || 0) + 1);
+        });
+      });
+
+      const huesosOrdenados = Array.from(huesosFrecuencia.entries())
+        .sort((a, b) => b[1] - a[1])
+        .map(([pos]) => pos);
+
+      return {
+        pollosEn123: clave,
+        huesosEncontrados: huesosOrdenados.slice(0, 10), // Top 10 huesos
+        frecuencia: data.count,
+      };
+    })
+    .sort((a, b) => b.frecuencia - a.frecuencia);
+
+  // Procesar zonas calientes
+  const zonasCalientes: ZonaCaliente[] = Array.from(zonasHuesosMap.entries())
+    .map(([posicion, data]) => ({
+      posicion,
+      vecesHueso: data.count,
+      frecuencia: (data.count / partidas.length) * 100,
+      ultimasApariciones: data.partidas,
+    }))
+    .filter(z => z.frecuencia >= 20) // Mínimo 20% de frecuencia
+    .sort((a, b) => b.frecuencia - a.frecuencia);
+
+  // Identificar posiciones seguras (nunca o raramente huesos)
+  const todasPosiciones = Array.from({ length: 25 }, (_, i) => i + 1);
+  const posicionesConHuesos = new Set(zonasCalientes.map(z => z.posicion));
+  const posicionesSeguras = todasPosiciones.filter(pos => !posicionesConHuesos.has(pos));
+
+  // Identificar posiciones peligrosas (frecuencia >= 40%)
+  const posicionesPeligrosas = zonasCalientes
+    .filter(z => z.frecuencia >= 40)
+    .map(z => z.posicion);
+
+  // Generar recomendaciones
+  const recomendaciones: string[] = [];
+
+  if (zonasCalientes.length > 0) {
+    recomendaciones.push(
+      `Evitar posiciones calientes: ${zonasCalientes.slice(0, 5).map(z => z.posicion).join(', ')}`
+    );
+  }
+
+  if (posicionesSeguras.length > 0) {
+    recomendaciones.push(
+      `Posiciones seguras detectadas: ${posicionesSeguras.slice(0, 10).join(', ')}`
+    );
+  }
+
+  if (patronesRotacion.length > 0) {
+    const patronPrincipal = patronesRotacion[0];
+    if (patronPrincipal.pollosEn123 !== 'ninguno') {
+      recomendaciones.push(
+        `Patrón detectado: Cuando pollos en [${patronPrincipal.pollosEn123}], huesos frecuentes en: ${patronPrincipal.huesosEncontrados.slice(0, 5).join(', ')}`
+      );
+    }
+  }
+
+  return {
+    ultimasPartidas: partidas.length,
+    patronesRotacion,
+    zonasCalientes,
+    posicionesSeguras,
+    posicionesPeligrosas,
+    recomendaciones,
+    timestamp: new Date(),
+  };
+}
+
+/**
+ * Obtiene posiciones recomendadas basadas en el análisis adaptativo
+ */
+export async function obtenerPosicionesRecomendadas(
+  posicionesReveladas: number[],
+  limite: number = 10
+): Promise<number[]> {
+  const analisis = await analizarUltimasPartidas(limite);
+
+  // Filtrar posiciones ya reveladas
+  const disponibles = Array.from({ length: 25 }, (_, i) => i + 1)
+    .filter(pos => !posicionesReveladas.includes(pos));
+
+  // Priorizar posiciones seguras
+  const segurasDisponibles = disponibles.filter(pos =>
+    analisis.posicionesSeguras.includes(pos)
+  );
+
+  // Evitar posiciones peligrosas
+  const nosPeligrosas = disponibles.filter(pos =>
+    !analisis.posicionesPeligrosas.includes(pos)
+  );
+
+  // Combinar: primero seguras, luego no peligrosas
+  const recomendadas = [
+    ...segurasDisponibles,
+    ...nosPeligrosas.filter(pos => !segurasDisponibles.includes(pos)),
+  ];
+
+  return recomendadas.slice(0, 10);
+}
+
+/**
+ * Detecta si Mystake está rotando huesos según un patrón
+ */
+export async function detectarRotacionActiva(limite: number = 10): Promise<{
+  hayRotacion: boolean;
+  patron: string;
+  confianza: number;
+  descripcion: string;
+}> {
+  const analisis = await analizarUltimasPartidas(limite);
+
+  if (analisis.patronesRotacion.length === 0) {
+    return {
+      hayRotacion: false,
+      patron: 'ninguno',
+      confianza: 0,
+      descripcion: 'No se detectó rotación de huesos',
+    };
+  }
+
+  // Verificar si hay un patrón dominante
+  const patronPrincipal = analisis.patronesRotacion[0];
+  const confianza = (patronPrincipal.frecuencia / analisis.ultimasPartidas) * 100;
+
+  if (confianza >= 60) {
+    return {
+      hayRotacion: true,
+      patron: patronPrincipal.pollosEn123,
+      confianza,
+      descripcion: `Rotación detectada: Cuando pollos en [${patronPrincipal.pollosEn123}], huesos frecuentes en: ${patronPrincipal.huesosEncontrados.slice(0, 5).join(', ')}`,
+    };
+  }
+
+  return {
+    hayRotacion: false,
+    patron: 'variable',
+    confianza,
+    descripcion: 'Rotación variable, sin patrón claro',
+  };
+}
+
+/**
+ * Calcula el score de seguridad de una posición basado en análisis adaptativo
+ */
+export async function calcularScoreSeguridad(
+  posicion: number,
+  limite: number = 10
+): Promise<{
+  score: number;
+  nivel: 'MUY_SEGURA' | 'SEGURA' | 'NEUTRAL' | 'PELIGROSA' | 'MUY_PELIGROSA';
+  razon: string;
+}> {
+  const analisis = await analizarUltimasPartidas(limite);
+
+  // Verificar si es zona caliente
+  const zonaCaliente = analisis.zonasCalientes.find(z => z.posicion === posicion);
+  
+  if (zonaCaliente) {
+    const frecuencia = zonaCaliente.frecuencia;
+    
+    if (frecuencia >= 60) {
+      return {
+        score: 0,
+        nivel: 'MUY_PELIGROSA',
+        razon: `Hueso en ${frecuencia.toFixed(0)}% de últimas ${limite} partidas`,
+      };
+    } else if (frecuencia >= 40) {
+      return {
+        score: 25,
+        nivel: 'PELIGROSA',
+        razon: `Hueso en ${frecuencia.toFixed(0)}% de últimas ${limite} partidas`,
+      };
+    } else {
+      return {
+        score: 50,
+        nivel: 'NEUTRAL',
+        razon: `Hueso en ${frecuencia.toFixed(0)}% de últimas ${limite} partidas`,
+      };
+    }
+  }
+
+  // Si es posición segura
+  if (analisis.posicionesSeguras.includes(posicion)) {
+    return {
+      score: 100,
+      nivel: 'MUY_SEGURA',
+      razon: `Sin huesos en últimas ${limite} partidas`,
+    };
+  }
+
+  // Neutral por defecto
+  return {
+    score: 75,
+    nivel: 'SEGURA',
+    razon: `Pocos huesos en últimas ${limite} partidas`,
+  };
+}
+
+/**
+ * Genera un reporte completo del análisis adaptativo
+ */
+export async function generarReporteAdaptativo(limite: number = 10): Promise<string> {
+  const analisis = await analizarUltimasPartidas(limite);
+  const rotacion = await detectarRotacionActiva(limite);
+
+  let reporte = `\n🔍 ANÁLISIS ADAPTATIVO (Últimas ${analisis.ultimasPartidas} partidas)\n`;
+  reporte += `Timestamp: ${analisis.timestamp.toLocaleString()}\n\n`;
+
+  // Rotación detectada
+  reporte += `📊 ROTACIÓN DE HUESOS:\n`;
+  reporte += `   ${rotacion.hayRotacion ? '✅' : '❌'} ${rotacion.descripcion}\n`;
+  reporte += `   Confianza: ${rotacion.confianza.toFixed(1)}%\n\n`;
+
+  // Zonas calientes
+  if (analisis.zonasCalientes.length > 0) {
+    reporte += `🔥 ZONAS CALIENTES (Evitar):\n`;
+    analisis.zonasCalientes.slice(0, 5).forEach(zona => {
+      reporte += `   Posición ${zona.posicion}: ${zona.vecesHueso}/${analisis.ultimasPartidas} huesos (${zona.frecuencia.toFixed(0)}%)\n`;
+    });
+    reporte += `\n`;
+  }
+
+  // Posiciones seguras
+  if (analisis.posicionesSeguras.length > 0) {
+    reporte += `🛡️ POSICIONES SEGURAS:\n`;
+    reporte += `   ${analisis.posicionesSeguras.slice(0, 15).join(', ')}\n\n`;
+  }
+
+  // Patrones de rotación
+  if (analisis.patronesRotacion.length > 0) {
+    reporte += `🔄 PATRONES DE ROTACIÓN:\n`;
+    analisis.patronesRotacion.slice(0, 3).forEach((patron, idx) => {
+      reporte += `   ${idx + 1}. Pollos en [${patron.pollosEn123}] → Huesos en: ${patron.huesosEncontrados.slice(0, 5).join(', ')} (${patron.frecuencia} veces)\n`;
+    });
+    reporte += `\n`;
+  }
+
+  // Recomendaciones
+  reporte += `💡 RECOMENDACIONES:\n`;
+  analisis.recomendaciones.forEach(rec => {
+    reporte += `   • ${rec}\n`;
+  });
+
+  return reporte;
+}
+
+export default {
+  analizarUltimasPartidas,
+  obtenerPosicionesRecomendadas,
+  detectarRotacionActiva,
+  calcularScoreSeguridad,
+  generarReporteAdaptativo,
+};
