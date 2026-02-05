@@ -55,27 +55,27 @@ import {
 } from 'lucide-react';
 
 const MULTIPLIERS = {
-  1: 1.1,
-  2: 1.3,
-  3: 1.5,
-  4: 1.7,
-  5: 1.99,
-  6: 2.34,
-   7: 2.66,
-  8: 3.0,
-  9: 3.84,
-  10: 3.84,
-  11: 4.35,
-  12: 4.96,
-  13: 5.65,
-  14: 6.44,
-  15: 7.35,
-  16: 8.4,
-  17: 9.6,
-  18: 10.96,
-  19: 12.52,
-  20: 14.32,
-  21: 16.37,
+  1: 1.17,
+  2: 1.41,
+  3: 1.71,
+  4: 2.09,
+  5: 2.58,
+  6: 3.23,
+  7: 4.09,
+  8: 5.26,
+  9: 6.88,
+  10: 9.17,
+  11: 12.50,
+  12: 17.50,
+  13: 25.00,
+  14: 37.50,
+  15: 58.33,
+  16: 100.00,
+  17: 183.33,
+  18: 366.67,
+  19: 825.00,
+  20: 2062.50,
+  21: 6187.50,
 } as const;
 
 type CellState = 'hidden' | 'chicken' | 'bone' | 'suggested';
@@ -104,6 +104,19 @@ export default function ChickenAIAdvisor() {
 
   const [boneCount, setBoneCount] = useState<number>(4);
   const [gameId, setGameId] = useState<string | null>(null);
+  
+  // Balance y apuesta
+  const [sessionId, setSessionId] = useState<string>('');
+  const [balanceInicial, setBalanceInicial] = useState<number>(100);
+  const [apuestaActual, setApuestaActual] = useState<number>(0.2);
+  const [balanceActual, setBalanceActual] = useState<number>(100);
+  const [showBalanceDialog, setShowBalanceDialog] = useState<boolean>(false);
+  
+  // Rachas
+  const [rachaVictorias, setRachaVictorias] = useState<number>(0);
+  const [rachaDerrotas, setRachaDerrotas] = useState<number>(0);
+  const [totalVictorias, setTotalVictorias] = useState<number>(0);
+  const [totalDerrotas, setTotalDerrotas] = useState<number>(0);
   
   // Board state
   const [cells, setCells] = useState<CellState[][]>(
@@ -482,7 +495,93 @@ export default function ChickenAIAdvisor() {
     }
   };
 
+  // Iniciar sesión completa (primera vez)
   const startAdvising = async () => {
+    // Mostrar diálogo para solicitar balance y apuesta
+    setShowBalanceDialog(true);
+  };
+  
+  // Iniciar sesión con balance (primera vez)
+  const iniciarPartidaConBalance = async () => {
+    // Generar sessionId único si no existe
+    if (!sessionId) {
+      const newSessionId = `session-${Date.now()}`;
+      setSessionId(newSessionId);
+    }
+    
+    // Crear o actualizar sesión con balance inicial
+    try {
+      const response = await fetch(`/api/chicken/session?sessionId=${sessionId || `session-${Date.now()}`}&balanceInicial=${balanceInicial}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setBalanceActual(data.balance.actual);
+        // Actualizar rachas
+        if (data.estadisticas) {
+          setRachaVictorias(data.estadisticas.rachaVictorias || 0);
+          setRachaDerrotas(data.estadisticas.rachaDerrotas || 0);
+          setTotalVictorias(data.estadisticas.totalVictorias || 0);
+          setTotalDerrotas(data.estadisticas.totalDerrotas || 0);
+        }
+        console.log('✅ Sesión iniciada:', data);
+      }
+    } catch (error) {
+      console.error('❌ Error al iniciar sesión:', error);
+    }
+    
+    setShowBalanceDialog(false);
+    
+    console.log('🎮 Sesión iniciada con balance:', balanceInicial, 'y apuesta:', apuestaActual);
+    
+    // Iniciar primera partida
+    await iniciarNuevaPartida();
+  };
+  
+  // Actualizar rachas desde la sesión
+  const actualizarRachas = async () => {
+    try {
+      const response = await fetch(`/api/chicken/session?sessionId=${sessionId}`);
+      const data = await response.json();
+      
+      if (data.success && data.estadisticas) {
+        setRachaVictorias(data.estadisticas.rachaVictorias || 0);
+        setRachaDerrotas(data.estadisticas.rachaDerrotas || 0);
+        setTotalVictorias(data.estadisticas.totalVictorias || 0);
+        setTotalDerrotas(data.estadisticas.totalDerrotas || 0);
+        setBalanceActual(data.balance.actual);
+        console.log('📊 Rachas actualizadas:', data.estadisticas);
+        
+        // Stop-loss: Alertar después de 3 derrotas consecutivas
+        if (data.estadisticas.rachaDerrotas >= 3) {
+          const continuar = window.confirm(
+            `⚠️ ALERTA DE STOP-LOSS\n\n` +
+            `Has perdido ${data.estadisticas.rachaDerrotas} partidas consecutivas.\n` +
+            `Balance actual: ${data.balance.actual.toFixed(2)}\n` +
+            `Pérdidas acumuladas: ${data.balance.perdido.toFixed(2)}\n\n` +
+            `Recomendaciones:\n` +
+            `• Tomar un descanso\n` +
+            `• Revisar estrategia\n` +
+            `• Reducir apuesta\n\n` +
+            `¿Deseas continuar jugando?`
+          );
+          
+          if (!continuar) {
+            await salirCompletamente();
+          }
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error al actualizar rachas:', error);
+    }
+  };
+  
+  // Iniciar nueva partida (mantiene rachas, balance y estadísticas)
+  const iniciarNuevaPartida = async () => {
+    console.log('🎮 ===== INICIANDO NUEVA PARTIDA =====');
+    console.log('📊 Manteniendo: rachas, balance, estadísticas');
+    console.log('🔄 Reseteando: solo tablero y partida actual');
+    
+    // Solo resetear el tablero y la partida actual
     setGameId(`adv-${Date.now()}`);
     setGameActive(true);
     setCells(Array(5).fill(null).map(() => Array(5).fill('hidden')));
@@ -490,11 +589,53 @@ export default function ChickenAIAdvisor() {
     setRevealedBones([]);
     setTotalChickens(0);
     setCurrentMultiplier(1.0);
+    setSuggestedPosition(null);
     
-    // console.log('Starting new advising session');
+    console.log('✅ Nueva partida iniciada. Balance actual:', balanceActual);
     
     // Calculate and suggest first position
     await calculateAndSuggest();
+  };
+  
+  // Salir completamente y resetear todo el sistema
+  const salirCompletamente = async () => {
+    const confirmar = window.confirm(
+      '¿Estás seguro de que quieres salir?\n\n' +
+      'Esto reseteará:\n' +
+      '• Balance y apuesta\n' +
+      '• Rachas de victorias/derrotas\n' +
+      '• Sesión actual\n' +
+      '• Tablero y partida\n\n' +
+      'Las estadísticas históricas se mantendrán en la base de datos.'
+    );
+    
+    if (!confirmar) {
+      return;
+    }
+    
+    console.log('🚪 ===== SALIENDO COMPLETAMENTE =====');
+    console.log('🔄 Reseteando todo el sistema...');
+    
+    // Resetear todo el estado
+    setSessionId('');
+    setBalanceInicial(100);
+    setApuestaActual(0.2);
+    setBalanceActual(100);
+    setGameId(null);
+    setGameActive(false);
+    setCells(Array(5).fill(null).map(() => Array(5).fill('hidden')));
+    setRevealedChickens([]);
+    setRevealedBones([]);
+    setTotalChickens(0);
+    setCurrentMultiplier(1.0);
+    setSuggestedPosition(null);
+    setShowBalanceDialog(false);
+    setShowConfirmDialog(false);
+    setShowBoneRequestDialog(false);
+    setGameEndedBy(null);
+    
+    console.log('✅ Sistema reseteado completamente');
+    console.log('👋 Listo para iniciar nueva sesión');
   };
 
   const calculateAndSuggest = async (revealedChickensOverride?: number[], revealedBonesOverride?: number[]) => {
@@ -698,6 +839,35 @@ export default function ChickenAIAdvisor() {
     console.log('Position:', pos);
     console.log('Pollos descubiertos:', revealedChickens.length);
     console.log('Huesos encontrados:', newBones.length);
+    
+    // Registrar pérdida en la sesión
+    try {
+      const perdidaResponse = await fetch('/api/chicken/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: sessionId || `session-${Date.now()}`,
+          tipo: 'PERDIDA',
+          apuesta: apuestaActual
+        })
+      });
+      
+      const perdidaData = await perdidaResponse.json();
+      if (perdidaData.success) {
+        setBalanceActual(perdidaData.balance.actual);
+        // Actualizar rachas
+        if (perdidaData.estadisticas) {
+          setRachaVictorias(perdidaData.estadisticas.rachaVictorias || 0);
+          setRachaDerrotas(perdidaData.estadisticas.rachaDerrotas || 0);
+          setTotalVictorias(perdidaData.estadisticas.totalVictorias || 0);
+          setTotalDerrotas(perdidaData.estadisticas.totalDerrotas || 0);
+        }
+        console.log('💸 Pérdida registrada. Nuevo balance:', perdidaData.balance.actual);
+        console.log('📊 Rachas actualizadas:', perdidaData.estadisticas);
+      }
+    } catch (error) {
+      console.error('❌ Error al registrar pérdida:', error);
+    }
 
     // Mark as bone in cells
     const newCells = cells.map((r) => [...r]);
@@ -718,14 +888,14 @@ export default function ChickenAIAdvisor() {
     console.log('❌ Partida terminada en DERROTA. Esperando posiciones reales de huesos...');
   };
 
-  // Handle withdraw/restart from zero with reset streaks
+  // Handle withdraw/restart (mantiene rachas y estadísticas)
   const handleWithdraw = async () => {
     if (totalChickens < 1) {
       return;
     }
 
-    console.log('🔄 ===== RETIRAR Y REINICIAR RACHAS EN CERO =====');
-    console.log('🔄 Estado actual:', { totalChickens, currentMultiplier, revealedChickens, revealedBones });
+    console.log('💰 ===== RETIRO EXITOSO =====');
+    console.log('📊 Estado actual:', { totalChickens, currentMultiplier, revealedChickens, revealedBones });
 
     // GUARDAR valores antes del reset para mostrar en el mensaje
     const chickensAtWithdraw = totalChickens;
@@ -733,6 +903,36 @@ export default function ChickenAIAdvisor() {
 
     // Calculate current multiplier before reset
     const currentMultiplierValue = currentMultiplier;
+    
+    // Registrar ganancia en la sesión
+    try {
+      const gananciaResponse = await fetch('/api/chicken/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: sessionId || `session-${Date.now()}`,
+          tipo: 'GANANCIA',
+          apuesta: apuestaActual,
+          posicionesDescubiertas: totalChickens
+        })
+      });
+      
+      const gananciaData = await gananciaResponse.json();
+      if (gananciaData.success) {
+        setBalanceActual(gananciaData.balance.actual);
+        // Actualizar rachas
+        if (gananciaData.estadisticas) {
+          setRachaVictorias(gananciaData.estadisticas.rachaVictorias || 0);
+          setRachaDerrotas(gananciaData.estadisticas.rachaDerrotas || 0);
+          setTotalVictorias(gananciaData.estadisticas.totalVictorias || 0);
+          setTotalDerrotas(gananciaData.estadisticas.totalDerrotas || 0);
+        }
+        console.log('💰 Ganancia registrada. Nuevo balance:', gananciaData.balance.actual);
+        console.log('📊 Rachas actualizadas:', gananciaData.estadisticas);
+      }
+    } catch (error) {
+      console.error('❌ Error al registrar ganancia:', error);
+    }
 
     // Save game with cashOutPosition = totalChickens (victory)
     console.log('📊 Guardando partida como victoria:', {
@@ -771,36 +971,15 @@ export default function ChickenAIAdvisor() {
       console.error('❌ Error guardando partida:', error);
     }
 
-    // Reset all game state to zero
-    setGameActive(true);
-    setCells(Array(5).fill(null).map(() => Array(5).fill('hidden')));
-    setRevealedChickens([]);
-    setRevealedBones([]);
-    setTotalChickens(0);
-    setCurrentMultiplier(1.0);
-    setSuggestedPosition(null);
-
-    console.log('🔄 Juego reiniciado desde cero. Rachas en cero.');
-
     // Guardar valores para el mensaje
     (window as any).lastWithdrawStats = {
       chickens: chickensAtWithdraw,
       multiplier: multiplierAtWithdraw
     };
 
-    // Refresh statistics after restart
-    console.log('🔄 Actualizando estadísticas después de reinicio...');
-    await fetchStatistics();
-    await fetchPatternAnalysis();
-    await fetchAdvancedAnalysis();
-
-    console.log('✅ Estadísticas actualizadas. Asesor listo para nueva partida.');
-
     // Show bone request dialog after withdrawal
-    setTimeout(() => {
-      setShowBoneRequestDialog(true);
-      setGameEndedBy('withdraw');
-    }, 500);
+    setShowBoneRequestDialog(true);
+    setGameEndedBy('withdraw');
   };
 
   const handleBoneRequestSubmit = async () => {
@@ -810,23 +989,52 @@ export default function ChickenAIAdvisor() {
       .map(s => parseInt(s.trim()))
       .filter(n => !isNaN(n) && n >= 1 && n <= 25);
 
-    // console.log('===== Bone request submit =====');
-    // console.log('Input:', realBonePositionsInput);
-    // console.log('Parsed bones:', boneArray);
-    // console.log('Expected count:', gameEndedBy === 'withdraw' ? boneCount : boneCount - revealedBones.length);
-    // console.log('Actual count:', boneArray.length);
+    console.log('📝 ===== VALIDANDO POSICIONES DE HUESOS =====');
+    console.log('Input del usuario:', realBonePositionsInput);
+    console.log('Posiciones parseadas:', boneArray);
+    console.log('Huesos ya revelados:', revealedBones);
+    console.log('Tipo de partida:', gameEndedBy === 'withdraw' ? 'VICTORIA' : 'DERROTA');
 
     // Determine how many bones should be entered
     const expectedBoneCount = gameEndedBy === 'withdraw'
       ? boneCount // When withdrawing: need ALL bones
       : boneCount - revealedBones.length; // When hitting bone: only REMAINING bones
 
+    console.log('Huesos esperados:', expectedBoneCount);
+    console.log('Huesos ingresados:', boneArray.length);
+
+    // Validación 1: Cantidad correcta
     if (boneArray.length !== expectedBoneCount) {
       alert(gameEndedBy === 'withdraw'
-        ? `Debes ingresar exactamente ${boneCount} posiciones de huesos (1-25), separadas por comas.`
-        : `Debes ingresar exactamente ${expectedBoneCount} posiciones RESTANTES de huesos (1-25), separadas por comas. Ya has revelado ${revealedBones.length} huesos.`);
+        ? `❌ Error: Debes ingresar exactamente ${boneCount} posiciones de huesos (1-25), separadas por comas.\n\nEjemplo: 1,5,10,15`
+        : `❌ Error: Debes ingresar exactamente ${expectedBoneCount} posiciones RESTANTES de huesos (1-25), separadas por comas.\n\nYa has revelado ${revealedBones.length} hueso(s) en: ${revealedBones.join(', ')}\n\nEjemplo: ${Array.from({length: expectedBoneCount}, (_, i) => (i + 1) * 3).join(',')}`);
       return;
     }
+
+    // Validación 2: No repetir huesos ya revelados (solo en caso de derrota)
+    if (gameEndedBy === 'bone') {
+      const huesosRepetidos = boneArray.filter(pos => revealedBones.includes(pos));
+      if (huesosRepetidos.length > 0) {
+        alert(`❌ Error: Las siguientes posiciones ya fueron confirmadas como huesos:\n${huesosRepetidos.join(', ')}\n\nNo las incluyas nuevamente. Solo ingresa los ${expectedBoneCount} huesos RESTANTES.`);
+        return;
+      }
+    }
+
+    // Validación 3: No repetir posiciones en el input
+    const posicionesUnicas = new Set(boneArray);
+    if (posicionesUnicas.size !== boneArray.length) {
+      alert(`❌ Error: Has ingresado posiciones duplicadas.\n\nCada posición debe aparecer solo una vez.`);
+      return;
+    }
+
+    // Validación 4: No incluir posiciones de pollos
+    const pollosIncluidos = boneArray.filter(pos => revealedChickens.includes(pos));
+    if (pollosIncluidos.length > 0) {
+      alert(`❌ Error: Las siguientes posiciones fueron pollos, no huesos:\n${pollosIncluidos.join(', ')}\n\nSolo ingresa posiciones que fueron huesos en Mystake.`);
+      return;
+    }
+
+    console.log('✅ Validación exitosa. Guardando posiciones...');
 
     // Mark all entered bones on the board
     const newCells = cells.map((r) => [...r]);
@@ -842,12 +1050,42 @@ export default function ChickenAIAdvisor() {
     const newBones = [...revealedBones, ...boneArray];
     setRevealedBones(newBones);
 
-    // console.log('===== Bones marked on board =====');
-    // console.log('New bones:', newBones);
-    // console.log('Total bones:', newBones.length);
+    console.log('💾 Huesos totales guardados:', newBones);
+    console.log('📊 Total de huesos:', newBones.length, '/', boneCount);
+
+    // ANÁLISIS DE SUGERENCIA NO USADA (solo en retiros)
+    let analisisSugerencia: {
+      posicionSugerida: number;
+      eraPollo: boolean;
+      eraHueso: boolean;
+      decision: string;
+      mensaje: string;
+    } | null = null;
+    
+    if (gameEndedBy === 'withdraw' && suggestedPosition) {
+      const sugerenciaEraHueso = newBones.includes(suggestedPosition);
+      const sugerenciaEraPollo = !sugerenciaEraHueso;
+      
+      analisisSugerencia = {
+        posicionSugerida: suggestedPosition,
+        eraPollo: sugerenciaEraPollo,
+        eraHueso: sugerenciaEraHueso,
+        decision: sugerenciaEraPollo ? 'RETIRO_PREMATURO' : 'RETIRO_INTELIGENTE',
+        mensaje: sugerenciaEraPollo 
+          ? `⚠️ La posición ${suggestedPosition} era POLLO - Retiro prematuro (perdiste ganancia potencial)`
+          : `✅ La posición ${suggestedPosition} era HUESO - Retiro inteligente (evitaste perder)`
+      };
+      
+      console.log('🔍 ===== ANÁLISIS DE SUGERENCIA NO USADA =====');
+      console.log('Posición sugerida:', suggestedPosition);
+      console.log('Era pollo:', sugerenciaEraPollo);
+      console.log('Era hueso:', sugerenciaEraHueso);
+      console.log('Decisión:', analisisSugerencia.decision);
+      console.log('Mensaje:', analisisSugerencia.mensaje);
+    }
 
     // Submit complete game to database
-    await submitCompleteGame(newBones, gameEndedBy === 'withdraw');
+    await submitCompleteGame(newBones, gameEndedBy === 'withdraw', analisisSugerencia);
 
     // Refresh all statistics and strategies
     console.log('🔄 Actualizando estadísticas y estrategias...');
@@ -855,6 +1093,7 @@ export default function ChickenAIAdvisor() {
       fetchStatistics(),
       fetchPatternAnalysis(),
       fetchAdvancedAnalysis(),
+      actualizarRachas(), // Actualizar rachas también
     ]);
     console.log('✅ Estadísticas y estrategias actualizadas');
 
@@ -862,25 +1101,39 @@ export default function ChickenAIAdvisor() {
     setRealBonePositionsInput('');
     setGameEndedBy(null);
 
-    // console.log('===== Bone request submit completed =====');
-
     // Show completion message
     if (gameEndedBy === 'withdraw') {
       const withdrawStats = (window as any).lastWithdrawStats || { chickens: 0, multiplier: 1 };
-      alert(`¡Victoria! Te retiraste con ${withdrawStats.chickens} pollos y ${withdrawStats.multiplier.toFixed(2)}x. Las posiciones de huesos han sido guardadas.`);
+      
+      let mensaje = `¡Victoria! Te retiraste con ${withdrawStats.chickens} pollos y ${withdrawStats.multiplier.toFixed(2)}x.\n\n`;
+      
+      // Agregar análisis de sugerencia si existe
+      if (analisisSugerencia) {
+        mensaje += `📊 Análisis de Decisión:\n`;
+        mensaje += `${analisisSugerencia.mensaje}\n\n`;
+        
+        if (analisisSugerencia.eraPollo) {
+          const gananciaExtra = apuestaActual * (MULTIPLIERS[(withdrawStats.chickens + 1) as keyof typeof MULTIPLIERS] - withdrawStats.multiplier);
+          mensaje += `💰 Ganancia potencial perdida: ${gananciaExtra.toFixed(2)}\n`;
+          mensaje += `💡 Consejo: Considera jugar una posición más antes de retirarte.\n`;
+        } else {
+          mensaje += `🎯 ¡Excelente decisión! Evitaste perder tu ganancia.\n`;
+          mensaje += `💡 Consejo: Tu instinto de retiro fue correcto.\n`;
+        }
+      }
+      
+      mensaje += `\nLas posiciones de huesos han sido guardadas.`;
+      alert(mensaje);
+      
       // Limpiar stats guardadas
       delete (window as any).lastWithdrawStats;
-      // Reset for new game on withdraw
-      setTimeout(() => {
-        startAdvising();
-      }, 1000);
     } else {
-      alert(`Has encontrado ${newBones.length} huesos. Las posiciones han sido guardadas en la base de datos.\n\nReiniciando nueva asesoría...`);
-      // Automatically restart after loss
-      setTimeout(() => {
-        startAdvising();
-      }, 1000);
+      alert(`Has encontrado ${newBones.length} huesos. Las posiciones han sido guardadas en la base de datos.`);
     }
+    
+    // Iniciar nueva partida (mantiene rachas, balance y estadísticas)
+    console.log('🎮 Iniciando nueva partida automáticamente...');
+    await iniciarNuevaPartida();
   };
 
   const handleNewGameFromBoneRequest = () => {
@@ -891,7 +1144,7 @@ export default function ChickenAIAdvisor() {
   };
 
   // Submit complete game to database as a single record
-  const submitCompleteGame = async (bonePositions: number[], isWithdraw: boolean) => {
+  const submitCompleteGame = async (bonePositions: number[], isWithdraw: boolean, analisisSugerencia: any = null) => {
     try {
       // IMPORTANTE: Guardar TODAS las posiciones de pollos descubiertos
       const chickenPositions = [...revealedChickens];
@@ -901,6 +1154,10 @@ export default function ChickenAIAdvisor() {
       console.log('Pollos descubiertos:', chickenPositions);
       console.log('Posiciones de huesos:', bonePositions);
       console.log('Total revelado:', chickenPositions.length + bonePositions.length);
+      
+      if (analisisSugerencia) {
+        console.log('📊 Análisis de sugerencia:', analisisSugerencia);
+      }
       
       const response = await fetch('/api/chicken/result', {
         method: 'POST',
@@ -912,6 +1169,7 @@ export default function ChickenAIAdvisor() {
           bonePositions: bonePositions, // Posiciones de HUESOS
           cashOutPosition: isWithdraw ? totalChickens : null,
           hitBone: !isWithdraw,
+          analisisSugerencia: analisisSugerencia, // NUEVO: Análisis de sugerencia no usada
         }),
       });
       
@@ -1023,26 +1281,33 @@ export default function ChickenAIAdvisor() {
     setTrainingStatus('Analizando partidas reales...');
 
     try {
-      const response = await fetch('/api/chicken/train-simulator', {
+      const response = await fetch('/api/ml/train-simulator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          boneCount: simulatorBoneCount,
-          minGamesForPattern: 5,
-        }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Error en el entrenamiento');
+        throw new Error(errorData.message || errorData.error || 'Error en el entrenamiento');
       }
 
       const result = await response.json();
 
       if (result.success) {
-        setSimulatorTrainingData(result.trainingData);
-        setTrainingStatus('Entrenamiento completado exitosamente');
-        alert(`Simulador entrenado exitosamente:\n\n${result.message}`);
+        setSimulatorTrainingData(result);
+        setTrainingStatus('Simulador entrenado exitosamente');
+        
+        const mensaje = `✅ Simulador entrenado exitosamente\n\n` +
+          `📊 Partidas analizadas: ${result.training.partidasReales}\n` +
+          `🎯 Posiciones seguras: ${result.training.posicionesSeguras}\n` +
+          `⚠️  Posiciones peligrosas: ${result.training.posicionesPeligrosas}\n` +
+          `🔄 Overlap promedio: ${result.training.averageOverlap} (${result.training.overlapPercentage})\n\n` +
+          `Top 5 posiciones seguras:\n` +
+          result.patterns.topSeguras.slice(0, 5).map((p: any) => 
+            `  Pos ${p.posicion}: ${p.tasaPollo}% pollos`
+          ).join('\n');
+        
+        alert(mensaje);
       } else {
         throw new Error(result.error || 'Error desconocido');
       }
@@ -1059,23 +1324,31 @@ export default function ChickenAIAdvisor() {
   const handleTrainAdvisor = async () => {
     if (isTrainingAdvisor) return;
 
+    // Verificar que el simulador esté entrenado primero
+    if (!simulatorTrainingData) {
+      alert('⚠️  Primero debes entrenar el simulador.\n\nHaz clic en "Entrenar Simulador" antes de entrenar el asesor.');
+      return;
+    }
+
     setIsTrainingAdvisor(true);
     setTrainingStatus('Entrenando asesor con partidas simuladas...');
 
     try {
-      const response = await fetch('/api/chicken/train-advisor', {
+      const trainingGames = simulationCount || 100;
+      
+      const response = await fetch('/api/ml/train-advisor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          boneCount: simulatorBoneCount,
-          gameCount: simulatedGames > 0 ? simulatedGames : 100,
-          minRevealedCount: 2,
+          trainingGames,
+          targetPositions: targetPositions || 5,
+          validateAfter: true,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Error en el entrenamiento');
+        throw new Error(errorData.message || errorData.error || 'Error en el entrenamiento');
       }
 
       const result = await response.json();
@@ -1083,7 +1356,20 @@ export default function ChickenAIAdvisor() {
       if (result.success) {
         setAdvisorTrainingData(result);
         setTrainingStatus('Asesor entrenado exitosamente');
-        alert(`Asesor entrenado exitosamente:\n\n${result.message}\n\nPatrones creados: ${result.summary.patternsCreated}\nPatrones actualizados: ${result.summary.patternsUpdated}`);
+        
+        const mensaje = `✅ Asesor ML entrenado exitosamente\n\n` +
+          `🎮 Partidas de entrenamiento: ${result.training.games}\n` +
+          `✅ Victorias: ${result.training.victorias} (${result.training.tasaExito}%)\n` +
+          `❌ Derrotas: ${result.training.derrotas}\n` +
+          `📍 Promedio posiciones: ${result.training.promedioPosiciones}\n` +
+          `🎯 Objetivo: ${result.training.targetPositions} pollos\n\n` +
+          (result.validation ? 
+            `🔍 Validación (${result.validation.games} partidas):\n` +
+            `   Tasa de éxito: ${result.validation.tasaExito}%\n\n` : '') +
+          `📊 Uso de posiciones seguras: ${result.analysis.porcentajeSeguras}%\n\n` +
+          `${result.recommendation}`;
+        
+        alert(mensaje);
 
         // Refresh statistics to include newly learned patterns
         await fetchStatistics();
@@ -1216,24 +1502,67 @@ export default function ChickenAIAdvisor() {
                           Comenzar Asesoría
                         </Button>
                       ) : (
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={handleWithdraw}
+                            disabled={totalChickens < 1}
+                            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                          >
+                            <Crown className="w-4 h-4 mr-2" />
+                            RETIRAR ({currentMultiplier.toFixed(2)}x)
+                          </Button>
+                          <Button
+                            onClick={salirCompletamente}
+                            variant="destructive"
+                            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                          >
+                            <XCircle className="w-4 h-4 mr-2" />
+                            Salir
+                          </Button>
+                        </div>
+                      )}
+                      
+                      {!gameActive && sessionId && (
                         <Button
-                          onClick={handleWithdraw}
-                          disabled={totalChickens < 1}
-                          className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                          onClick={salirCompletamente}
+                          variant="outline"
+                          className="border-red-500 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                         >
-                          <Crown className="w-4 h-4 mr-2" />
-                          RETIRAR ({currentMultiplier.toFixed(2)}x)
+                          <XCircle className="w-4 h-4 mr-2" />
+                          Salir Completamente
                         </Button>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
                       <Badge variant="default" className="text-lg px-4 py-2">
                         {currentMultiplier}x
                       </Badge>
                       <Badge variant="secondary" className="px-4 py-2">
                         {totalChickens} Pollos
                       </Badge>
+                      <Badge variant="outline" className="px-4 py-2 bg-green-50 dark:bg-green-900/20 border-green-500">
+                        <Wallet className="w-4 h-4 mr-1" />
+                        {balanceActual.toFixed(2)}
+                      </Badge>
+                      <Badge variant="outline" className="px-4 py-2 bg-blue-50 dark:bg-blue-900/20 border-blue-500">
+                        Apuesta: {apuestaActual.toFixed(2)}
+                      </Badge>
+                      {sessionId && (
+                        <>
+                          <Badge variant="outline" className="px-4 py-2 bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500">
+                            <TrendingUpIcon className="w-4 h-4 mr-1" />
+                            Racha V: {rachaVictorias}
+                          </Badge>
+                          <Badge variant="outline" className="px-4 py-2 bg-red-50 dark:bg-red-900/20 border-red-500">
+                            <TrendingUp className="w-4 h-4 mr-1 rotate-180" />
+                            Racha D: {rachaDerrotas}
+                          </Badge>
+                          <Badge variant="outline" className="px-4 py-2 bg-gray-50 dark:bg-gray-900/20 border-gray-500">
+                            Total: {totalVictorias}V / {totalDerrotas}D
+                          </Badge>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -1622,53 +1951,185 @@ export default function ChickenAIAdvisor() {
 
           <TabsContent value="stats">
             <div className="space-y-6">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-orange-500" />
-                    <h2 className="text-xl font-bold">Estadísticas por Posición</h2>
+              {/* Resumen General */}
+              <Card className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+                <div className="flex items-center gap-3 mb-4">
+                  <TrendingUpIcon className="w-6 h-6 text-blue-600" />
+                  <h2 className="text-2xl font-bold">Estadísticas en Tiempo Real</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Balance Actual</div>
+                    <div className="text-3xl font-bold text-green-600">{balanceActual.toFixed(2)}</div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {balanceActual >= balanceInicial ? '↑' : '↓'} {((balanceActual - balanceInicial) / balanceInicial * 100).toFixed(2)}%
+                    </div>
                   </div>
-                  <Button
-                    onClick={handleExportCSV}
-                    className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
-                  >
-                    <Download className="w-4 h-4" />
-                    Exportar CSV
-                  </Button>
+                  
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Apuesta Actual</div>
+                    <div className="text-3xl font-bold text-blue-600">{apuestaActual.toFixed(2)}</div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {Math.floor(balanceActual / apuestaActual)} partidas posibles
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Multiplicador</div>
+                    <div className="text-3xl font-bold text-purple-600">{currentMultiplier.toFixed(2)}x</div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {totalChickens} pollos descubiertos
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Ganancia Potencial</div>
+                    <div className="text-3xl font-bold text-orange-600">
+                      {(apuestaActual * currentMultiplier - apuestaActual).toFixed(2)}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      Si retiras ahora
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Posiciones Más Seguras */}
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="w-5 h-5 text-green-500" />
+                  <h2 className="text-xl font-bold">🎯 Top 10 Posiciones MÁS SEGURAS</h2>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Estas posiciones tienen la menor probabilidad de ser huesos
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {Array.from({ length: 25 }, (_, i) => i + 1)
+                    .map(pos => ({
+                      position: pos,
+                      winRate: positionProbabilities[pos] || 0.5
+                    }))
+                    .sort((a, b) => b.winRate - a.winRate)
+                    .slice(0, 10)
+                    .map((item, idx) => (
+                      <div
+                        key={item.position}
+                        className="relative p-4 rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-500 shadow-lg"
+                      >
+                        <div className="absolute top-1 right-1">
+                          <Badge variant="default" className="text-xs bg-green-600">
+                            #{idx + 1}
+                          </Badge>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-green-700 dark:text-green-400 mb-1">
+                            {item.position}
+                          </div>
+                          <div className="text-lg font-semibold text-green-600 dark:text-green-300">
+                            {Math.round(item.winRate * 100)}%
+                          </div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                            Seguridad
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </Card>
+
+              {/* Posiciones Más Peligrosas */}
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertTriangle className="w-5 h-5 text-red-500" />
+                  <h2 className="text-xl font-bold">⚠️ Top 10 Posiciones MÁS PELIGROSAS</h2>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  EVITA estas posiciones - tienen alta probabilidad de ser huesos
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {Array.from({ length: 25 }, (_, i) => i + 1)
+                    .map(pos => ({
+                      position: pos,
+                      winRate: positionProbabilities[pos] || 0.5
+                    }))
+                    .sort((a, b) => a.winRate - b.winRate)
+                    .slice(0, 10)
+                    .map((item, idx) => (
+                      <div
+                        key={item.position}
+                        className="relative p-4 rounded-lg bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30 border-2 border-red-500 shadow-lg"
+                      >
+                        <div className="absolute top-1 right-1">
+                          <Badge variant="destructive" className="text-xs">
+                            #{idx + 1}
+                          </Badge>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-red-700 dark:text-red-400 mb-1">
+                            {item.position}
+                          </div>
+                          <div className="text-lg font-semibold text-red-600 dark:text-red-300">
+                            {Math.round((1 - item.winRate) * 100)}%
+                          </div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                            Peligro
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </Card>
+
+              {/* Mapa de Calor Visual */}
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <BarChart3 className="w-5 h-5 text-orange-500" />
+                  <h2 className="text-xl font-bold">🗺️ Mapa de Calor del Tablero</h2>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Verde = Seguro | Amarillo = Neutral | Rojo = Peligroso
                 </div>
 
-                <div className="grid grid-cols-5 gap-4">
+                <div className="grid grid-cols-5 gap-2">
                   {Array.from({ length: 25 }, (_, i) => i + 1).map((pos) => {
                     const winRate = positionProbabilities[pos] || 0.5;
                     const isHot = hotZones.some((h) => h.position === pos && h.percentage > 30);
                     const isCold = coldZones.some((c) => c.position === pos && c.percentage < 5);
 
+                    let bgColor = 'bg-yellow-100 dark:bg-yellow-900/30';
+                    let textColor = 'text-gray-900 dark:text-white';
+                    let borderColor = 'border-yellow-500';
+                    
+                    if (winRate > 0.7) {
+                      bgColor = 'bg-green-200 dark:bg-green-900/50';
+                      textColor = 'text-green-900 dark:text-green-100';
+                      borderColor = 'border-green-600';
+                    } else if (winRate < 0.3) {
+                      bgColor = 'bg-red-200 dark:bg-red-900/50';
+                      textColor = 'text-red-900 dark:text-red-100';
+                      borderColor = 'border-red-600';
+                    }
+
                     return (
                       <div
                         key={pos}
                         className={`
-                          p-4 rounded-lg text-center
-                          ${
-                            winRate > 0.7
-                              ? 'bg-green-100 dark:bg-green-900/30'
-                              : winRate < 0.3
-                              ? 'bg-red-100 dark:bg-red-900/30'
-                              : 'bg-gray-100 dark:bg-gray-700'
-                          }
+                          p-3 rounded-lg text-center border-2 ${bgColor} ${borderColor}
+                          transition-all hover:scale-105 cursor-pointer
                         `}
                       >
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-bold">{pos}</span>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className={`text-xs font-bold ${textColor}`}>{pos}</span>
                           <div className="flex gap-1">
-                            {isHot && <Flame className="w-3 h-3 text-red-500" />}
-                            {isCold && <Snowflake className="w-3 h-3 text-blue-500" />}
+                            {isHot && <Flame className="w-3 h-3 text-red-600" />}
+                            {isCold && <Snowflake className="w-3 h-3 text-blue-600" />}
                           </div>
                         </div>
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                        <div className={`text-xl font-bold ${textColor}`}>
                           {Math.round(winRate * 100)}%
-                        </div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400">
-                          Win Rate
                         </div>
                       </div>
                     );
@@ -1676,6 +2137,21 @@ export default function ChickenAIAdvisor() {
                 </div>
               </Card>
 
+              {/* Botón de Exportar */}
+              <div className="flex justify-center">
+                <Button
+                  onClick={handleExportCSV}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-lg px-6 py-3"
+                >
+                  <Download className="w-5 h-5" />
+                  Exportar Datos Completos a CSV
+                </Button>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="patterns">
+            <div className="space-y-6">
               <Card className="p-6">
                 <div className="flex items-center gap-2 mb-6">
                   <Target className="w-5 h-5 text-purple-500" />
@@ -2387,7 +2863,9 @@ export default function ChickenAIAdvisor() {
                     <div>
                       <Label className="text-base font-semibold">Usar Patrones Entrenados</Label>
                       <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                        El simulador aprenderá de partidas reales
+                        {useTrainedPatterns 
+                          ? '✅ Usando patrones REALES de 300 partidas' 
+                          : 'Simulación aleatoria (no recomendado)'}
                       </p>
                     </div>
                     <input
@@ -2397,6 +2875,22 @@ export default function ChickenAIAdvisor() {
                       className="w-5 h-5 rounded"
                     />
                   </div>
+
+                  {useTrainedPatterns && (
+                    <div className="p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
+                      <div className="flex items-center gap-2 mb-3">
+                        <TrendingUp className="w-4 h-4 text-indigo-600" />
+                        <span className="font-semibold text-sm">Patrones Realistas Activos</span>
+                      </div>
+                      <div className="space-y-1 text-xs text-gray-700 dark:text-gray-300">
+                        <div>• Frecuencias REALES de huesos por posición</div>
+                        <div>• Rotación realista: 4.68% overlap</div>
+                        <div>• Posiciones seguras: 19, 13, 7, 18, 11, 10, 6, 25, 22, 1</div>
+                        <div>• Comportamiento de retiro: 45% en 5 pollos</div>
+                        <div>• Basado en 300 partidas reales de Mystake</div>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                     <div className="flex items-center gap-2 mb-3">
@@ -2505,9 +2999,10 @@ export default function ChickenAIAdvisor() {
                         Datos de Entrenamiento del Simulador
                       </h3>
                       <div className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                        <div>• Patrones identificados: {simulatorTrainingData.summary.frequentPatterns}</div>
-                        <div>• Partidas analizadas: {simulatorTrainingData.summary.gamesAnalyzed}</div>
-                        <div>• Secuencias reveladas: {simulatorTrainingData.summary.revealSequences}</div>
+                        <div>• Partidas analizadas: {simulatorTrainingData.training?.partidasReales || 0}</div>
+                        <div>• Posiciones seguras: {simulatorTrainingData.training?.posicionesSeguras || 0}</div>
+                        <div>• Posiciones peligrosas: {simulatorTrainingData.training?.posicionesPeligrosas || 0}</div>
+                        <div>• Overlap: {simulatorTrainingData.training?.overlapPercentage || '0%'}</div>
                       </div>
                     </div>
                   )}
@@ -2519,10 +3014,10 @@ export default function ChickenAIAdvisor() {
                         Datos de Entrenamiento del Asesor
                       </h3>
                       <div className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                        <div>• Patrones creados: {advisorTrainingData.summary.patternsCreated}</div>
-                        <div>• Patrones actualizados: {advisorTrainingData.summary.patternsUpdated}</div>
-                        <div>• Total patrones: {advisorTrainingData.advisorStatus.totalPatterns}</div>
-                        <div>• Patrones de alta confianza: {advisorTrainingData.advisorStatus.highConfidencePatterns}</div>
+                        <div>• Partidas entrenamiento: {advisorTrainingData.training?.games || 0}</div>
+                        <div>• Victorias: {advisorTrainingData.training?.victorias || 0}</div>
+                        <div>• Tasa de éxito: {advisorTrainingData.training?.tasaExito || 0}%</div>
+                        <div>• Uso posiciones seguras: {advisorTrainingData.analysis?.porcentajeSeguras || 0}%</div>
                       </div>
                     </div>
                   )}
@@ -2615,6 +3110,93 @@ export default function ChickenAIAdvisor() {
           </TabsContent>
         </Tabs>
 
+        {/* Balance y Apuesta Dialog */}
+        <Dialog open={showBalanceDialog} onOpenChange={setShowBalanceDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Wallet className="w-6 h-6 text-green-600" />
+                Configurar Balance y Apuesta
+              </DialogTitle>
+              <DialogDescription>
+                Ingresa tu balance inicial y la apuesta para esta partida
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="balance">Balance Inicial</Label>
+                <Input
+                  id="balance"
+                  type="number"
+                  min="1"
+                  step="1"
+                  defaultValue={balanceInicial}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value) && value >= 1) {
+                      setBalanceInicial(value);
+                    }
+                  }}
+                  placeholder="100"
+                  className="text-lg font-bold"
+                />
+                <p className="text-xs text-gray-500">Tu capital disponible para jugar</p>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="apuesta">Apuesta por Partida</Label>
+                <Input
+                  id="apuesta"
+                  type="number"
+                  min="0.2"
+                  step="0.2"
+                  defaultValue={apuestaActual}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value) && value >= 0.2) {
+                      setApuestaActual(value);
+                    }
+                  }}
+                  placeholder="0.2"
+                  className="text-lg font-bold"
+                />
+                <p className="text-xs text-gray-500">Mínimo: 0.2, incremento: 0.2</p>
+              </div>
+              
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-600 dark:text-gray-400">Balance:</span>
+                  <span className="font-bold">{balanceInicial.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-600 dark:text-gray-400">Apuesta:</span>
+                  <span className="font-bold">{apuestaActual.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">Partidas posibles:</span>
+                  <span className="font-bold">{Math.floor(balanceInicial / apuestaActual)}</span>
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={() => setShowBalanceDialog(false)}
+                variant="outline"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={iniciarPartidaConBalance}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                disabled={apuestaActual > balanceInicial}
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Comenzar Partida
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         {/* Confirm Dialog */}
         <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
           <DialogContent className="sm:max-w-md">
@@ -2677,33 +3259,52 @@ export default function ChickenAIAdvisor() {
               <DialogDescription>
                 {gameEndedBy === 'withdraw'
                   ? `¡Felicidades! Te retiraste con ${totalChickens} pollos y ${currentMultiplier}x de multiplicador. Por favor, ingresa las posiciones reales de los ${boneCount} huesos de tu partida en Mystake para mejorar el sistema.`
-                  : `Has encontrado un hueso en la posición ${suggestedPosition}. Por favor, ingresa las posiciones de los ${boneCount - revealedBones.length} huesos RESTANTES que no se han revelado aún en tu partida.`
+                  : `Has encontrado un hueso en la posición ${revealedBones[revealedBones.length - 1]}. Este hueso ya está guardado. Por favor, ingresa SOLO las posiciones de los ${boneCount - revealedBones.length} huesos RESTANTES que no se han revelado aún en tu partida.`
                 }
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
+              {gameEndedBy === 'bone' && revealedBones.length > 0 && (
+                <div className="p-3 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg border border-yellow-300">
+                  <div className="flex items-start gap-2">
+                    <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm">
+                      <p className="font-semibold text-yellow-800 dark:text-yellow-200 mb-1">
+                        ⚠️ Importante: NO incluyas estos huesos
+                      </p>
+                      <p className="text-yellow-700 dark:text-yellow-300">
+                        Ya confirmaste {revealedBones.length} hueso(s) en: <span className="font-bold">{revealedBones.join(', ')}</span>
+                      </p>
+                      <p className="text-yellow-700 dark:text-yellow-300 mt-1">
+                        Solo ingresa los <span className="font-bold">{boneCount - revealedBones.length} huesos restantes</span> que no descubriste.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div className="space-y-2">
                 <Label htmlFor="bonePositions">
                   {gameEndedBy === 'withdraw'
-                    ? 'Posiciones de TODOS los Huesos (separadas por coma)'
-                    : `Posiciones de Huesos RESTANTES (${boneCount - revealedBones.length} de ${boneCount}) - separadas por coma`
+                    ? `Posiciones de TODOS los Huesos (${boneCount} huesos)`
+                    : `Posiciones de Huesos RESTANTES (${boneCount - revealedBones.length} de ${boneCount})`
                   }
                 </Label>
                 <Input
                   id="bonePositions"
                   placeholder={
                     gameEndedBy === 'withdraw'
-                      ? 'Ejemplo: 5, 12, 18, 23'
-                      : `Ejemplo: 12, 18 (huesos que faltan descubrir)`
+                      ? `Ejemplo: 5,12,18,23 (${boneCount} posiciones)`
+                      : `Ejemplo: 12,18,23 (${boneCount - revealedBones.length} posiciones restantes)`
                   }
                   value={realBonePositionsInput}
                   onChange={(e) => setRealBonePositionsInput(e.target.value)}
-                  className="font-mono"
+                  className="font-mono text-lg"
                 />
                 <p className="text-xs text-gray-500">
                   {gameEndedBy === 'withdraw'
-                    ? `Debes ingresar exactamente ${boneCount} posiciones (1-25), separadas por comas.`
-                    : `Debes ingresar exactamente ${boneCount - revealedBones.length} posiciones restantes (1-25), separadas por comas.`
+                    ? `Ingresa exactamente ${boneCount} posiciones (1-25), separadas por comas.`
+                    : `Ingresa exactamente ${boneCount - revealedBones.length} posiciones restantes (1-25), separadas por comas. NO incluyas la posición ${revealedBones[revealedBones.length - 1]} que ya confirmaste.`
                   }
                 </p>
               </div>

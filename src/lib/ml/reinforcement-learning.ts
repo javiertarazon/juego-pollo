@@ -7,10 +7,10 @@ const COLD_ZONES = {
   ZONE_B: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25], // Mitad inferior
 };
 
-// Posiciones siempre seguras por zona
+// Posiciones siempre seguras por zona - MÍNIMAS para máxima diversidad
 const SAFE_POSITIONS_BY_ZONE = {
-  ZONE_A: [4, 7, 10, 13, 14, 15], // Seguras en zona A
-  ZONE_B: [17, 18, 19, 20, 21, 23], // Seguras en zona B
+  ZONE_A: [7], // Solo 1 posición "segura" en zona A
+  ZONE_B: [23], // Solo 1 posición "segura" en zona B
 };
 
 interface MLState {
@@ -34,12 +34,12 @@ let mlState: MLState = {
   explorationCount: 0,
 };
 
-// Parámetros de aprendizaje
-const LEARNING_RATE = 0.1; // Alpha: qué tan rápido aprende
-const DISCOUNT_FACTOR = 0.9; // Gamma: importancia de recompensas futuras
-const MIN_EPSILON = 0.05; // Epsilon mínimo (siempre 5% exploración)
-const EPSILON_DECAY = 0.995; // Degradación de epsilon por partida
-const SAFE_SEQUENCE_LENGTH = 7; // Longitud de secuencia segura antes de repetir
+// Parámetros de aprendizaje - FASE 2: ULTRA AGRESIVO
+const LEARNING_RATE = 0.15; // Alpha: aumentado para aprender más rápido de errores
+const DISCOUNT_FACTOR = 0.85; // Gamma: reducido para priorizar recompensas inmediatas
+const MIN_EPSILON = 0.35; // Epsilon mínimo aumentado a 35% para MÁXIMA exploración
+const EPSILON_DECAY = 0.998; // Degradación más lenta para mantener exploración
+const SAFE_SEQUENCE_LENGTH = 15; // Memoria aumentada a 15 para evitar repeticiones
 
 /**
  * Inicializar Q-values para todas las posiciones
@@ -56,6 +56,49 @@ export function initializeMLState() {
 }
 
 /**
+ * Obtener posiciones "calientes" (usadas 2+ veces en últimas 5 partidas)
+ */
+async function getHotPositions(): Promise<number[]> {
+  try {
+    const ultimas5 = await db.chickenGame.findMany({
+      where: { isSimulated: false },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+      include: { positions: true },
+    });
+
+    const posicionesCalientes = new Map<number, number>();
+
+    ultimas5.forEach((partida) => {
+      const primeraPos = partida.positions
+        .filter((p) => p.revealed && p.revealOrder !== null)
+        .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))[0];
+
+      if (primeraPos) {
+        posicionesCalientes.set(
+          primeraPos.position,
+          (posicionesCalientes.get(primeraPos.position) || 0) + 1
+        );
+      }
+    });
+
+    // Retornar posiciones usadas 2+ veces
+    const calientes = Array.from(posicionesCalientes.entries())
+      .filter(([, count]) => count >= 2)
+      .map(([pos]) => pos);
+
+    if (calientes.length > 0) {
+      console.log(`🔥 Posiciones CALIENTES detectadas (evitar): ${calientes.join(', ')}`);
+    }
+
+    return calientes;
+  } catch (error) {
+    console.error('Error obteniendo posiciones calientes:', error);
+    return [];
+  }
+}
+
+/**
  * Cargar estado del ML desde la base de datos
  */
 export async function loadMLState() {
@@ -64,11 +107,37 @@ export async function loadMLState() {
     const games = await db.chickenGame.findMany({
       where: { isSimulated: false }, // Solo partidas reales
       orderBy: { createdAt: 'desc' },
-      take: 100,
+      take: 200, // Aumentado para mejor análisis
       include: { positions: true },
     });
 
     mlState.totalGames = games.length;
+
+    // Inicializar contadores para TODAS las posiciones
+    for (let pos = 1; pos <= 25; pos++) {
+      if (!mlState.positionSuccessRate[pos]) {
+        mlState.positionSuccessRate[pos] = { wins: 0, total: 0 };
+      }
+    }
+
+    // Calcular tasa de éxito general de las últimas 30 partidas
+    const last30Games = games.slice(0, 30);
+    const victorias = last30Games.filter(g => !g.hitBone).length;
+    const tasaExitoGeneral = (victorias / last30Games.length) * 100;
+    
+    console.log(`📊 Tasa de éxito últimas 30 partidas: ${tasaExitoGeneral.toFixed(1)}%`);
+    
+    // RESET ADAPTATIVO: Si tasa de éxito < 48%, resetear Q-values (más sensible)
+    if (tasaExitoGeneral < 48 && mlState.totalGames > 30) {
+      console.log('🔄 RESET ADAPTATIVO: Tasa de éxito muy baja, reseteando Q-values');
+      for (let pos = 1; pos <= 25; pos++) {
+        mlState.positionQValues[pos] = 0.5; // Resetear a neutral
+        mlState.positionSuccessRate[pos] = { wins: 0, total: 0 };
+      }
+      mlState.epsilon = 0.40; // Aumentar exploración después de reset a 40%
+      mlState.consecutiveSafePositions = [];
+      console.log('✅ Q-values reseteados, epsilon aumentado a 40%');
+    }
 
     // Calcular tasas de éxito por posición SOLO con partidas reales
     games.forEach((game) => {
@@ -76,28 +145,52 @@ export async function loadMLState() {
         .filter((p) => p.revealed && p.revealOrder !== null)
         .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
-      if (revealed.length > 0) {
-        const firstPos = revealed[0].position;
-        const wasSuccess = revealed[0].isChicken;
+      // Analizar TODAS las posiciones reveladas, no solo la primera
+      revealed.forEach((pos, index) => {
+        const position = pos.position;
+        const wasSuccess = pos.isChicken;
 
-        if (!mlState.positionSuccessRate[firstPos]) {
-          mlState.positionSuccessRate[firstPos] = { wins: 0, total: 0 };
+        if (!mlState.positionSuccessRate[position]) {
+          mlState.positionSuccessRate[position] = { wins: 0, total: 0 };
         }
 
-        mlState.positionSuccessRate[firstPos].total++;
+        mlState.positionSuccessRate[position].total++;
         if (wasSuccess) {
-          mlState.positionSuccessRate[firstPos].wins++;
+          mlState.positionSuccessRate[position].wins++;
         }
 
-        // Actualizar Q-value basado en éxito histórico REAL
+        // Calcular Q-value balanceado
         const successRate =
-          mlState.positionSuccessRate[firstPos].wins /
-          mlState.positionSuccessRate[firstPos].total;
-        mlState.positionQValues[firstPos] = successRate;
-      }
+          mlState.positionSuccessRate[position].wins /
+          mlState.positionSuccessRate[position].total;
+        
+        // Peso balanceado: 60% tasa de éxito + 40% frecuencia de uso (priorizar diversidad)
+        const usageWeight = Math.min(mlState.positionSuccessRate[position].total / 50, 1);
+        const balancedQValue = (successRate * 0.6) + (usageWeight * 0.4);
+        
+        // Penalizar posiciones con 100% de éxito pero pocos datos
+        if (successRate === 1.0 && mlState.positionSuccessRate[position].total < 5) {
+          mlState.positionQValues[position] = 0.6; // Reducir confianza más
+        } else if (successRate < 0.5 && mlState.positionSuccessRate[position].total > 2) {
+          // Penalizar BRUTALMENTE posiciones con < 50% éxito
+          mlState.positionQValues[position] = Math.max(0.1, balancedQValue * 0.3);
+        } else if (successRate < 0.4 && mlState.positionSuccessRate[position].total > 3) {
+          // Penalizar aún más fuerte si < 40% éxito
+          mlState.positionQValues[position] = Math.max(0.05, balancedQValue * 0.2);
+        } else {
+          mlState.positionQValues[position] = balancedQValue;
+        }
+      });
     });
 
-    // Obtener últimas 7 posiciones seguras usadas (SOLO REALES)
+    // Penalizar posiciones sin datos
+    for (let pos = 1; pos <= 25; pos++) {
+      if (mlState.positionSuccessRate[pos].total === 0) {
+        mlState.positionQValues[pos] = 0.5; // Valor neutral
+      }
+    }
+
+    // Obtener últimas 15 posiciones seguras usadas (aumentado de 10)
     const recentSafeGames = games
       .filter((g) => !g.hitBone)
       .slice(0, SAFE_SEQUENCE_LENGTH);
@@ -114,10 +207,11 @@ export async function loadMLState() {
     // Degradar epsilon basado en total de partidas REALES
     mlState.epsilon = Math.max(
       MIN_EPSILON,
-      0.3 * Math.pow(EPSILON_DECAY, mlState.totalGames)
+      0.35 * Math.pow(EPSILON_DECAY, mlState.totalGames)
     );
 
     console.log(`ML State cargado: ${mlState.totalGames} partidas REALES, epsilon: ${mlState.epsilon.toFixed(3)}`);
+    console.log(`Posiciones con datos: ${Object.values(mlState.positionSuccessRate).filter(s => s.total > 0).length}/25`);
   } catch (error) {
     console.error('Error cargando ML state:', error);
     initializeMLState();
@@ -187,44 +281,45 @@ export async function selectPositionML(
     initializeMLState();
   }
 
-  // Alternar zona (estrategia anti-detección)
-  const targetZone = getOppositeZone();
-  let availablePositions = getAvailablePositionsInZone(
-    targetZone,
-    revealedPositions
+  // Obtener posiciones calientes (a evitar)
+  const hotPositions = await getHotPositions();
+
+  // Obtener TODAS las posiciones disponibles (excluyendo calientes)
+  const allAvailable = Array.from({ length: 25 }, (_, i) => i + 1).filter(
+    (p) => 
+      !revealedPositions.includes(p) && 
+      canUsePosition(p) &&
+      !hotPositions.includes(p) // NUEVO: Evitar posiciones calientes
   );
 
-  // Si no hay posiciones disponibles en zona objetivo, usar la otra
-  let finalZone = targetZone;
-  let finalAvailable = availablePositions;
-
+  // Si no hay posiciones disponibles (memoria llena o todas calientes), relajar restricciones
+  let finalAvailable = allAvailable;
   if (finalAvailable.length === 0) {
-    finalZone = mlState.lastZoneUsed;
-    finalAvailable = getAvailablePositionsInZone(finalZone, revealedPositions);
-  }
-
-  // Si aún no hay disponibles, usar cualquier posición segura (ignorando memoria)
-  if (finalAvailable.length === 0) {
-    const allSafe = [
-      ...SAFE_POSITIONS_BY_ZONE.ZONE_A,
-      ...SAFE_POSITIONS_BY_ZONE.ZONE_B,
-    ];
-    finalAvailable = allSafe.filter((p) => !revealedPositions.includes(p));
+    console.log('⚠️  No hay posiciones disponibles, relajando restricciones...');
+    // Primero intentar sin memoria pero manteniendo filtro de calientes
+    finalAvailable = Array.from({ length: 25 }, (_, i) => i + 1).filter(
+      (p) => !revealedPositions.includes(p) && !hotPositions.includes(p)
+    );
     
-    // Si todavía no hay, usar TODAS las posiciones disponibles
+    // Si aún no hay, ignorar también calientes (último recurso)
     if (finalAvailable.length === 0) {
+      console.log('⚠️  Ignorando posiciones calientes por necesidad');
       finalAvailable = Array.from({ length: 25 }, (_, i) => i + 1).filter(
         (p) => !revealedPositions.includes(p)
       );
     }
   }
 
+  // Determinar zona para anti-detección
+  const targetZone = getOppositeZone();
+  const zonePositions = COLD_ZONES[targetZone];
+  
   let selectedPosition: number;
   let strategy: 'EXPLOIT' | 'EXPLORE';
 
   // Decisión: Explorar o Explotar
   if (shouldExplore()) {
-    // EXPLORACIÓN: Selección aleatoria
+    // EXPLORACIÓN: Selección aleatoria de TODAS las posiciones disponibles
     strategy = 'EXPLORE';
     selectedPosition =
       finalAvailable[Math.floor(Math.random() * finalAvailable.length)];
@@ -232,35 +327,93 @@ export async function selectPositionML(
   } else {
     // EXPLOTACIÓN: Seleccionar mejor Q-value
     strategy = 'EXPLOIT';
-    const positionsWithQValues = finalAvailable.map((pos) => ({
-      position: pos,
-      qValue: mlState.positionQValues[pos] || 0.5,
-    }));
-
-    // Ordenar por Q-value descendente
-    positionsWithQValues.sort((a, b) => b.qValue - a.qValue);
     
-    // Seleccionar entre top 3 para agregar variedad
-    const topN = Math.min(3, positionsWithQValues.length);
-    const topCandidates = positionsWithQValues.slice(0, topN);
-    const randomTop = topCandidates[Math.floor(Math.random() * topCandidates.length)];
-    selectedPosition = randomTop.position;
+    // Calcular score combinado: Q-value + bonus de zona + penalizaciones AGRESIVAS
+    const positionsWithScores = finalAvailable.map((pos) => {
+      const qValue = mlState.positionQValues[pos] || 0.5;
+      const usageCount = mlState.positionSuccessRate[pos]?.total || 0;
+      const successRate = mlState.positionSuccessRate[pos]?.wins || 0;
+      const failureRate = usageCount - successRate;
+      
+      // Bonus por estar en zona objetivo (muy reducido)
+      const zoneBonus = zonePositions.includes(pos) ? 0.02 : 0;
+      
+      // Penalización BRUTAL por uso excesivo - FASE 2
+      let diversityPenalty = 0;
+      if (usageCount > 4) {
+        diversityPenalty = -0.50; // Penalización BRUTAL para > 4 usos
+      } else if (usageCount > 3) {
+        diversityPenalty = -0.35; // Penalización MUY fuerte para > 3 usos
+      } else if (usageCount > 2) {
+        diversityPenalty = -0.25; // Penalización fuerte para > 2 usos
+      } else if (usageCount > 1) {
+        diversityPenalty = -0.15; // Penalización media para > 1 uso
+      }
+      
+      // Penalización por tasa de fallo alta
+      const failurePenalty = failureRate > 2 ? -0.25 : failureRate > 1 ? -0.15 : 0;
+      
+      // Bonus ENORME por posiciones poco usadas - FASE 2
+      const noveltyBonus = usageCount === 0 ? 0.30 : usageCount === 1 ? 0.15 : 0;
+      
+      // Bonus por posiciones con éxito reciente
+      const recentSuccessBonus = successRate > 0 && usageCount <= 2 ? 0.10 : 0;
+      
+      const finalScore = qValue + zoneBonus + diversityPenalty + noveltyBonus + failurePenalty + recentSuccessBonus;
+      
+      return {
+        position: pos,
+        qValue,
+        score: Math.max(0, Math.min(1, finalScore)), // Clamp entre 0-1
+        usageCount,
+      };
+    });
+
+    // Ordenar por score descendente
+    positionsWithScores.sort((a, b) => b.score - a.score);
+    
+    // Seleccionar entre top 12 para MÁXIMA variedad - FASE 2 (antes top 8)
+    const topN = Math.min(12, positionsWithScores.length);
+    const topCandidates = positionsWithScores.slice(0, topN);
+    
+    // Selección ponderada: mayor probabilidad para mejores scores
+    const totalScore = topCandidates.reduce((sum, c) => sum + c.score, 0);
+    
+    // Si todos tienen score muy bajo, forzar exploración
+    if (totalScore < 0.5) {
+      console.log('⚠️ Scores muy bajos, forzando exploración aleatoria');
+      selectedPosition = finalAvailable[Math.floor(Math.random() * finalAvailable.length)];
+    } else {
+      let random = Math.random() * totalScore;
+      
+      let selected = topCandidates[0];
+      for (const candidate of topCandidates) {
+        random -= candidate.score;
+        if (random <= 0) {
+          selected = candidate;
+          break;
+        }
+      }
+      
+      selectedPosition = selected.position;
+    }
   }
 
   // Actualizar estado
-  mlState.lastZoneUsed = finalZone;
+  mlState.lastZoneUsed = targetZone;
 
   const qValue = mlState.positionQValues[selectedPosition] || 0.5;
   const confidence = Math.round(qValue * 100);
 
+  const isHot = hotPositions.includes(selectedPosition);
   console.log(
-    `ML: Pos ${selectedPosition} | ${strategy} | Zona ${finalZone} | Epsilon=${mlState.epsilon.toFixed(3)} | Q=${qValue.toFixed(3)}`
+    `ML: Pos ${selectedPosition} | ${strategy} | Zona ${targetZone} | Epsilon=${mlState.epsilon.toFixed(3)} | Q=${qValue.toFixed(3)}${isHot ? ' 🔥 CALIENTE' : ''}`
   );
 
   return {
     position: selectedPosition,
     strategy,
-    zone: finalZone,
+    zone: targetZone,
     epsilon: mlState.epsilon,
     qValue,
     confidence,

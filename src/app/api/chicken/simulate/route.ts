@@ -22,43 +22,46 @@ const MULTIPLIERS = {
   21: 16.37,
 } as const;
 
-// PATRONES REALES DE MYSTAKE APRENDIDOS
-const MYSTAKE_LEARNED_PATTERNS = {
-  // Posiciones más frecuentes como huesos (basado en 647 juegos reales)
-  // AJUSTADO V3: Maximizar diferencia entre seguras y peligrosas
+// PATRONES REALES DE MYSTAKE - BASADO EN 300 PARTIDAS REALES
+const MYSTAKE_REAL_PATTERNS = {
+  // Frecuencia de huesos por posición (datos reales de 300 partidas)
   boneFrequencyWeights: {
-    // Posiciones PELIGROSAS (evitar)
-    1: 0.0800, 3: 0.0700, 16: 0.0650, 5: 0.0600, 24: 0.0580,
-    2: 0.0560, 6: 0.0540, 18: 0.0520, 20: 0.0500, 25: 0.0480,
-    
-    // Posiciones INTERMEDIAS
-    4: 0.0450, 17: 0.0430, 10: 0.0410, 9: 0.0400, 21: 0.0390,
-    
-    // Posiciones SEGURAS (priorizar)
-    11: 0.0250, 22: 0.0260, 12: 0.0270, 8: 0.0280, 7: 0.0290,
-    13: 0.0300, 19: 0.0310, 14: 0.0320, 15: 0.0330, 23: 0.0200
+    24: 0.0561, 3: 0.0513, 8: 0.0497, 16: 0.0481,
+    5: 0.0465, 9: 0.0465, 12: 0.0465, 14: 0.0465,
+    20: 0.0449, 21: 0.0449, 23: 0.0433, 4: 0.0401,
+    15: 0.0401, 17: 0.0385, 2: 0.0369, 1: 0.0353,
+    22: 0.0337, 25: 0.0337, 6: 0.0321, 10: 0.0321,
+    11: 0.0321, 18: 0.0321, 7: 0.0304, 13: 0.0304,
+    19: 0.0288,
   },
   
   // Posiciones más reveladas por jugadores (comportamiento real)
-  mostRevealedPositions: [9, 10, 17, 2, 11, 13, 20, 6, 1, 19],
+  mostRevealedPositions: [2, 4, 7, 9, 6, 17, 14, 1, 3, 20, 18, 21, 5, 23, 10],
   
-  // Rotación: Mystake NO repite huesos en posiciones consecutivas (0% overlap)
+  // Rotación: Mystake tiene 4.68% overlap (muy bajo)
   rotationEnabled: true,
+  averageOverlap: 0.19, // 0.19 huesos repetidos en promedio
+  overlapPercentage: 4.68, // 4.68% de overlap
   
-  // Distribución por zonas (basado en análisis real)
+  // Distribución por zonas (basado en análisis real de 300 partidas)
   zoneWeights: {
-    row1: 0.16, // Fila 1: 16% de huesos
-    row2: 0.24, // Fila 2: 24% de huesos (más peligrosa)
-    row3: 0.13, // Fila 3: 13% de huesos
-    row4: 0.17, // Fila 4: 17% de huesos
-    row5: 0.07, // Fila 5: 7% de huesos (más segura)
-    
-    col1: 0.15, // Columna 1: 15% de huesos
-    col2: 0.18, // Columna 2: 18% de huesos
-    col3: 0.12, // Columna 3: 12% de huesos
-    col4: 0.16, // Columna 4: 16% de huesos
-    col5: 0.18, // Columna 5: 18% de huesos
-  }
+    fila1: 0.2099, fila2: 0.1907, fila3: 0.1955,
+    fila4: 0.1923, fila5: 0.2115,
+    col1: 0.1923, col2: 0.1859, col3: 0.2067,
+    col4: 0.2179, col5: 0.1971,
+  },
+  
+  // Comportamiento de retiro (datos reales)
+  cashOutBehavior: {
+    1: 0.0250, 3: 0.0250, 4: 0.2500,
+    5: 0.4500, 6: 0.1625, 7: 0.0875,
+  },
+  
+  // Posiciones seguras (93%+ pollos en datos reales)
+  safePositions: [19, 13, 7, 18, 11, 10, 6, 25, 22, 1],
+  
+  // Posiciones peligrosas (más de 10% huesos)
+  dangerousPositions: [24, 3, 8, 16],
 };
 
 interface GameData {
@@ -66,7 +69,7 @@ interface GameData {
   chickenPositions: number[];
 }
 
-// Función para generar posiciones de huesos REALISTAS basadas en patrones de Mystake
+// Función para generar posiciones de huesos REALISTAS basadas en 300 partidas reales
 async function generateRealisticBonePositions(
   boneCount: number,
   previousGameBones: number[] = []
@@ -74,21 +77,21 @@ async function generateRealisticBonePositions(
   const bonePositions: number[] = [];
   const allPositions = Array.from({ length: 25 }, (_, i) => i + 1);
   
-  // Crear pool de candidatos con pesos basados en frecuencia real
+  // Crear pool de candidatos con pesos REALES de 300 partidas
   const weightedCandidates = allPositions.map(pos => {
-    let weight = MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights[pos as keyof typeof MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights] || 0.04;
+    let weight = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[pos as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
     
-    // APLICAR ROTACIÓN: Reducir probabilidad de repetir huesos
-    if (MYSTAKE_LEARNED_PATTERNS.rotationEnabled && previousGameBones.includes(pos)) {
-      weight *= 0.4; // 60% menos probable que se repita
+    // APLICAR ROTACIÓN REALISTA: 4.68% overlap promedio
+    // Esto significa que hay 95.32% de probabilidad de NO repetir
+    if (MYSTAKE_REAL_PATTERNS.rotationEnabled && previousGameBones.includes(pos)) {
+      // Reducir peso para simular 4.68% overlap
+      weight *= 0.05; // Solo 5% de probabilidad de repetir
     }
-    
-    // NO ajustar por zona para mantener distribución más natural
     
     return { pos, weight };
   });
   
-  // Seleccionar huesos usando distribución ponderada
+  // Seleccionar huesos usando distribución ponderada REAL
   const maxAttempts = 100;
   let attempts = 0;
   
@@ -122,7 +125,7 @@ async function generateRealisticBonePositions(
   return bonePositions.sort((a, b) => a - b);
 }
 
-// Función para simular comportamiento de jugador usando patrones aprendidos
+// Función para simular comportamiento de jugador usando patrones REALES de 300 partidas
 function simulatePlayerBehavior(
   bonePositions: number[],
   confidenceLevel: number
@@ -135,19 +138,24 @@ function simulatePlayerBehavior(
   let hitBone = false;
   let cashOutPosition: number | null = null;
   
-  // Crear cola de movimientos basada en posiciones más reveladas
-  const moveQueue = [...MYSTAKE_LEARNED_PATTERNS.mostRevealedPositions];
+  // Crear cola de movimientos basada en posiciones MÁS REVELADAS REALES
+  const moveQueue = [...MYSTAKE_REAL_PATTERNS.mostRevealedPositions];
   
-  // Agregar otras posiciones ordenadas por seguridad
+  // Agregar posiciones seguras primero (93%+ pollos)
+  const safeRemaining = MYSTAKE_REAL_PATTERNS.safePositions.filter(
+    p => !moveQueue.includes(p)
+  );
+  
+  // Agregar otras posiciones ordenadas por seguridad REAL
   const remaining = Array.from({ length: 25 }, (_, i) => i + 1)
-    .filter(p => !moveQueue.includes(p))
+    .filter(p => !moveQueue.includes(p) && !safeRemaining.includes(p))
     .sort((a, b) => {
-      const weightA = MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights] || 0.04;
-      const weightB = MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights] || 0.04;
+      const weightA = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
+      const weightB = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
       return weightA - weightB; // Menor peso = más seguro
     });
   
-  moveQueue.push(...remaining);
+  moveQueue.push(...safeRemaining, ...remaining);
   
   // Ejecutar movimientos
   let continueRevealing = true;
@@ -164,31 +172,31 @@ function simulatePlayerBehavior(
       revealedPositions.push(pos);
       const currentCount = revealedPositions.length;
       
-      // Decisión de retiro basada en confianza y estadísticas reales
-      // Basado en análisis: 4 pollos = 30.91%, 5 pollos = 7.11%, 6+ = <2%
+      // Decisión de retiro basada en COMPORTAMIENTO REAL de 300 partidas
+      // 45% retiran en 5 pollos, 25% en 4, 16.25% en 6, 8.75% en 7
       let shouldCashOut = false;
+      const random = Math.random();
       
       if (confidenceLevel > 0.8) {
-        // Alta confianza: más agresivo
+        // Alta confianza: más agresivo (buscar 6-7 pollos)
         shouldCashOut = 
-          (currentCount >= 6 && Math.random() < 0.25) ||
-          (currentCount >= 7 && Math.random() < 0.50) ||
-          (currentCount >= 8 && Math.random() < 0.80) ||
+          (currentCount >= 7 && random < 0.40) ||
+          (currentCount >= 8 && random < 0.70) ||
           (currentCount >= 9);
       } else if (confidenceLevel > 0.6) {
-        // Confianza media: moderado
+        // Confianza media: seguir patrón real (5-6 pollos)
         shouldCashOut = 
-          (currentCount >= 5 && Math.random() < 0.30) ||
-          (currentCount >= 6 && Math.random() < 0.60) ||
-          (currentCount >= 7 && Math.random() < 0.85) ||
+          (currentCount >= 5 && random < 0.45) || // 45% como en datos reales
+          (currentCount >= 6 && random < 0.70) ||
+          (currentCount >= 7 && random < 0.90) ||
           (currentCount >= 8);
       } else {
-        // Baja confianza: conservador (basado en estadísticas reales)
+        // Baja confianza: conservador (4-5 pollos)
         shouldCashOut = 
-          (currentCount >= 4 && Math.random() < 0.35) || // 35% retiro en 4
-          (currentCount >= 5 && Math.random() < 0.65) || // 65% retiro en 5
-          (currentCount >= 6 && Math.random() < 0.90) || // 90% retiro en 6
-          (currentCount >= 7); // Siempre retiro en 7+
+          (currentCount >= 4 && random < 0.25) || // 25% como en datos reales
+          (currentCount >= 5 && random < 0.70) || // 45% + 25% acumulado
+          (currentCount >= 6 && random < 0.90) ||
+          (currentCount >= 7);
       }
       
       if (shouldCashOut) {
@@ -231,9 +239,10 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log(`🎮 Simulación Realista de Mystake: ${count} juegos, ${boneCount} huesos`);
+    console.log(`🎮 Simulación REALISTA de Mystake: ${count} juegos, ${boneCount} huesos`);
     console.log(`🎯 Objetivo: ${targetPositions} posiciones consecutivas`);
-    console.log(`📊 Usando patrones aprendidos de 647 juegos reales`);
+    console.log(`📊 Usando patrones REALES de 300 partidas`);
+    console.log(`🔄 Overlap promedio: ${MYSTAKE_REAL_PATTERNS.averageOverlap} huesos (${MYSTAKE_REAL_PATTERNS.overlapPercentage}%)`);
 
     // Obtener últimas 3 partidas reales para aplicar rotación
     const recentRealGames = await db.chickenGame.findMany({
@@ -295,23 +304,22 @@ export async function POST(req: NextRequest) {
       let hitBone = false;
       let reachedTarget = false;
       
-      // ESTRATEGIA V3: Usar TODAS las posiciones ordenadas por seguridad
-      const positionsToTry = Array.from({ length: 25 }, (_, k) => k + 1);
-      const sortedBySafety = positionsToTry.sort((a, b) => {
-        const weightA = MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights] || 0.04;
-        const weightB = MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_LEARNED_PATTERNS.boneFrequencyWeights] || 0.04;
-        return weightA - weightB; // Menor peso = más seguro
-      });
+      // ESTRATEGIA V4: Usar posiciones SEGURAS REALES (93%+ pollos)
+      const positionsToTry = [...MYSTAKE_REAL_PATTERNS.safePositions];
       
-      // Usar las posiciones más seguras necesarias para el objetivo + margen
-      // Para objetivo 4: usar top 8-10 posiciones (margen 2x)
-      // Para objetivo 5: usar top 10-12 posiciones
-      // Para objetivo 6+: usar top 12-15 posiciones
-      const safetyMargin = Math.max(targetPositions * 2, 10);
-      const safePositions = sortedBySafety.slice(0, Math.min(safetyMargin, 20));
+      // Agregar otras posiciones ordenadas por seguridad REAL
+      const otherPositions = Array.from({ length: 25 }, (_, k) => k + 1)
+        .filter(p => !positionsToTry.includes(p))
+        .sort((a, b) => {
+          const weightA = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
+          const weightB = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
+          return weightA - weightB; // Menor peso = más seguro
+        });
+      
+      positionsToTry.push(...otherPositions);
       
       // Mezclar para evitar patrones predecibles
-      const shuffledSafe = safePositions.sort(() => Math.random() - 0.5);
+      const shuffledSafe = positionsToTry.sort(() => Math.random() - 0.5);
       
       // Ejecutar movimientos hasta alcanzar objetivo o encontrar hueso
       let continueRevealing = true;
@@ -468,13 +476,16 @@ export async function POST(req: NextRequest) {
       targetPositions,
       realisticEngine: {
         active: useRealisticPatterns,
-        learnedFrom: '647 juegos reales',
-        rotationEnabled: MYSTAKE_LEARNED_PATTERNS.rotationEnabled,
+        learnedFrom: '300 partidas reales',
+        rotationEnabled: MYSTAKE_REAL_PATTERNS.rotationEnabled,
+        averageOverlap: MYSTAKE_REAL_PATTERNS.averageOverlap,
+        overlapPercentage: MYSTAKE_REAL_PATTERNS.overlapPercentage,
         patternsUsed: [
-          'Frecuencia de huesos por posición',
-          'Rotación de huesos (0% overlap)',
-          'Comportamiento de jugadores exitosos',
-          'Distribución por zonas'
+          'Frecuencia REAL de huesos por posición',
+          'Rotación REAL (4.68% overlap)',
+          'Comportamiento REAL de jugadores exitosos',
+          'Distribución REAL por zonas',
+          'Retiro REAL (45% en 5 pollos)'
         ]
       },
       summary: {

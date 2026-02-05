@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { EnsembleInteligente } from '@/../../ml/algoritmos/ensemble-inteligente';
+import { EnsembleInteligente } from '../../../../../ml/algoritmos/ensemble-inteligente';
 
 // Instancia global del ensemble (se entrena una vez)
 let ensembleGlobal: EnsembleInteligente | null = null;
