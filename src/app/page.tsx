@@ -3170,7 +3170,7 @@ export default function ChickenAIAdvisor() {
 
         {/* Balance y Apuesta Dialog */}
         <Dialog open={showBalanceDialog} onOpenChange={setShowBalanceDialog}>
-          <DialogContent className="sm:max-w-lg">
+          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Wallet className="w-6 h-6 text-green-600" />
@@ -3222,87 +3222,90 @@ export default function ChickenAIAdvisor() {
               </div>
 
               {/* Selector de Tipo de Asesor */}
-              <div className="space-y-2 pt-2 border-t">
-                <Label htmlFor="tipoAsesor" className="flex items-center gap-2">
-                  <Target className="w-4 h-4 text-blue-600" />
+              <div className="space-y-3 pt-3 border-t">
+                <Label htmlFor="tipoAsesor" className="flex items-center gap-2 text-base">
+                  <Target className="w-5 h-5 text-blue-600" />
                   Tipo de Asesor ML
                 </Label>
-                <Select
-                  value={tipoAsesor}
-                  onValueChange={(value: 'original' | 'rentable') => setTipoAsesor(value)}
-                >
-                  <SelectTrigger id="tipoAsesor" className="w-full">
-                    <SelectValue placeholder="Selecciona el asesor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="original">
-                      <div className="flex flex-col items-start">
-                        <span className="font-semibold">🎯 Asesor Original (5 posiciones)</span>
-                        <span className="text-xs text-gray-500">Objetivo: 5 pos | Éxito: 50-55% | Exploración: 35%</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="rentable">
-                      <div className="flex flex-col items-start">
-                        <span className="font-semibold">💰 Asesor Rentable (2-3 posiciones)</span>
-                        <span className="text-xs text-gray-500">Objetivo: 2-3 pos | Éxito: 75-85% | Exploración: 25%</span>
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
                 
-                {/* Información del asesor seleccionado */}
-                {tipoAsesor === 'original' && (
-                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-xs space-y-1">
-                    <p className="font-semibold text-blue-700 dark:text-blue-300">Características del Asesor Original:</p>
-                    <ul className="space-y-0.5 text-gray-700 dark:text-gray-300">
-                      <li>• Objetivo: Llegar a 5 posiciones seguras</li>
-                      <li>• Tasa de éxito: 50-55% de las partidas</li>
-                      <li>• Exploración: 35% (más variedad)</li>
-                      <li>• Usa todas las posiciones disponibles</li>
-                      <li>• Rentabilidad: Moderada, mayor riesgo</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {tipoAsesor === 'rentable' && (
-                  <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-xs space-y-2">
-                    <p className="font-semibold text-green-700 dark:text-green-300">Características del Asesor Rentable:</p>
-                    <ul className="space-y-0.5 text-gray-700 dark:text-gray-300">
-                      <li>• Objetivo: 2-3 posiciones seguras (configurable)</li>
-                      <li>• Tasa de éxito: 75-85% de las partidas</li>
-                      <li>• Exploración: 25% (más conservador)</li>
-                      <li>• Solo posiciones ultra seguras (93%+ pollos)</li>
-                      <li>• Rentabilidad: 41-71% por partida ganada</li>
-                    </ul>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {/* Selector de Asesor */}
+                  <div className="space-y-2">
+                    <Select
+                      value={tipoAsesor}
+                      onValueChange={(value: 'original' | 'rentable') => setTipoAsesor(value)}
+                    >
+                      <SelectTrigger id="tipoAsesor" className="w-full">
+                        <SelectValue placeholder="Selecciona el asesor" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="original">
+                          <div className="flex flex-col items-start">
+                            <span className="font-semibold">🎯 Asesor Original</span>
+                            <span className="text-xs text-gray-500">5 pos | 50-55% éxito</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="rentable">
+                          <div className="flex flex-col items-start">
+                            <span className="font-semibold">💰 Asesor Rentable</span>
+                            <span className="text-xs text-gray-500">2-3 pos | 75-85% éxito</span>
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     
                     {/* Selector de objetivo para asesor rentable */}
-                    <div className="pt-2 space-y-2">
-                      <Label htmlFor="objetivoRentable" className="text-xs">Objetivo de Posiciones:</Label>
-                      <Select
-                        value={objetivoRentable.toString()}
-                        onValueChange={(value) => setObjetivoRentable(parseInt(value) as 2 | 3)}
-                      >
-                        <SelectTrigger id="objetivoRentable" className="w-full h-8">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="2">
-                            <div className="flex flex-col items-start">
-                              <span className="font-semibold">2 Posiciones</span>
-                              <span className="text-xs text-gray-500">Más seguro | Mult: 1.41x | +41% ganancia</span>
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="3">
-                            <div className="flex flex-col items-start">
-                              <span className="font-semibold">3 Posiciones</span>
-                              <span className="text-xs text-gray-500">Equilibrado | Mult: 1.71x | +71% ganancia</span>
-                            </div>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    {tipoAsesor === 'rentable' && (
+                      <div className="space-y-1">
+                        <Label htmlFor="objetivoRentable" className="text-xs">Objetivo:</Label>
+                        <Select
+                          value={objetivoRentable.toString()}
+                          onValueChange={(value) => setObjetivoRentable(parseInt(value) as 2 | 3)}
+                        >
+                          <SelectTrigger id="objetivoRentable" className="w-full h-9">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="2">
+                              <span className="text-sm">2 Pos (1.41x | +41%)</span>
+                            </SelectItem>
+                            <SelectItem value="3">
+                              <span className="text-sm">3 Pos (1.71x | +71%)</span>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </div>
-                )}
+                  
+                  {/* Información del asesor seleccionado */}
+                  <div>
+                    {tipoAsesor === 'original' && (
+                      <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-xs h-full">
+                        <p className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Asesor Original:</p>
+                        <ul className="space-y-1 text-gray-700 dark:text-gray-300">
+                          <li>• Objetivo: 5 posiciones</li>
+                          <li>• Éxito: 50-55%</li>
+                          <li>• Exploración: 35%</li>
+                          <li>• Mult: 2.58x (+158%)</li>
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {tipoAsesor === 'rentable' && (
+                      <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-xs h-full">
+                        <p className="font-semibold text-green-700 dark:text-green-300 mb-2">Asesor Rentable:</p>
+                        <ul className="space-y-1 text-gray-700 dark:text-gray-300">
+                          <li>• Objetivo: {objetivoRentable} posiciones</li>
+                          <li>• Éxito: 75-85%</li>
+                          <li>• Exploración: 25%</li>
+                          <li>• Solo pos. seguras (93%+)</li>
+                          <li>• Mult: {objetivoRentable === 2 ? '1.41x (+41%)' : '1.71x (+71%)'}</li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
               
               <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
