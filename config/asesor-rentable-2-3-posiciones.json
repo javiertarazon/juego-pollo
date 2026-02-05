@@ -1,0 +1,63 @@
+{
+  "nombre": "Asesor Rentable 2-3 Posiciones",
+  "version": "1.0",
+  "descripcion": "Configuración optimizada para máxima rentabilidad con objetivo de 2-3 posiciones",
+  "objetivo": {
+    "posicionesMinimas": 2,
+    "posicionesMaximas": 3,
+    "posicionesObjetivo": 2,
+    "estrategia": "CONSERVADORA_RENTABLE"
+  },
+  "multiplicadores": {
+    "2posiciones": 1.41,
+    "3posiciones": 1.71,
+    "rentabilidadEsperada": "41-71% por partida ganada"
+  },
+  "ml": {
+    "epsilon": 0.25,
+    "epsilonDecay": 0.995,
+    "epsilonMin": 0.10,
+    "learningRate": 0.15,
+    "discountFactor": 0.90,
+    "memorySize": 10,
+    "descripcion": "Exploración reducida (25%) para mayor consistencia"
+  },
+  "posiciones": {
+    "prioridad": "MAXIMA_SEGURIDAD",
+    "usarSoloSeguras": true,
+    "posicionesSeguras": [19, 13, 7, 18, 11, 10, 6, 25, 22, 1],
+    "evitarPeligrosas": [24, 3, 8, 16, 5, 9, 12, 14],
+    "penalizacionPeligrosas": -0.50,
+    "bonusSeguras": 0.30
+  },
+  "retiro": {
+    "automaticoEn": 2,
+    "permitir3Posiciones": true,
+    "probabilidadRetiroEn2": 0.70,
+    "probabilidadRetiroEn3": 0.95,
+    "descripcion": "70% retira en 2 pollos, 95% en 3 pollos"
+  },
+  "gestionRiesgo": {
+    "stopLossDerrotas": 3,
+    "reducirApuestaTrasDerrotas": 2,
+    "aumentarApuestaTrasVictorias": 3,
+    "factorReduccion": 0.5,
+    "factorAumento": 1.5,
+    "maxApuesta": 5.0,
+    "minApuesta": 0.2
+  },
+  "metricas": {
+    "tasaExitoEsperada": "75-85%",
+    "rentabilidadPorHora": "Alta",
+    "riesgo": "Bajo",
+    "volatilidad": "Baja"
+  },
+  "notas": [
+    "Configuración optimizada para rentabilidad consistente",
+    "Objetivo: 2 posiciones (41% ganancia) con opción a 3 (71% ganancia)",
+    "Usa solo las 10 posiciones más seguras (93%+ pollos)",
+    "Exploración reducida al 25% para mayor consistencia",
+    "Stop-loss automático después de 3 derrotas",
+    "Gestión de apuesta dinámica según rachas"
+  ]
+}
