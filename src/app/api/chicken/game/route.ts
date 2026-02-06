@@ -27,7 +27,7 @@ const MULTIPLIERS = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { boneCount = 3, isSimulated = false } = body;
+    const { boneCount = 3, isSimulated = false, objetivo = 0, modoJuego = 'preparacion', streakStateId = 'default' } = body;
 
     // Validate bone count
     if (![2, 3, 4].includes(boneCount)) {
@@ -47,10 +47,19 @@ export async function POST(req: NextRequest) {
       data: {
         boneCount,
         isSimulated,
+        revealedCount: 0,
+        hitBone: false,
+        cashOutPosition: 0,
+        multiplier: 0,
+        objetivo,
+        modoJuego,
+        streakStateId,
         positions: {
           create: positions.map((pos) => ({
             position: pos,
             isChicken: !bonePositions.includes(pos),
+            revealed: false,
+            revealOrder: 0,
           })),
         },
       },

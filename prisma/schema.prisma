@@ -33,10 +33,15 @@ model ChickenGame {
   boneCount       Int
   revealedCount   Int         @default(0)
   hitBone         Boolean     @default(false)
-  cashOutPosition Int?
-  multiplier      Float?
+  cashOutPosition Int         @default(0)
+  multiplier      Float       @default(0)
   isSimulated     Boolean     @default(false)
   createdAt       DateTime    @default(now())
+  
+  // Nuevos campos para sistema de rachas
+  streakStateId   String      @default("default") // Relación con estado de racha
+  objetivo        Int         @default(0)          // 2 o 3 (si es partida de asesor rentable)
+  modoJuego       String      @default("desconocido") // "conservador" | "liberado"
   
   positions       ChickenPosition[]
 }
@@ -47,7 +52,7 @@ model ChickenPosition {
   position  Int
   isChicken Boolean
   revealed  Boolean      @default(false)
-  revealOrder Int?
+  revealOrder Int        @default(0)
   
   game      ChickenGame  @relation(fields: [gameId], references: [id], onDelete: Cascade)
   
@@ -95,3 +100,36 @@ model SimulationStats {
   @@index([targetPositions])
   @@index([boneCount])
 }
+
+// Estado de racha del usuario
+model StreakState {
+  id                    String      @id @default(cuid())
+  usuarioId             String      @default("default") // Para futuro multi-usuario
+  rachaActual           Int         @default(0)
+  modoActivo            String      @default("conservador") // "conservador" | "liberado"
+  objetivoActual        Int         // 2 o 3
+  partidaActualId       String?
+  posicionesConfirmadas Int         @default(0)
+  ultimaActualizacion   DateTime    @updatedAt
+  createdAt             DateTime    @default(now())
+  
+  @@index([usuarioId])
+}
+
+// Reporte de análisis de partidas
+model AnalysisReport {
+  id                  String   @id @default(cuid())
+  timestamp           DateTime @default(now())
+  partidasAnalizadas  Int
+  tasaAcierto         Float
+  tasaExito           Float
+  promedioRetiro      Float
+  mejorRacha          Int
+  patrones            String   // JSON serializado de PatronIdentificado[]
+  recomendaciones     String   // JSON serializado de string[]
+  comparacionData     String   // JSON serializado de comparacionPredicciones
+  createdAt           DateTime @default(now())
+  
+  @@index([timestamp])
+}
+

@@ -93,7 +93,7 @@ export class MLMonitoringService {
 
       games.forEach(game => {
         const revealed = game.positions
-          .filter(p => p.revealed && p.revealOrder !== null)
+          .filter(p => p.revealed && p.revealOrder > 0)
           .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
         if (revealed.length > 0) {

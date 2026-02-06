@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     for (const game of simulatedGames) {
       // Extract revealed positions in order
       const revealedPositions = game.positions
-        .filter(p => p.revealed && p.revealOrder !== null)
+        .filter(p => p.revealed && p.revealOrder > 0)
         .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))
         .map(p => p.position);
 

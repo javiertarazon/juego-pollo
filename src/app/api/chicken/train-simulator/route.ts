@@ -224,7 +224,7 @@ export async function POST(req: NextRequest) {
     const revealSequences: Map<string, number> = new Map();
     realGames.forEach(game => {
       const revealedChickens = game.positions
-        .filter(p => p.isChicken && p.revealed && p.revealOrder !== null)
+        .filter(p => p.isChicken && p.revealed && p.revealOrder > 0)
         .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))
         .map(p => p.position);
 

@@ -56,7 +56,7 @@ async function exportDetailedCSV(games: any[]): Promise<string> {
       .sort((a: number, b: number) => a - b);
     
     const revealedSequence = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
       .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0))
       .map((p: any) => p.position);
 
@@ -85,7 +85,7 @@ async function exportSequencesCSV(games: any[]): Promise<string> {
 
   const rows = games.map(game => {
     const revealedPositions = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
       .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
     const sequence = revealedPositions.map((p: any) => p.position);
@@ -125,7 +125,7 @@ async function exportPatternsCSV(games: any[]): Promise<string> {
 
   games.forEach(game => {
     const revealedPositions = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
       .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
     for (let length = 2; length <= 4; length++) {
@@ -184,7 +184,7 @@ async function exportMLTrainingCSV(games: any[]): Promise<string> {
 
   games.forEach(game => {
     const revealedPositions = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
       .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
     revealedPositions.forEach((pos: any, index: number) => {
@@ -238,7 +238,7 @@ async function exportPositionsCSV(games: any[]): Promise<string> {
     game.positions.forEach((pos: any) => {
       rows.push([
         game.id, pos.position, pos.isChicken, !pos.isChicken, pos.revealed,
-        pos.revealOrder || '', pos.revealOrder ? `${pos.revealOrder}/${game.revealedCount}` : '',
+        pos.revealOrder ?? 0, pos.revealOrder ? `${pos.revealOrder}/${game.revealedCount}` : '0/0',
         game.boneCount, game.createdAt.toISOString()
       ]);
     });

@@ -1284,46 +1284,109 @@ export default function ChickenAIAdvisor() {
     if (isTrainingSimulator) return;
 
     setIsTrainingSimulator(true);
-    setTrainingStatus('Analizando partidas reales...');
+    setTrainingStatus('Iniciando entrenamiento completo...');
 
     try {
-      const response = await fetch('/api/ml/train-simulator', {
+      // PASO 1: Entrenar el simulador con patrones reales
+      console.log('🔄 Paso 1/3: Analizando patrones de Mystake...');
+      setTrainingStatus('Paso 1/3: Analizando patrones de Mystake...');
+      
+      const trainResponse = await fetch('/api/ml/train-simulator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Error en el entrenamiento');
+      if (!trainResponse.ok) {
+        const errorData = await trainResponse.json();
+        throw new Error(errorData.message || errorData.error || 'Error analizando patrones');
       }
 
-      const result = await response.json();
+      const trainResult = await trainResponse.json();
 
-      if (result.success) {
-        setSimulatorTrainingData(result);
-        setTrainingStatus('Simulador entrenado exitosamente');
-        
-        const mensaje = `✅ Simulador entrenado exitosamente\n\n` +
-          `📊 Partidas analizadas: ${result.training.partidasReales}\n` +
-          `🎯 Posiciones seguras: ${result.training.posicionesSeguras}\n` +
-          `⚠️  Posiciones peligrosas: ${result.training.posicionesPeligrosas}\n` +
-          `🔄 Overlap promedio: ${result.training.averageOverlap} (${result.training.overlapPercentage})\n\n` +
-          `Top 5 posiciones seguras:\n` +
-          result.patterns.topSeguras.slice(0, 5).map((p: any) => 
-            `  Pos ${p.posicion}: ${p.tasaPollo}% pollos`
-          ).join('\n');
-        
-        alert(mensaje);
-      } else {
-        throw new Error(result.error || 'Error desconocido');
+      if (!trainResult.success) {
+        throw new Error(trainResult.error || 'Error en análisis de patrones');
       }
+
+      setSimulatorTrainingData(trainResult);
+      console.log('✅ Patrones analizados:', trainResult.training);
+
+      // PASO 2: Generar partidas simuladas realistas
+      console.log('🔄 Paso 2/3: Generando partidas simuladas realistas...');
+      setTrainingStatus('Paso 2/3: Generando partidas simuladas realistas...');
+      
+      const simulateCount = simulationCount || 100;
+      const simulateResponse = await fetch('/api/chicken/simulate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          count: simulateCount,
+          boneCount: simulatorBoneCount,
+          targetPositions: targetPositions || 5,
+          useRealisticPatterns: true,
+        }),
+      });
+
+      if (!simulateResponse.ok) {
+        const errorData = await simulateResponse.json();
+        throw new Error(errorData.message || errorData.error || 'Error generando partidas simuladas');
+      }
+
+      const simulateResult = await simulateResponse.json();
+      console.log('✅ Partidas simuladas generadas:', simulateResult.summary);
+
+      // PASO 3: Entrenar el asesor ML con las partidas simuladas
+      console.log('🔄 Paso 3/3: Entrenando asesor ML con partidas simuladas...');
+      setTrainingStatus('Paso 3/3: Entrenando asesor ML...');
+      
+      const advisorResponse = await fetch('/api/ml/train-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trainingGames: simulateCount,
+          targetPositions: targetPositions || 5,
+          validateAfter: true,
+        }),
+      });
+
+      if (!advisorResponse.ok) {
+        const errorData = await advisorResponse.json();
+        throw new Error(errorData.message || errorData.error || 'Error entrenando asesor ML');
+      }
+
+      const advisorResult = await advisorResponse.json();
+      console.log('✅ Asesor ML entrenado:', advisorResult);
+
+      setAdvisorTrainingData(advisorResult);
+      setTrainingStatus('✅ Entrenamiento completo');
+      
+      // Mensaje final con todos los resultados
+      const mensaje = `🎉 ENTRENAMIENTO COMPLETO\n\n` +
+        `📊 PASO 1 - Análisis de Patrones:\n` +
+        `  • Partidas analizadas: ${trainResult.training.partidasReales}\n` +
+        `  • Posiciones seguras: ${trainResult.training.posicionesSeguras}\n` +
+        `  • Posiciones peligrosas: ${trainResult.training.posicionesPeligrosas}\n` +
+        `  • Overlap: ${trainResult.training.averageOverlap} (${trainResult.training.overlapPercentage})\n\n` +
+        `🎮 PASO 2 - Partidas Simuladas:\n` +
+        `  • Partidas generadas: ${simulateResult.gamesProcessed}\n` +
+        `  • Victorias: ${simulateResult.summary?.victories || 'N/A'}\n` +
+        `  • Tasa de éxito: ${simulateResult.summary?.winRate || 'N/A'}%\n\n` +
+        `🤖 PASO 3 - Asesor ML:\n` +
+        `  • Partidas entrenamiento: ${advisorResult.training?.games || 'N/A'}\n` +
+        `  • Tasa de éxito: ${advisorResult.training?.tasaExito || 'N/A'}%\n` +
+        `  • Posiciones seguras usadas: ${advisorResult.analysis?.porcentajeSeguras || 'N/A'}%\n\n` +
+        `✅ El sistema ahora usa patrones reales de Mystake`;
+      
+      alert(mensaje);
+      
+      // Actualizar estadísticas
+      await fetchStatistics();
     } catch (error) {
-      console.error('Error training simulator:', error);
+      console.error('Error en entrenamiento completo:', error);
       setTrainingStatus('Error en el entrenamiento');
-      alert(`Error al entrenar el simulador: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      alert(`❌ Error en el entrenamiento:\n\n${error instanceof Error ? error.message : 'Error desconocido'}`);
     } finally {
       setIsTrainingSimulator(false);
-      setTimeout(() => setTrainingStatus(''), 3000);
+      setTimeout(() => setTrainingStatus(''), 5000);
     }
   };
 
@@ -1332,63 +1395,100 @@ export default function ChickenAIAdvisor() {
 
     // Verificar que el simulador esté entrenado primero
     if (!simulatorTrainingData) {
-      alert('⚠️  Primero debes entrenar el simulador.\n\nHaz clic en "Entrenar Simulador" antes de entrenar el asesor.');
+      alert('⚠️ Primero debes entrenar el simulador.\n\nHaz clic en "Entrenar Simulador" antes de entrenar el asesor.');
       return;
     }
 
+    // Preguntar al usuario si desea guardar las partidas
+    const guardarPartidas = window.confirm(
+      '💾 ¿Deseas GUARDAR las partidas de entrenamiento en la base de datos?\n\n' +
+      '✅ SÍ: Las partidas se guardarán y se usarán para mejorar el asesor en juegos reales\n' +
+      '❌ NO: Solo se entrenar en memoria (más rápido, no afecta BD)'
+    );
+
     setIsTrainingAdvisor(true);
-    setTrainingStatus('Entrenando asesor con partidas simuladas...');
+    setTrainingStatus('Entrenando asesor contra simulador de Mystake...');
 
     try {
       const trainingGames = simulationCount || 100;
       
-      const response = await fetch('/api/ml/train-advisor', {
+      const response = await fetch('/api/ml/train-asesor-vs-simulador', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           trainingGames,
           targetPositions: targetPositions || 5,
-          validateAfter: true,
+          boneCount: simulatorBoneCount,
+          saveToDatabase: guardarPartidas,
+          showProgressEvery: 10,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Error en el entrenamiento');
+        throw new Error(errorData.details || errorData.error || 'Error entrenando asesor');
       }
 
       const result = await response.json();
-
-      if (result.success) {
-        setAdvisorTrainingData(result);
-        setTrainingStatus('Asesor entrenado exitosamente');
-        
-        const mensaje = `✅ Asesor ML entrenado exitosamente\n\n` +
-          `🎮 Partidas de entrenamiento: ${result.training.games}\n` +
-          `✅ Victorias: ${result.training.victorias} (${result.training.tasaExito}%)\n` +
-          `❌ Derrotas: ${result.training.derrotas}\n` +
-          `📍 Promedio posiciones: ${result.training.promedioPosiciones}\n` +
-          `🎯 Objetivo: ${result.training.targetPositions} pollos\n\n` +
-          (result.validation ? 
-            `🔍 Validación (${result.validation.games} partidas):\n` +
-            `   Tasa de éxito: ${result.validation.tasaExito}%\n\n` : '') +
-          `📊 Uso de posiciones seguras: ${result.analysis.porcentajeSeguras}%\n\n` +
-          `${result.recommendation}`;
-        
-        alert(mensaje);
-
-        // Refresh statistics to include newly learned patterns
-        await fetchStatistics();
-      } else {
-        throw new Error(result.error || 'Error desconocido');
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Error en entrenamiento');
       }
+
+      setAdvisorTrainingData(result);
+      setTrainingStatus('✅ Asesor entrenado exitosamente');
+      
+      // Mostrar resultados detallados
+      const mensaje = `
+🎉 ENTRENAMIENTO COMPLETADO
+
+📊 RESUMEN GENERAL:
+• Partidas jugadas: ${result.resumen.partidasJugadas}
+• Victorias: ${result.resumen.victorias} (${result.resumen.tasaExito}%)
+• Derrotas: ${result.resumen.derrotas}
+• Promedio reveladas: ${result.resumen.promedioReveladas}
+• Guardado en BD: ${result.resumen.guardadoEnBD ? 'SÍ' : 'NO'}
+
+🏆 RACHAS:
+• Máxima victorias: ${result.rachas.victoriasMaxima}
+• Máxima derrotas: ${result.rachas.derrotasMaxima}
+
+🎯 TOP 5 POSICIONES MÁS USADAS:
+${result.asesor.topPosiciones.slice(0, 5).map((p: any, i: number) => 
+  `${i + 1}. Pos ${p.posicion}: ${p.usos} usos, ${p.tasaExito}% éxito`
+).join('\n')}
+
+🔥 TOP 5 POSICIONES MÁS CALIENTES (Huesos):
+${result.simulador.posicionesCalientes.slice(0, 5).map((p: any, i: number) => 
+  `${i + 1}. Pos ${p.posicion}: ${p.vecesHueso} veces (${p.frecuencia}%)`
+).join('\n')}
+
+❄️ TOP 5 POSICIONES MÁS FRÍAS (Pollos):
+${result.simulador.posicionesFrias.slice(0, 5).map((p: any, i: number) => 
+  `${i + 1}. Pos ${p.posicion}: ${p.vecesHueso} veces (${p.frecuencia}%)`
+).join('\n')}
+
+⚔️ ASESOR VS MYSTAKE:
+• Asesor: ${result.comparacion.asesorTasaExito}%
+• Mystake: ${result.comparacion.mystakeTasaEstimada}%
+• Diferencia: ${result.comparacion.diferencia > 0 ? '+' : ''}${result.comparacion.diferencia}%
+• Ganador: ${result.comparacion.ganador}
+
+${result.recomendacion}
+      `.trim();
+      
+      alert(mensaje);
+      
+      // Actualizar estadísticas
+      await fetchStatistics();
+      
     } catch (error) {
-      console.error('Error training advisor:', error);
-      setTrainingStatus('Error en el entrenamiento');
-      alert(`Error al entrenar el asesor: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      console.error('Error entrenando asesor:', error);
+      setTrainingStatus('Error al entrenar el asesor');
+      alert(`❌ Error al entrenar el asesor:\n\n${error instanceof Error ? error.message : 'Error desconocido'}`);
     } finally {
       setIsTrainingAdvisor(false);
-      setTimeout(() => setTrainingStatus(''), 3000);
+      setTimeout(() => setTrainingStatus(''), 5000);
     }
   };
 

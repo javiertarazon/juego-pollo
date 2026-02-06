@@ -74,9 +74,14 @@ export async function POST(req: NextRequest) {
 
     console.log(`✅ Simulador cargado (entrenado con ${simulatorConfig.trainedWith} partidas)`);
 
-    // 2. Cargar estado actual del ML
+    // 2. Cargar estado actual del ML y resetear racha de derrotas
     await loadMLState();
     console.log('✅ Estado del ML cargado');
+    
+    // IMPORTANTE: Resetear contadores de stop-loss para entrenamiento
+    const { resetStopLoss } = await import('@/lib/ml/reinforcement-learning');
+    resetStopLoss();
+    console.log('✅ Stop-loss reseteado para entrenamiento');
 
     // 3. Entrenar con partidas simuladas
     let victorias = 0;
@@ -87,6 +92,11 @@ export async function POST(req: NextRequest) {
     const posicionesUsadas = new Map<number, { usos: number; exitos: number }>();
 
     for (let i = 0; i < trainingGames; i++) {
+      // Resetear stop-loss cada 50 partidas para evitar bloqueos durante entrenamiento
+      if (i > 0 && i % 50 === 0) {
+        resetStopLoss();
+      }
+      
       // Generar huesos realistas
       const bones = generateRealisticBones(simulatorConfig, previousBones);
       previousBones = bones;
@@ -97,8 +107,8 @@ export async function POST(req: NextRequest) {
       let reachedObjective = false;
 
       while (!hitBone && !reachedObjective && revealedPositions.length < 21) {
-        // Obtener sugerencia del ML
-        const prediction = await selectPositionML(revealedPositions);
+        // Obtener sugerencia del ML (con stop-loss desactivado durante entrenamiento)
+        const prediction = await selectPositionML(revealedPositions, true);
         const suggestedPos = prediction.position;
 
         // Registrar uso
@@ -173,7 +183,7 @@ export async function POST(req: NextRequest) {
         let reachedObjective = false;
 
         while (!hitBone && !reachedObjective && revealedPositions.length < 21) {
-          const prediction = await selectPositionML(revealedPositions);
+          const prediction = await selectPositionML(revealedPositions, true);
           const suggestedPos = prediction.position;
 
           if (bones.includes(suggestedPos)) {

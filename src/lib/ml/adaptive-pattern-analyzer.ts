@@ -12,6 +12,11 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+// Caché para análisis adaptativo
+let cacheAnalisis: AnalisisAdaptativo | null = null;
+let cacheTimestamp: Date | null = null;
+const CACHE_DURATION = 60000; // 60 segundos
+
 interface PatronRotacion {
   ordenSugerencias: string; // Ej: "1ra,2da,3ra" o "1ra,2da" o "1ra"
   posicionesSugeridas: number[][]; // Posiciones sugeridas en ese orden
@@ -47,6 +52,19 @@ interface AnalisisAdaptativo {
  * según el ORDEN de las sugerencias del asesor
  */
 export async function analizarUltimasPartidas(limite: number = 10): Promise<AnalisisAdaptativo> {
+  const ahora = new Date();
+  
+  // Verificar caché
+  if (cacheAnalisis && cacheTimestamp) {
+    const diff = ahora.getTime() - cacheTimestamp.getTime();
+    if (diff < CACHE_DURATION) {
+      console.log('📦 Usando caché de análisis adaptativo');
+      return cacheAnalisis;
+    }
+  }
+  
+  console.log('🔄 Calculando nuevo análisis adaptativo...');
+  
   // Obtener últimas partidas reales
   const partidas = await prisma.chickenGame.findMany({
     where: {
@@ -66,7 +84,7 @@ export async function analizarUltimasPartidas(limite: number = 10): Promise<Anal
   });
 
   if (partidas.length === 0) {
-    return {
+    const emptyAnalisis = {
       ultimasPartidas: 0,
       patronesRotacion: [],
       zonasCalientes: [],
@@ -80,6 +98,12 @@ export async function analizarUltimasPartidas(limite: number = 10): Promise<Anal
       recomendaciones: ['No hay partidas suficientes para análisis'],
       timestamp: new Date(),
     };
+    
+    // Guardar en caché
+    cacheAnalisis = emptyAnalisis;
+    cacheTimestamp = new Date();
+    
+    return emptyAnalisis;
   }
 
   // Analizar patrones de rotación según ORDEN de sugerencias
@@ -99,7 +123,7 @@ export async function analizarUltimasPartidas(limite: number = 10): Promise<Anal
 
   // Analizar cada partida
   partidas.forEach((partida, idx) => {
-    const posiciones = partida.positions.filter(p => p.revealed && p.revealOrder !== null);
+    const posiciones = partida.positions.filter(p => p.revealed && p.revealOrder > 0);
     const pollos = posiciones.filter(p => p.isChicken);
     const huesos = posiciones.filter(p => !p.isChicken);
 
@@ -294,7 +318,8 @@ export async function analizarUltimasPartidas(limite: number = 10): Promise<Anal
     }
   }
 
-  return {
+  // Crear análisis completo
+  const analisis: AnalisisAdaptativo = {
     ultimasPartidas: partidas.length,
     patronesRotacion,
     zonasCalientes,
@@ -304,6 +329,21 @@ export async function analizarUltimasPartidas(limite: number = 10): Promise<Anal
     recomendaciones,
     timestamp: new Date(),
   };
+
+  // Actualizar caché
+  cacheAnalisis = analisis;
+  cacheTimestamp = new Date();
+
+  return analisis;
+}
+
+/**
+ * Invalidar caché (llamar después de guardar nueva partida)
+ */
+export function invalidarCacheAnalisis(): void {
+  cacheAnalisis = null;
+  cacheTimestamp = null;
+  console.log('🗑️ Caché de análisis invalidado');
 }
 
 /**

@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
       frecuencias_posiciones: analizarFrecuenciasPosiciones(partidas),
       patrones_consecutivos: analizarPatronesConsecutivos(partidas),
       transiciones: analizarTransiciones(partidas),
+      patrones_huesos_condicional: analizarPatronesHuesosCondicional(partidas),
       ultimas_10_partidas: analizarUltimas10Partidas(partidas.slice(0, 10)),
       zonas_calientes_frias: analizarZonasCalientesFrias(partidas),
       ventajas_estadisticas: identificarVentajasEstadisticas(partidas),
@@ -285,6 +286,139 @@ function analizarTransiciones(partidas: any[]) {
   return {
     resumen_transiciones: transiciones,
     posiciones_que_cambian_mas: cambios_frecuentes
+  };
+}
+
+/**
+ * Analiza patrones de huesos condicionados por las últimas posiciones de pollo reveladas
+ */
+function analizarPatronesHuesosCondicional(partidas: any[]) {
+  const distanciaManhattan: Record<number, number> = {};
+  const lastChickenToBones = new Map<number, Map<number, number>>();
+  const lastTwoChickenToBones = new Map<string, Map<number, number>>();
+
+  let totalBones = 0;
+  let totalGamesConRevelados = 0;
+  let adyacentes = 0;
+  let mismaFila = 0;
+  let mismaCol = 0;
+
+  const getRowCol = (pos: number) => {
+    const row = Math.floor((pos - 1) / 5);
+    const col = (pos - 1) % 5;
+    return { row, col };
+  };
+
+  const incrementarMapa = (mapa: Map<number, number>, key: number) => {
+    mapa.set(key, (mapa.get(key) || 0) + 1);
+  };
+
+  partidas.forEach((partida) => {
+    const reveladas = partida.positions
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
+      .sort((a: any, b: any) => a.revealOrder - b.revealOrder);
+
+    const pollosRevelados = reveladas.filter((p: any) => p.isChicken);
+    if (pollosRevelados.length === 0) return;
+
+    totalGamesConRevelados++;
+
+    const lastChicken = pollosRevelados[pollosRevelados.length - 1].position;
+    const lastTwoKey = pollosRevelados.length >= 2
+      ? `${pollosRevelados[pollosRevelados.length - 2].position}-${lastChicken}`
+      : null;
+
+    const bones = partida.positions
+      .filter((p: any) => !p.isChicken)
+      .map((p: any) => p.position);
+
+    const { row: lastRow, col: lastCol } = getRowCol(lastChicken);
+
+    bones.forEach((bonePos: number) => {
+      totalBones++;
+
+      const { row, col } = getRowCol(bonePos);
+      const dist = Math.abs(row - lastRow) + Math.abs(col - lastCol);
+      distanciaManhattan[dist] = (distanciaManhattan[dist] || 0) + 1;
+
+      if (Math.max(Math.abs(row - lastRow), Math.abs(col - lastCol)) === 1) {
+        adyacentes++;
+      }
+      if (row === lastRow) mismaFila++;
+      if (col === lastCol) mismaCol++;
+
+      if (!lastChickenToBones.has(lastChicken)) {
+        lastChickenToBones.set(lastChicken, new Map());
+      }
+      incrementarMapa(lastChickenToBones.get(lastChicken)!, bonePos);
+
+      if (lastTwoKey) {
+        if (!lastTwoChickenToBones.has(lastTwoKey)) {
+          lastTwoChickenToBones.set(lastTwoKey, new Map());
+        }
+        incrementarMapa(lastTwoChickenToBones.get(lastTwoKey)!, bonePos);
+      }
+    });
+  });
+
+  const ordenarTop = (mapa: Map<number, number>, top: number) => {
+    const total = Array.from(mapa.values()).reduce((a, b) => a + b, 0) || 1;
+    return Array.from(mapa.entries())
+      .map(([posicion, conteo]) => ({
+        posicion,
+        conteo,
+        porcentaje: Number(((conteo / total) * 100).toFixed(2))
+      }))
+      .sort((a, b) => b.conteo - a.conteo)
+      .slice(0, top);
+  };
+
+  const topPorUltimoPollo = Array.from(lastChickenToBones.entries())
+    .map(([ultimaPosicion, mapa]) => ({
+      ultima_posicion_pollo: ultimaPosicion,
+      muestras: Array.from(mapa.values()).reduce((a, b) => a + b, 0),
+      huesos_mas_probables: ordenarTop(mapa, 5)
+    }))
+    .sort((a, b) => b.muestras - a.muestras)
+    .slice(0, 10);
+
+  const topPorUltimosDos = Array.from(lastTwoChickenToBones.entries())
+    .map(([clave, mapa]) => ({
+      ultimas_dos_posiciones: clave,
+      muestras: Array.from(mapa.values()).reduce((a, b) => a + b, 0),
+      huesos_mas_probables: ordenarTop(mapa, 5)
+    }))
+    .sort((a, b) => b.muestras - a.muestras)
+    .slice(0, 10);
+
+  const distanciaDistribucion = Object.entries(distanciaManhattan)
+    .map(([dist, count]) => ({
+      distancia: Number(dist),
+      conteo: count,
+      porcentaje: totalBones > 0 ? Number(((count / totalBones) * 100).toFixed(2)) : 0
+    }))
+    .sort((a, b) => a.distancia - b.distancia);
+
+  return {
+    total_partidas_con_revelados: totalGamesConRevelados,
+    total_muestras_huesos: totalBones,
+    proximidad: {
+      adyacentes: {
+        conteo: adyacentes,
+        porcentaje: totalBones > 0 ? Number(((adyacentes / totalBones) * 100).toFixed(2)) : 0
+      },
+      misma_fila: {
+        conteo: mismaFila,
+        porcentaje: totalBones > 0 ? Number(((mismaFila / totalBones) * 100).toFixed(2)) : 0
+      },
+      misma_columna: {
+        conteo: mismaCol,
+        porcentaje: totalBones > 0 ? Number(((mismaCol / totalBones) * 100).toFixed(2)) : 0
+      },
+      distribucion_distancia_manhattan: distanciaDistribucion
+    },
+    condicion_por_ultima_posicion_pollo: topPorUltimoPollo,
+    condicion_por_ultimas_dos_posiciones: topPorUltimosDos
   };
 }
 

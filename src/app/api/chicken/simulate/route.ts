@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
 
 const MULTIPLIERS = {
   4: 1.7,
@@ -22,8 +24,19 @@ const MULTIPLIERS = {
   21: 16.37,
 } as const;
 
-// PATRONES REALES DE MYSTAKE - BASADO EN 300 PARTIDAS REALES
-const MYSTAKE_REAL_PATTERNS = {
+// Tipos de comportamiento del jugador simulado
+type BehaviorType = 'conservador' | 'rentable' | 'agresivo';
+
+interface SimulatedBehavior {
+  type: BehaviorType;
+  targetMin: number; // Mínimo de posiciones a revelar
+  targetMax: number; // Máximo de posiciones a revelar
+  cashoutProbability: number; // Probabilidad de retirarse al alcanzar objetivo
+  riskTolerance: number; // Tolerancia al riesgo (0-1)
+}
+
+// PATRONES REALES DE MYSTAKE - BASADO EN 300 PARTIDAS REALES (FALLBACK)
+const MYSTAKE_REAL_PATTERNS_DEFAULT = {
   // Frecuencia de huesos por posición (datos reales de 300 partidas)
   boneFrequencyWeights: {
     24: 0.0561, 3: 0.0513, 8: 0.0497, 16: 0.0481,
@@ -64,28 +77,58 @@ const MYSTAKE_REAL_PATTERNS = {
   dangerousPositions: [24, 3, 8, 16],
 };
 
+// Función para cargar patrones entrenados o usar fallback
+function loadTrainedPatterns() {
+  try {
+    const configPath = join(process.cwd(), 'ml-simulator-config.json');
+    if (existsSync(configPath)) {
+      const config = JSON.parse(readFileSync(configPath, 'utf-8'));
+      console.log('✅ Usando patrones entrenados desde ml-simulator-config.json');
+      console.log(`📊 Entrenado con ${config.trainedWith} partidas reales`);
+      console.log(`📅 Fecha: ${config.trainedAt}`);
+      return config;
+    }
+  } catch (error) {
+    console.warn('⚠️ Error cargando patrones entrenados, usando fallback:', error);
+  }
+  console.log('ℹ️ Usando patrones por defecto (MYSTAKE_REAL_PATTERNS_DEFAULT)');
+  return MYSTAKE_REAL_PATTERNS_DEFAULT;
+}
+
+// Función para generar posiciones aleatorias (fallback sin patrones)
+function generateRandomBonePositions(boneCount: number): number[] {
+  const allPositions = Array.from({ length: 25 }, (_, i) => i + 1);
+  const shuffled = allPositions.sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, boneCount).sort((a, b) => a - b);
+}
+
 interface GameData {
   bonePositions: number[];
   chickenPositions: number[];
 }
 
-// Función para generar posiciones de huesos REALISTAS basadas en 300 partidas reales
+// Función para generar posiciones de huesos REALISTAS basadas en patrones entrenados
 async function generateRealisticBonePositions(
   boneCount: number,
-  previousGameBones: number[] = []
+  previousGameBones: number[] = [],
+  patterns: any = null
 ): Promise<number[]> {
   const bonePositions: number[] = [];
   const allPositions = Array.from({ length: 25 }, (_, i) => i + 1);
   
-  // Crear pool de candidatos con pesos REALES de 300 partidas
+  // Usar patrones entrenados o cargar por defecto
+  const MYSTAKE_PATTERNS = patterns || loadTrainedPatterns();
+  
+  // Crear pool de candidatos con pesos REALES entrenados
   const weightedCandidates = allPositions.map(pos => {
-    let weight = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[pos as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
+    let weight = MYSTAKE_PATTERNS.boneFrequencyWeights[pos as keyof typeof MYSTAKE_PATTERNS.boneFrequencyWeights] || 0.04;
     
-    // APLICAR ROTACIÓN REALISTA: 4.68% overlap promedio
-    // Esto significa que hay 95.32% de probabilidad de NO repetir
-    if (MYSTAKE_REAL_PATTERNS.rotationEnabled && previousGameBones.includes(pos)) {
-      // Reducir peso para simular 4.68% overlap
-      weight *= 0.05; // Solo 5% de probabilidad de repetir
+    // APLICAR ROTACIÓN REALISTA basada en overlap entrenado
+    const rotationEnabled = MYSTAKE_PATTERNS.rotationEnabled ?? true;
+    if (rotationEnabled && previousGameBones.includes(pos)) {
+      // Reducir peso según overlap entrenado
+      const overlapFactor = (MYSTAKE_PATTERNS.overlapPercentage || 4.68) / 100;
+      weight *= overlapFactor;
     }
     
     return { pos, weight };
@@ -125,10 +168,12 @@ async function generateRealisticBonePositions(
   return bonePositions.sort((a, b) => a - b);
 }
 
-// Función para simular comportamiento de jugador usando patrones REALES de 300 partidas
+// Función para simular comportamiento de jugador usando patrones entrenados
 function simulatePlayerBehavior(
   bonePositions: number[],
-  confidenceLevel: number
+  confidenceLevel: number,
+  targetPositions: number,
+  patterns: any = null
 ): {
   revealedPositions: number[];
   hitBone: boolean;
@@ -138,20 +183,23 @@ function simulatePlayerBehavior(
   let hitBone = false;
   let cashOutPosition: number | null = null;
   
-  // Crear cola de movimientos basada en posiciones MÁS REVELADAS REALES
-  const moveQueue = [...MYSTAKE_REAL_PATTERNS.mostRevealedPositions];
+  // Usar patrones entrenados o cargar por defecto
+  const MYSTAKE_PATTERNS = patterns || loadTrainedPatterns();
   
-  // Agregar posiciones seguras primero (93%+ pollos)
-  const safeRemaining = MYSTAKE_REAL_PATTERNS.safePositions.filter(
-    p => !moveQueue.includes(p)
+  // Crear cola de movimientos basada en posiciones MÁS REVELADAS del entrenamiento
+  const moveQueue = [...(MYSTAKE_PATTERNS.mostRevealedPositions || [])];
+  
+  // Agregar posiciones seguras del entrenamiento
+  const safeRemaining = (MYSTAKE_PATTERNS.safePositions || []).filter(
+    (p: number) => !moveQueue.includes(p)
   );
   
-  // Agregar otras posiciones ordenadas por seguridad REAL
+  // Agregar otras posiciones ordenadas por seguridad del entrenamiento
   const remaining = Array.from({ length: 25 }, (_, i) => i + 1)
     .filter(p => !moveQueue.includes(p) && !safeRemaining.includes(p))
     .sort((a, b) => {
-      const weightA = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
-      const weightB = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
+      const weightA = MYSTAKE_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_PATTERNS.boneFrequencyWeights] || 0.04;
+      const weightB = MYSTAKE_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_PATTERNS.boneFrequencyWeights] || 0.04;
       return weightA - weightB; // Menor peso = más seguro
     });
   
@@ -172,31 +220,33 @@ function simulatePlayerBehavior(
       revealedPositions.push(pos);
       const currentCount = revealedPositions.length;
       
-      // Decisión de retiro basada en COMPORTAMIENTO REAL de 300 partidas
-      // 45% retiran en 5 pollos, 25% en 4, 16.25% en 6, 8.75% en 7
+      // Decisión de retiro ADAPTADA AL OBJETIVO (targetPositions)
       let shouldCashOut = false;
       const random = Math.random();
       
-      if (confidenceLevel > 0.8) {
-        // Alta confianza: más agresivo (buscar 6-7 pollos)
-        shouldCashOut = 
-          (currentCount >= 7 && random < 0.40) ||
-          (currentCount >= 8 && random < 0.70) ||
-          (currentCount >= 9);
-      } else if (confidenceLevel > 0.6) {
-        // Confianza media: seguir patrón real (5-6 pollos)
-        shouldCashOut = 
-          (currentCount >= 5 && random < 0.45) || // 45% como en datos reales
-          (currentCount >= 6 && random < 0.70) ||
-          (currentCount >= 7 && random < 0.90) ||
-          (currentCount >= 8);
-      } else {
-        // Baja confianza: conservador (4-5 pollos)
-        shouldCashOut = 
-          (currentCount >= 4 && random < 0.25) || // 25% como en datos reales
-          (currentCount >= 5 && random < 0.70) || // 45% + 25% acumulado
-          (currentCount >= 6 && random < 0.90) ||
-          (currentCount >= 7);
+      // Si alcanzamos el objetivo, decisión basada en confianza y patrones reales
+      if (currentCount >= targetPositions) {
+        if (confidenceLevel > 0.85) {
+          // Alta confianza: intentar 1-2 más del objetivo
+          shouldCashOut = 
+            (currentCount >= targetPositions + 2) ||
+            (currentCount === targetPositions + 1 && random < 0.60) ||
+            (currentCount === targetPositions && random < 0.25);
+        } else if (confidenceLevel > 0.7) {
+          // Confianza media: intentar 1 más o retirarse en objetivo
+          shouldCashOut = 
+            (currentCount >= targetPositions + 1 && random < 0.70) ||
+            (currentCount === targetPositions && random < 0.50);
+        } else {
+          // Baja confianza: retirarse en objetivo
+          shouldCashOut = 
+            (currentCount >= targetPositions && random < 0.75);
+        }
+      }
+      
+      // Protección: si revelamos demasiadas posiciones, retirarse
+      if (currentCount >= Math.min(targetPositions + 4, 12)) {
+        shouldCashOut = true;
       }
       
       if (shouldCashOut) {
@@ -209,7 +259,7 @@ function simulatePlayerBehavior(
   return { revealedPositions, hitBone, cashOutPosition };
 }
 
-// POST /api/chicken/simulate - MEJORADO CON APRENDIZAJE DE PATRONES REALES
+// POST /api/chicken/simulate - MEJORADO CON APRENDIZAJE DE PATRONES ENTRENADOS
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -219,6 +269,9 @@ export async function POST(req: NextRequest) {
       targetPositions = 5, // NUEVO: Objetivo de posiciones consecutivas
       useRealisticPatterns = true,
     } = body;
+    
+    // Cargar patrones entrenados al inicio
+    const trainedPatterns = loadTrainedPatterns();
 
     // Validación
     if (!Number.isInteger(count) || count < 1 || count > 1000) {
@@ -239,11 +292,16 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log(`🎮 Simulación REALISTA de Mystake: ${count} juegos, ${boneCount} huesos`);
-    console.log(`🎯 Objetivo: ${targetPositions} posiciones consecutivas`);
-    console.log(`📊 Usando patrones REALES de 300 partidas`);
-    console.log(`🔄 Overlap promedio: ${MYSTAKE_REAL_PATTERNS.averageOverlap} huesos (${MYSTAKE_REAL_PATTERNS.overlapPercentage}%)`);
+    console.log(`\n🎮 Iniciando simulación de ${count} partidas...`);
+    console.log(`🎯 Objetivo: ${targetPositions} posiciones reveladas`);
+    console.log(`🦴 Cantidad de huesos: ${boneCount}`);
+    console.log(`🔄 Patrones realistas: ${useRealisticPatterns ? 'SÍ' : 'NO'}`);
+    console.log(`📊 Entrenado con: ${trainedPatterns.trainedWith || 'N/A'} partidas reales`);
+    console.log(`🔄 Overlap promedio: ${trainedPatterns.averageOverlap || 0.19} huesos (${trainedPatterns.overlapPercentage || 4.68}%)`);
+    console.log('---');
 
+    const results: GameData[] = [];
+    
     // Obtener últimas 3 partidas reales para aplicar rotación
     const recentRealGames = await db.chickenGame.findMany({
       where: { isSimulated: false, boneCount },
@@ -252,22 +310,9 @@ export async function POST(req: NextRequest) {
       include: { positions: true }
     });
 
-    interface SimulationResult {
-      gameId: string;
-      revealedCount: number;
-      hitBone: boolean;
-      cashOutPosition: number | null;
-      multiplier: number | null;
-      isVictory: boolean;
-      reachedTarget: boolean; // NUEVO
-      bonePositions: number[];
-      confidenceLevel: number;
-      usedRotation: boolean;
-    }
-
-    const results: SimulationResult[] = [];
-    
-    // Estadísticas detalladas por cantidad de posiciones
+    let victories = 0;
+    let defeats = 0;
+    let totalRevealed = 0;
     const detailedStats: Record<number, { 
       reached: number; 
       victories: number; 
@@ -293,169 +338,80 @@ export async function POST(req: NextRequest) {
     let totalRevealedCount = 0;
 
     for (let i = 0; i < count; i++) {
-      // 1. Generar posiciones de huesos REALISTAS
-      const bonePositions = await generateRealisticBonePositions(
-        boneCount,
-        previousGameBones
+      // Generar posiciones de huesos con patrones entrenados
+      const bonePositions = useRealisticPatterns
+        ? await generateRealisticBonePositions(boneCount, previousGameBones, trainedPatterns)
+        : generateRandomBonePositions(boneCount);
+
+      const chickenPositions = Array.from({ length: 25 }, (_, j) => j + 1)
+        .filter(p => !bonePositions.includes(p));
+
+      // Nivel de confianza variable (70-90%)
+      const confidenceLevel = 0.7 + Math.random() * 0.2;
+
+      // Simular comportamiento de jugador con patrones entrenados
+      const { revealedPositions, hitBone, cashOutPosition } = simulatePlayerBehavior(
+        bonePositions,
+        confidenceLevel,
+        targetPositions,
+        trainedPatterns
       );
+      // Determinar victoria/derrota
+      const isVictory = !hitBone && revealedPositions.length >= targetPositions;
+      const reachedTarget = revealedPositions.length >= targetPositions;
       
-      // 2. Simular juego con objetivo específico usando ESTRATEGIA ÓPTIMA V3
-      const revealedPositions: number[] = [];
-      let hitBone = false;
-      let reachedTarget = false;
+      // Actualizar estadísticas
+      if (isVictory) victories++;
+      if (hitBone) defeats++;
+      totalRevealed += revealedPositions.length;
       
-      // ESTRATEGIA V4: Usar posiciones SEGURAS REALES (93%+ pollos)
-      const positionsToTry = [...MYSTAKE_REAL_PATTERNS.safePositions];
-      
-      // Agregar otras posiciones ordenadas por seguridad REAL
-      const otherPositions = Array.from({ length: 25 }, (_, k) => k + 1)
-        .filter(p => !positionsToTry.includes(p))
-        .sort((a, b) => {
-          const weightA = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[a as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
-          const weightB = MYSTAKE_REAL_PATTERNS.boneFrequencyWeights[b as keyof typeof MYSTAKE_REAL_PATTERNS.boneFrequencyWeights] || 0.04;
-          return weightA - weightB; // Menor peso = más seguro
-        });
-      
-      positionsToTry.push(...otherPositions);
-      
-      // Mezclar para evitar patrones predecibles
-      const shuffledSafe = positionsToTry.sort(() => Math.random() - 0.5);
-      
-      // Ejecutar movimientos hasta alcanzar objetivo o encontrar hueso
-      let continueRevealing = true;
-      let positionIndex = 0;
-      
-      while (continueRevealing && positionIndex < shuffledSafe.length) {
-        const pos = shuffledSafe[positionIndex];
-        positionIndex++;
-        
-        // Verificar si es hueso
-        if (bonePositions.includes(pos)) {
-          hitBone = true;
-          revealedPositions.push(pos);
-          continueRevealing = false;
-        } else {
-          revealedPositions.push(pos);
-          const currentCount = revealedPositions.length;
-          
-          // Actualizar estadísticas detalladas
-          if (currentCount >= 3 && currentCount <= 15) {
-            detailedStats[currentCount].reached++;
-          }
-          
-          // Verificar si alcanzó el objetivo
-          if (currentCount >= targetPositions) {
-            reachedTarget = true;
-            continueRevealing = false;
-            
-            // Registrar victoria en estadísticas detalladas
-            if (currentCount >= 3 && currentCount <= 15) {
-              detailedStats[currentCount].victories++;
-            }
-          }
+      // Actualizar estadísticas detalladas por posición
+      const actualRevealed = hitBone ? revealedPositions.length - 1 : revealedPositions.length;
+      if (actualRevealed >= 3 && actualRevealed <= 15) {
+        detailedStats[actualRevealed].reached++;
+        if (isVictory) {
+          detailedStats[actualRevealed].victories++;
+        } else if (hitBone) {
+          detailedStats[actualRevealed].defeats++;
         }
       }
       
-      // Registrar derrota si no alcanzó objetivo
-      if (hitBone) {
-        const lastCount = revealedPositions.length - 1; // No contar el hueso
-        if (lastCount >= 3 && lastCount <= 15) {
-          detailedStats[lastCount].defeats++;
-        }
-      }
-      
-      // 3. Determinar victoria/derrota
-      const isVictory = reachedTarget && !hitBone;
-      const cashOutPosition = reachedTarget ? revealedPositions.length : null;
-      
-      if (isVictory) totalVictories++;
-      if (hitBone) totalDefeats++;
-      totalRevealedCount += revealedPositions.length;
-      
-      // 4. Guardar en base de datos
+      // Guardar en base de datos
       const allPositions = Array.from({ length: 25 }, (_, k) => k + 1);
+      const safeCashOutPosition = cashOutPosition ?? 0;
       const game = await db.chickenGame.create({
         data: {
           boneCount,
           revealedCount: revealedPositions.length,
           hitBone,
-          cashOutPosition,
-          multiplier: cashOutPosition
-            ? MULTIPLIERS[cashOutPosition as keyof typeof MULTIPLIERS] || 1
-            : null,
+          cashOutPosition: safeCashOutPosition,
+          multiplier: safeCashOutPosition > 0
+            ? MULTIPLIERS[safeCashOutPosition as keyof typeof MULTIPLIERS] || 1
+            : 0,
           isSimulated: true,
+          objetivo: targetPositions,
+          modoJuego: 'simulado',
+          streakStateId: 'default',
           positions: {
             create: allPositions.map((pos) => {
               const isChicken = !bonePositions.includes(pos);
               const revealed = revealedPositions.includes(pos);
-              const revealOrder = revealed ? revealedPositions.indexOf(pos) + 1 : null;
+              const revealOrder = revealed ? revealedPositions.indexOf(pos) + 1 : 0;
               return { position: pos, isChicken, revealed, revealOrder };
             }),
           },
         },
       });
 
-      results.push({
-        gameId: game.id,
-        revealedCount: game.revealedCount,
-        hitBone: game.hitBone,
-        cashOutPosition: game.cashOutPosition,
-        multiplier: game.multiplier,
-        isVictory,
-        reachedTarget,
-        bonePositions,
-        confidenceLevel: 70 + Math.floor(Math.random() * 20), // 70-90%
-        usedRotation: previousGameBones.length > 0
-      });
+      results.push({ bonePositions, chickenPositions });
       
       // Actualizar para siguiente iteración (simular rotación)
       previousGameBones = bonePositions;
     }
 
     // Calcular estadísticas finales
-    const avgRevealedCount = totalRevealedCount / count;
-    const winRate = Math.round((totalVictories / count) * 100);
-
-    // TODO: Guardar/actualizar estadísticas en BD cuando se regenere el cliente Prisma
-    // Temporalmente comentado debido a problema de permisos con prisma generate
-    /*
-    const existingStats = await db.simulationStats.findUnique({
-      where: {
-        targetPositions_boneCount: {
-          targetPositions,
-          boneCount
-        }
-      }
-    });
-
-    if (existingStats) {
-      // Actualizar estadísticas existentes
-      await db.simulationStats.update({
-        where: { id: existingStats.id },
-        data: {
-          totalGames: existingStats.totalGames + count,
-          victories: existingStats.victories + totalVictories,
-          defeats: existingStats.defeats + totalDefeats,
-          winRate: ((existingStats.victories + totalVictories) / (existingStats.totalGames + count)) * 100,
-          avgRevealedCount: ((existingStats.avgRevealedCount * existingStats.totalGames) + totalRevealedCount) / (existingStats.totalGames + count),
-          updatedAt: new Date()
-        }
-      });
-    } else {
-      // Crear nuevas estadísticas
-      await db.simulationStats.create({
-        data: {
-          targetPositions,
-          boneCount,
-          totalGames: count,
-          victories: totalVictories,
-          defeats: totalDefeats,
-          winRate,
-          avgRevealedCount
-        }
-      });
-    }
-    */
+    const avgRevealedCount = totalRevealed / count;
+    const winRate = Math.round((victories / count) * 100);
 
     // Preparar estadísticas detalladas para respuesta
     const detailedStatsArray = Object.entries(detailedStats)
@@ -476,41 +432,42 @@ export async function POST(req: NextRequest) {
       targetPositions,
       realisticEngine: {
         active: useRealisticPatterns,
-        learnedFrom: '300 partidas reales',
-        rotationEnabled: MYSTAKE_REAL_PATTERNS.rotationEnabled,
-        averageOverlap: MYSTAKE_REAL_PATTERNS.averageOverlap,
-        overlapPercentage: MYSTAKE_REAL_PATTERNS.overlapPercentage,
+        trainedWith: trainedPatterns.trainedWith || 'N/A',
+        trainedAt: trainedPatterns.trainedAt || 'N/A',
+        rotationEnabled: trainedPatterns.rotationEnabled ?? true,
+        averageOverlap: trainedPatterns.averageOverlap || 0.19,
+        overlapPercentage: trainedPatterns.overlapPercentage || 4.68,
         patternsUsed: [
-          'Frecuencia REAL de huesos por posición',
-          'Rotación REAL (4.68% overlap)',
-          'Comportamiento REAL de jugadores exitosos',
-          'Distribución REAL por zonas',
-          'Retiro REAL (45% en 5 pollos)'
+          'Frecuencia de huesos por posición (entrenado)',
+          'Rotación basada en datos reales',
+          'Comportamiento de jugadores entrenado',
+          'Distribución por zonas entrenada',
+          'Patrones de retiro entrenados'
         ]
       },
       summary: {
-        victories: totalVictories,
-        defeats: totalDefeats,
-        incomplete: count - totalVictories - totalDefeats,
+        victories,
+        defeats,
+        incomplete: count - victories - defeats,
         winRate,
         avgRevealedCount: avgRevealedCount.toFixed(2),
-        targetReached: totalVictories,
+        targetReached: victories,
         targetReachedRate: winRate
       },
       detailedStatsByPositions: detailedStatsArray,
       results: results.slice(0, 10), // Mostrar solo primeros 10
       analysis: {
-        message: `Con objetivo de ${targetPositions} posiciones: ${totalVictories}/${count} victorias (${winRate}%)`,
+        message: `Con objetivo de ${targetPositions} posiciones: ${victories}/${count} victorias (${winRate}%)`,
         recommendation: winRate >= 50 
-          ? `✅ Objetivo de ${targetPositions} posiciones es alcanzable`
+          ? `✅ Objetivo de ${targetPositions} posiciones es alcanzable con patrones entrenados`
           : winRate >= 30
           ? `⚠️ Objetivo de ${targetPositions} posiciones es desafiante`
           : `❌ Objetivo de ${targetPositions} posiciones es muy difícil`
       }
     };
 
-    console.log(`✅ Simulación completada: ${totalVictories}/${count} victorias (${winRate}%)`);
-    console.log(`📊 Objetivo de ${targetPositions} posiciones alcanzado: ${totalVictories} veces`);
+    console.log(`✅ Simulación completada: ${victories}/${count} victorias (${winRate}%)`);
+    console.log(`📊 Objetivo de ${targetPositions} posiciones alcanzado: ${victories} veces`);
 
     return NextResponse.json(response);
 

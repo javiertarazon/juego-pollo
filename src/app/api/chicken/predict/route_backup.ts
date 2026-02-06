@@ -33,7 +33,12 @@ export async function POST(req: NextRequest) {
       bonePositions = [],
       cashOutPosition,
       hitBone = false,
+      objetivo = 0,
+      modoJuego = 'real',
+      streakStateId = 'default',
     } = body;
+
+    const safeCashOutPosition = cashOutPosition ?? 0;
 
     // Create the game
     const game = await db.chickenGame.create({
@@ -41,11 +46,14 @@ export async function POST(req: NextRequest) {
         boneCount,
         revealedCount: revealedPositions.length,
         hitBone,
-        cashOutPosition,
-        multiplier: cashOutPosition
-          ? MULTIPLIERS[cashOutPosition as keyof typeof MULTIPLIERS] || null
-          : null,
+        cashOutPosition: safeCashOutPosition,
+        multiplier: safeCashOutPosition > 0
+          ? MULTIPLIERS[safeCashOutPosition as keyof typeof MULTIPLIERS] || 0
+          : 0,
         isSimulated: false,
+        objetivo,
+        modoJuego,
+        streakStateId,
         positions: {
           create: Array.from({ length: 25 }, (_, i) => {
             const pos = i + 1;
@@ -53,7 +61,7 @@ export async function POST(req: NextRequest) {
             const revealed = revealedPositions.includes(pos);
             const revealOrder = revealed
               ? revealedPositions.indexOf(pos) + 1
-              : null;
+              : 0;
 
             return {
               position: pos,

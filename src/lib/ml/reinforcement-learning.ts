@@ -5,6 +5,19 @@ import {
   calcularScoreSeguridad,
   detectarRotacionActiva,
 } from './adaptive-pattern-analyzer';
+import { saveMLStateToFile, loadMLStateFromFile } from './persistence';
+import {
+  getHotPositions as getHotPositionsCommon,
+  calculateSuccessRate,
+  degradeEpsilon,
+  calculateNoveltyBonus,
+  calculateDiversityPenalty,
+  calculateSuccessPenalty,
+  detectMystakeAdaptation,
+  getUnexploredPositions,
+  selectRandomPosition,
+  calculateZoneBonus,
+} from './ml-common';
 
 // Zonas frías opuestas (dividir tablero en 2 zonas)
 const COLD_ZONES = {
@@ -26,9 +39,14 @@ interface MLState {
   positionQValues: Record<number, number>; // Q-values por posición (aprendizaje)
   positionSuccessRate: Record<number, { wins: number; total: number }>; // Tasa de éxito
   explorationCount: number; // Contador de exploraciones
-  // NUEVO: Análisis adaptativo
+  // Análisis adaptativo
   lastAdaptiveAnalysis: Date | null;
   adaptiveScores: Record<number, number>; // Scores adaptativos por posición
+  // NUEVO: Sistema de stop-loss
+  rachaDerrota: number; // Contador de derrotas consecutivas
+  stopLossActivado: boolean; // Bandera de stop-loss activo
+  // Control de inicialización
+  initialized: boolean; // Indica si ya se cargaron los datos de BD
 }
 
 // Estado global del ML (en producción, esto debería estar en DB)
@@ -40,19 +58,32 @@ let mlState: MLState = {
   positionQValues: {},
   positionSuccessRate: {},
   explorationCount: 0,
-  // NUEVO
   lastAdaptiveAnalysis: null,
   adaptiveScores: {},
+  // Sistema de stop-loss
+  rachaDerrota: 0,
+  stopLossActivado: false,
+  // Control de inicialización
+  initialized: false,
 };
 
-// Parámetros de aprendizaje - FASE 2: ULTRA AGRESIVO + ADAPTATIVO
+// Parámetros de aprendizaje - FASE 2: OPTIMIZADO + ADAPTATIVO
 const LEARNING_RATE = 0.15; // Alpha: aumentado para aprender más rápido de errores
 const DISCOUNT_FACTOR = 0.85; // Gamma: reducido para priorizar recompensas inmediatas
-const MIN_EPSILON = 0.35; // Epsilon mínimo aumentado a 35% para MÁXIMA exploración
+const MIN_EPSILON = 0.15; // Epsilon mínimo optimizado a 15% para mejor balance
 const EPSILON_DECAY = 0.998; // Degradación más lenta para mantener exploración
 const SAFE_SEQUENCE_LENGTH = 15; // Memoria aumentada a 15 para evitar repeticiones
 const ADAPTIVE_ANALYSIS_INTERVAL = 60000; // Actualizar análisis cada 60 segundos
 const ADAPTIVE_WEIGHT = 0.4; // Peso del análisis adaptativo (40%)
+
+/**
+ * Resetear sistema de stop-loss (útil para entrenamiento)
+ */
+export function resetStopLoss(): void {
+  mlState.rachaDerrota = 0;
+  mlState.stopLossActivado = false;
+  console.log('🔄 Stop-loss reseteado');
+}
 
 /**
  * Actualizar análisis adaptativo si es necesario
@@ -112,35 +143,57 @@ export function initializeMLState() {
 
 /**
  * Obtener posiciones "calientes" (usadas 2+ veces en últimas 5 partidas)
- * MEJORADO: Integra análisis adaptativo
+ * MEJORADO: Usa función del módulo común + análisis adaptativo
  */
 async function getHotPositions(): Promise<number[]> {
   try {
     // Actualizar análisis adaptativo si es necesario
     await actualizarAnalisisAdaptativo();
 
-    // Obtener zonas calientes del análisis adaptativo
+    // Usar función del módulo común
+    const calientes = await getHotPositionsCommon(5);
+    
+    // Agregar zonas calientes del análisis adaptativo
     const analisis = await analizarUltimasPartidas(10);
     const zonasCalientes = analisis.zonasCalientes
       .filter(z => z.frecuencia >= 30) // Mínimo 30% de frecuencia
       .map(z => z.posicion);
 
-    if (zonasCalientes.length > 0) {
-      console.log(`🔥 Posiciones CALIENTES detectadas (evitar): ${zonasCalientes.join(', ')}`);
-    }
+    // Combinar ambos conjuntos sin duplicados
+    const todasCalientes = [...new Set([...calientes, ...zonasCalientes])];
 
-    return zonasCalientes;
+    return todasCalientes;
   } catch (error) {
-    console.error('Error obteniendo posiciones calientes:', error);
+    console.error('❌ Error obteniendo posiciones calientes:', error);
     return [];
   }
 }
 
 /**
- * Cargar estado del ML desde la base de datos
+ * Cargar estado del ML desde la base de datos o disco
  */
 export async function loadMLState() {
   try {
+    // 1. Intentar cargar persistencia local primero (más rápido y continuidad)
+    const persistedState = loadMLStateFromFile();
+    if (persistedState) {
+      // Validar estructura básica
+      if (persistedState.positionQValues && persistedState.positionSuccessRate) {
+        // Combinar estado base con persistido para asegurar integridad
+        mlState = { ...mlState, ...persistedState, initialized: true };
+        
+        // RESET DE SEGURIDAD: Resetear contadores de racha al cargar
+        // Esto evita que el sistema arranque bloqueado por un Stop-Loss previo
+        mlState.rachaDerrota = 0;
+        mlState.stopLossActivado = false;
+
+        console.log(`✅ ML State restaurado: ${mlState.totalGames} partidas, epsilon: ${mlState.epsilon.toFixed(3)}`);
+        return;
+      }
+    }
+
+    console.log('⚠️ Reconstruyendo estado desde BD (sin persistencia previa)...');
+
     // SOLO PARTIDAS REALES para entrenamiento ML
     const games = await db.chickenGame.findMany({
       where: { isSimulated: false }, // Solo partidas reales
@@ -180,7 +233,7 @@ export async function loadMLState() {
     // Calcular tasas de éxito por posición SOLO con partidas reales
     games.forEach((game) => {
       const revealed = game.positions
-        .filter((p) => p.revealed && p.revealOrder !== null)
+        .filter((p) => p.revealed && p.revealOrder > 0)
         .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
       // Analizar TODAS las posiciones reveladas, no solo la primera
@@ -236,7 +289,7 @@ export async function loadMLState() {
     mlState.consecutiveSafePositions = recentSafeGames
       .map((g) => {
         const revealed = g.positions
-          .filter((p) => p.revealed && p.revealOrder !== null)
+          .filter((p) => p.revealed && p.revealOrder > 0)
           .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0));
         return revealed.length > 0 ? revealed[0].position : null;
       })
@@ -250,9 +303,12 @@ export async function loadMLState() {
 
     console.log(`ML State cargado: ${mlState.totalGames} partidas REALES, epsilon: ${mlState.epsilon.toFixed(3)}`);
     console.log(`Posiciones con datos: ${Object.values(mlState.positionSuccessRate).filter(s => s.total > 0).length}/25`);
+    
+    mlState.initialized = true; // Marcar como inicializado
   } catch (error) {
     console.error('Error cargando ML state:', error);
     initializeMLState();
+    mlState.initialized = true;
   }
 }
 
@@ -304,7 +360,8 @@ function getAvailablePositionsInZone(
  * Seleccionar posición usando estrategia epsilon-greedy
  */
 export async function selectPositionML(
-  revealedPositions: number[] = []
+  revealedPositions: number[] = [],
+  ignoreStopLoss: boolean = false
 ): Promise<{
   position: number;
   strategy: 'EXPLOIT' | 'EXPLORE';
@@ -313,10 +370,69 @@ export async function selectPositionML(
   qValue: number;
   confidence: number;
 }> {
-  // Cargar estado si es primera vez
-  if (mlState.totalGames === 0) {
+  // ⛔ STOP-LOSS: Detener si hay 3+ derrotas consecutivas (excepto durante entrenamiento)
+  if (!ignoreStopLoss && mlState.rachaDerrota >= 3) {
+    mlState.stopLossActivado = true;
+    console.log('⛔ STOP-LOSS ACTIVADO: 3+ derrotas consecutivas. Se recomienda PAUSAR el juego.');
+    console.log(`📉 Racha actual: ${mlState.rachaDerrota} derrotas`);
+    
+    throw new Error(
+      `STOP_LOSS_ACTIVADO: Racha de ${mlState.rachaDerrota} derrotas. ` +
+      'Se recomienda pausar y analizar patrones antes de continuar.'
+    );
+  }
+
+  // Cargar estado si NO está inicializado
+  if (!mlState.initialized) {
     await loadMLState();
     initializeMLState();
+  }
+
+  // 🆕 EXPLORACIÓN FORZADA: Cada 20 partidas, explorar posición no usada
+  if (mlState.totalGames > 0 && mlState.totalGames % 20 === 0) {
+    const posicionesNoExploradas = getUnexploredPositions(mlState.positionSuccessRate, 0);
+    
+    if (posicionesNoExploradas.length > 0) {
+      // Filtrar posiciones no reveladas
+      const disponibles = posicionesNoExploradas.filter(p => !revealedPositions.includes(p));
+      
+      if (disponibles.length > 0) {
+        const posicionNoExplorada = selectRandomPosition(disponibles);
+        
+        console.log(`🆕 EXPLORACIÓN FORZADA (partida ${mlState.totalGames}): Posición ${posicionNoExplorada} (nunca usada)`);
+        
+        // Determinar zona de la posición
+        const zone = COLD_ZONES.ZONE_A.includes(posicionNoExplorada) ? 'ZONE_A' : 'ZONE_B';
+        
+        return {
+          position: posicionNoExplorada,
+          confidence: 0.5,
+          strategy: 'EXPLORE',
+          zone,
+          qValue: 0.5,
+          epsilon: mlState.epsilon,
+        };
+      }
+    }
+  }
+
+  // Detectar si Mystake está adaptándose
+  if (mlState.totalGames >= 5) {
+    try {
+      const recentGames = await db.chickenGame.findMany({
+        where: { isSimulated: false },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      });
+      
+      if (detectMystakeAdaptation(recentGames)) {
+        console.log('🔄 ADAPTACIÓN DE MYSTAKE DETECTADA: Aumentando exploración');
+        // Aumentar temporalmente epsilon para cambiar estrategia
+        mlState.epsilon = Math.min(0.5, mlState.epsilon * 1.2);
+      }
+    } catch (error) {
+      console.error('Error detectando adaptación:', error);
+    }
   }
 
   // Obtener posiciones calientes (a evitar)
@@ -503,6 +619,9 @@ export async function updateMLFromGame(
     mlState.positionSuccessRate[position].wins++;
   }
 
+  // Guardar estado en disco para persistencia
+  saveMLStateToFile(mlState);
+
   // Actualizar secuencia de posiciones seguras
   if (wasSuccess) {
     mlState.consecutiveSafePositions.unshift(position);
@@ -511,8 +630,21 @@ export async function updateMLFromGame(
     }
   }
 
+  // Actualizar racha de derrotas (stop-loss)
+  if (wasSuccess) {
+    mlState.rachaDerrota = 0; // Reset en victoria
+    mlState.stopLossActivado = false;
+  } else {
+    mlState.rachaDerrota++;
+    console.log(`📉 Racha de derrotas: ${mlState.rachaDerrota}`);
+  }
+
   // Degradar epsilon (menos exploración con el tiempo)
-  mlState.epsilon = Math.max(MIN_EPSILON, mlState.epsilon * EPSILON_DECAY);
+  mlState.epsilon = degradeEpsilon(
+    mlState.epsilon,
+    MIN_EPSILON,
+    EPSILON_DECAY
+  );
 
   // Incrementar contador de partidas
   mlState.totalGames++;

@@ -1,27 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { selectPositionML, getMLStats } from "@/lib/ml/reinforcement-learning";
 import { 
   selectPositionMLRentable, 
   getMLStatsRentable 
 } from "@/lib/ml/reinforcement-learning-rentable";
 
+// Schema de validación
+const requestSchema = z.object({
+  revealedPositions: z
+    .array(z.number().int().min(1).max(25))
+    .max(24)
+    .optional()
+    .default([]),
+  tipoAsesor: z
+    .enum(['original', 'rentable'])
+    .optional()
+    .default('original'),
+  objetivoRentable: z
+    .union([z.literal(2), z.literal(3)])
+    .optional()
+    .default(2),
+});
+
 export async function POST(request: NextRequest) {
   try {
     const requestBody = await request.json();
-    const positions = requestBody.revealedPositions || [];
-    const tipoAsesor = requestBody.tipoAsesor || 'original'; // 'original' o 'rentable'
-    const objetivoRentable = requestBody.objetivoRentable || 2; // 2 o 3 posiciones
+    
+    // Validar entrada
+    const validated = requestSchema.parse(requestBody);
+    const { revealedPositions, tipoAsesor, objetivoRentable } = validated;
 
     let prediction;
     let statistics;
 
     // Seleccionar asesor según configuración
     if (tipoAsesor === 'rentable') {
-      prediction = await selectPositionMLRentable(positions, objetivoRentable);
+      prediction = await selectPositionMLRentable(revealedPositions, objetivoRentable);
       statistics = getMLStatsRentable();
       console.log(`ML RENTABLE Prediction - Position: ${prediction.position} | Strategy: ${prediction.strategy} | Objetivo: ${objetivoRentable} pos`);
     } else {
-      prediction = await selectPositionML(positions);
+      prediction = await selectPositionML(revealedPositions);
       statistics = getMLStats();
       console.log("ML ORIGINAL Prediction - Position:", prediction.position, "Strategy:", prediction.strategy);
     }
@@ -69,6 +88,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(responseData);
 
   } catch (err) {
+    // Manejo de errores de validación
+    if (err instanceof z.ZodError) {
+      console.error('Error de validación:', err.errors);
+      return NextResponse.json(
+        { 
+          error: 'Validación fallida', 
+          details: err.errors,
+          message: 'Los parámetros de entrada no son válidos'
+        },
+        { status: 400 }
+      );
+    }
+    
     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
     console.error('Error en prediccion ML:', errorMessage);
     

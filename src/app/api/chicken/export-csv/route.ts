@@ -105,10 +105,10 @@ function generateDetailedCSV(games: any[]): string {
       .map((p: any) => p.position)
       .sort((a: number, b: number) => a - b);
     
-    const revealedSequence = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
-      .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0))
-      .map((p: any) => p.position);
+      const revealedSequence = game.positions
+        .filter((p: any) => p.revealed && p.revealOrder > 0)
+        .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0))
+        .map((p: any) => p.position);
 
     const firstPosition = revealedSequence.length > 0 ? revealedSequence[0] : null;
     const lastPosition = revealedSequence.length > 0 ? revealedSequence[revealedSequence.length - 1] : null;
@@ -189,9 +189,9 @@ function generateSequencesCSV(games: any[]): string {
   ];
 
   const rows = games.map(game => {
-    const revealedPositions = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
-      .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
+      const revealedPositions = game.positions
+        .filter((p: any) => p.revealed && p.revealOrder > 0)
+        .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
     const sequence = revealedPositions.map((p: any) => p.position);
     const results = revealedPositions.map((p: any) => p.isChicken ? 'C' : 'B');
@@ -251,7 +251,7 @@ function generatePatternsCSV(games: any[]): string {
 
   games.forEach(game => {
     const revealedPositions = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
       .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
     // Generar patrones de longitud 2, 3, 4
@@ -346,7 +346,7 @@ function generateMLTrainingCSV(games: any[]): string {
 
   games.forEach(game => {
     const revealedPositions = game.positions
-      .filter((p: any) => p.revealed && p.revealOrder !== null)
+      .filter((p: any) => p.revealed && p.revealOrder > 0)
       .sort((a: any, b: any) => (a.revealOrder || 0) - (b.revealOrder || 0));
 
     revealedPositions.forEach((pos: any, index: number) => {

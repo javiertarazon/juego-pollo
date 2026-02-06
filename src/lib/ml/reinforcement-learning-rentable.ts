@@ -1,5 +1,17 @@
 // Sistema de Aprendizaje por Refuerzo - ASESOR RENTABLE 2-3 POSICIONES
 import { db } from '@/lib/db';
+import {
+  analizarUltimasPartidas,
+  calcularScoreSeguridad,
+  detectarRotacionActiva,
+} from './adaptive-pattern-analyzer';
+import {
+  getHotPositions as getHotPositionsCommon,
+  degradeEpsilon as degradeEpsilonCommon,
+  detectMystakeAdaptation as detectMystakeAdaptationCommon,
+  getUnexploredPositions as getUnexploredPositionsCommon,
+  selectRandomPosition as selectRandomPositionCommon,
+} from './ml-common';
 
 // CONFIGURACIÓN RENTABLE: Solo posiciones MÁS SEGURAS (93%+ pollos)
 const POSICIONES_ULTRA_SEGURAS = [19, 13, 7, 18, 11, 10, 6, 25, 22, 1];
@@ -15,6 +27,11 @@ interface MLStateRentable {
   positionSuccessRate: Record<number, { wins: number; total: number }>;
   explorationCount: number;
   objetivo: 2 | 3; // Objetivo de posiciones
+  lastAdaptiveAnalysis: Date | null;
+  adaptiveScores: Record<number, number>;
+  rachaDerrota: number; // Contador de derrotas consecutivas (stop-loss)
+  stopLossActivado: boolean; // Flag si se activó stop-loss
+  initialized: boolean; // Control de inicialización de datos
 }
 
 // Estado global del ML RENTABLE
@@ -26,11 +43,15 @@ let mlStateRentable: MLStateRentable = {
   positionSuccessRate: {},
   explorationCount: 0,
   objetivo: 2, // Objetivo por defecto: 2 posiciones
+  lastAdaptiveAnalysis: null,
+  adaptiveScores: {},
+  rachaDerrota: 0, // Inicializar contador stop-loss
+  stopLossActivado: false, // Inicializar flag stop-loss
+  initialized: false, // No inicializado al inicio
 };
 
 // Parámetros de aprendizaje RENTABLE
 const LEARNING_RATE = 0.15;
-const DISCOUNT_FACTOR = 0.90; // Mayor para valorar seguridad a largo plazo
 const MIN_EPSILON = 0.10; // Mínimo 10% exploración
 const EPSILON_DECAY = 0.995;
 const SAFE_SEQUENCE_LENGTH = 10; // Memoria de 10 posiciones
@@ -43,12 +64,14 @@ export function initializeMLStateRentable() {
   POSICIONES_ULTRA_SEGURAS.forEach(pos => {
     mlStateRentable.positionQValues[pos] = 0.85; // Valor alto inicial
     mlStateRentable.positionSuccessRate[pos] = { wins: 0, total: 0 };
+    mlStateRentable.adaptiveScores[pos] = 0.85; // Score adaptativo inicial alto
   });
   
   // Inicializar posiciones peligrosas con valor bajo
   POSICIONES_PELIGROSAS.forEach(pos => {
     mlStateRentable.positionQValues[pos] = 0.10; // Valor bajo inicial
     mlStateRentable.positionSuccessRate[pos] = { wins: 0, total: 0 };
+    mlStateRentable.adaptiveScores[pos] = 0.10; // Score adaptativo inicial bajo
   });
   
   // Resto de posiciones con valor neutral
@@ -56,6 +79,47 @@ export function initializeMLStateRentable() {
     if (!mlStateRentable.positionQValues[pos]) {
       mlStateRentable.positionQValues[pos] = 0.50;
       mlStateRentable.positionSuccessRate[pos] = { wins: 0, total: 0 };
+      mlStateRentable.adaptiveScores[pos] = 0.75; // Score neutral inicial
+    }
+  }
+}
+
+/**
+ * Actualizar análisis adaptativo si es necesario
+ */
+async function actualizarAnalisisAdaptativoRentable(): Promise<void> {
+  const ahora = new Date();
+  const ultimoAnalisis = mlStateRentable.lastAdaptiveAnalysis;
+  const INTERVALO = 60000; // 60 segundos
+
+  // Actualizar si nunca se ha hecho o si pasó el intervalo
+  if (!ultimoAnalisis || (ahora.getTime() - ultimoAnalisis.getTime()) > INTERVALO) {
+    console.log('🔄 Actualizando análisis adaptativo rentable...');
+    
+    try {
+      // Analizar últimas 10 partidas
+      const analisis = await analizarUltimasPartidas(10);
+      
+      // Actualizar scores adaptativos para posiciones seguras
+      for (const pos of POSICIONES_ULTRA_SEGURAS) {
+        const scoreData = await calcularScoreSeguridad(pos, 10);
+        mlStateRentable.adaptiveScores[pos] = scoreData.score / 100; // Normalizar a 0-1
+      }
+
+      // Detectar rotación activa
+      const rotacion = await detectarRotacionActiva(10);
+      if (rotacion.hayRotacion) {
+        console.log(`🔄 Rotación detectada: ${rotacion.descripcion} (${rotacion.confianza.toFixed(1)}% confianza)`);
+      }
+
+      // Mostrar zonas calientes
+      if (analisis.zonasCalientes.length > 0) {
+        console.log(`🔥 Zonas calientes: ${analisis.zonasCalientes.slice(0, 5).map(z => `${z.posicion}(${z.frecuencia.toFixed(0)}%)`).join(', ')}`);
+      }
+
+      mlStateRentable.lastAdaptiveAnalysis = ahora;
+    } catch (error) {
+      console.error('❌ Error en análisis adaptativo rentable:', error);
     }
   }
 }
@@ -64,42 +128,17 @@ export function initializeMLStateRentable() {
  * Obtener posiciones calientes (evitar)
  */
 async function getHotPositions(): Promise<number[]> {
-  try {
-    const ultimas5 = await db.chickenGame.findMany({
-      where: { isSimulated: false },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-      include: { positions: true },
-    });
-
-    const posicionesCalientes = new Map<number, number>();
-
-    ultimas5.forEach((partida) => {
-      const primeraPos = partida.positions
-        .filter((p) => p.revealed && p.revealOrder !== null)
-        .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))[0];
-
-      if (primeraPos) {
-        posicionesCalientes.set(
-          primeraPos.position,
-          (posicionesCalientes.get(primeraPos.position) || 0) + 1
-        );
-      }
-    });
-
-    const calientes = Array.from(posicionesCalientes.entries())
-      .filter(([, count]) => count >= 2)
-      .map(([pos]) => pos);
-
-    if (calientes.length > 0) {
-      console.log(`🔥 Posiciones CALIENTES detectadas (evitar): ${calientes.join(', ')}`);
-    }
-
-    return calientes;
-  } catch (error) {
-    console.error('Error obteniendo posiciones calientes:', error);
-    return [];
-  }
+  // Usar función común con 5 juegos de ventana
+  const hotCommon = await getHotPositionsCommon(5);
+  
+  // Combinar con análisis adaptativo si está disponible
+  const analisis = await analizarUltimasPartidas(5);
+  const hotFromAnalysis = analisis.zonasCalientes
+    .filter(z => z.frecuencia > 40) // >40% frecuencia = caliente
+    .map(z => z.posicion);
+  
+  // Unir y devolver únicos
+  return [...new Set([...hotCommon, ...hotFromAnalysis])];
 }
 
 /**
@@ -114,12 +153,53 @@ export async function selectPositionMLRentable(
   strategy: 'EXPLORE' | 'EXPLOIT';
   reason: string;
 }> {
+  // ⛔ STOP-LOSS: Detener si hay 3+ derrotas consecutivas
+  if (mlStateRentable.rachaDerrota >= 3) {
+    mlStateRentable.stopLossActivado = true;
+    throw new Error(
+      `⛔ STOP-LOSS ACTIVADO - ${mlStateRentable.rachaDerrota} derrotas consecutivas. Detener juego.`
+    );
+  }
+
   // Actualizar objetivo
   mlStateRentable.objetivo = objetivo;
   
-  // Inicializar si es necesario
-  if (Object.keys(mlStateRentable.positionQValues).length === 0) {
-    initializeMLStateRentable();
+  // Cargar datos si NO está inicializado (primera vez o reinicio servidor)
+  if (!mlStateRentable.initialized) {
+    await loadMLStateRentable();
+  }
+
+  // Actualizar análisis adaptativo
+  await actualizarAnalisisAdaptativoRentable();
+
+  // 🔍 Detectar si Mystake se está adaptando (>60% pérdidas recientes)
+  const mystakeAdapting = await detectMystakeAdaptationCommon();
+  if (mystakeAdapting) {
+    console.log('⚠️ MYSTAKE ADAPTÁNDOSE - Aumentando exploración +20%');
+    mlStateRentable.epsilon = Math.min(0.80, mlStateRentable.epsilon + 0.20);
+  }
+
+  // 🔄 EXPLORACIÓN FORZADA cada 20 partidas para posiciones no exploradas
+  const unexploredPositions = await getUnexploredPositionsCommon();
+  if (mlStateRentable.totalGames > 0 && mlStateRentable.totalGames % 20 === 0 && unexploredPositions.length > 0) {
+    const unexploredAvailable = unexploredPositions.filter(p => !revealedPositions.includes(p));
+    if (unexploredAvailable.length > 0) {
+      const position = await selectRandomPositionCommon(unexploredAvailable);
+      console.log(`🔄 EXPLORACIÓN FORZADA (cada 20 juegos) - Pos ${position} (no explorada)`);
+      
+      // Actualizar memoria
+      mlStateRentable.consecutiveSafePositions.push(position);
+      if (mlStateRentable.consecutiveSafePositions.length > SAFE_SEQUENCE_LENGTH) {
+        mlStateRentable.consecutiveSafePositions.shift();
+      }
+      
+      return {
+        position,
+        confidence: 50,
+        strategy: 'EXPLORE',
+        reason: 'Exploración forzada de posiciones no probadas',
+      };
+    }
   }
 
   // Obtener posiciones calientes
@@ -171,7 +251,7 @@ export async function selectPositionMLRentable(
     reason = 'Exploración de posiciones seguras';
     mlStateRentable.explorationCount++;
   } else {
-    // EXPLOTACIÓN: Elegir la mejor según Q-values
+    // EXPLOTACIÓN: Elegir la mejor según Q-values + scores adaptativos
     const positionsWithScores = candidatePositions.map((pos) => {
       let score = mlStateRentable.positionQValues[pos] || 0.5;
 
@@ -197,7 +277,11 @@ export async function selectPositionMLRentable(
         score += 0.15;
       }
 
-      return { pos, score };
+      // NUEVO: Combinar con score adaptativo (30% peso)
+      const adaptiveScore = mlStateRentable.adaptiveScores[pos] || 0.75;
+      const combinedScore = (score * 0.7) + (adaptiveScore * 0.3);
+
+      return { pos, score: combinedScore };
     });
 
     // Ordenar por score y elegir la mejor
@@ -258,8 +342,21 @@ export async function updateMLFromGameRentable(
   const newQ = currentQ + LEARNING_RATE * (reward - currentQ);
   mlStateRentable.positionQValues[position] = Math.max(0, Math.min(1, newQ));
 
-  // Actualizar epsilon (reducir exploración gradualmente)
-  mlStateRentable.epsilon = Math.max(MIN_EPSILON, mlStateRentable.epsilon * EPSILON_DECAY);
+  // Actualizar racha de derrotas (stop-loss)
+  if (wasSuccessful) {
+    mlStateRentable.rachaDerrota = 0; // Reset en victoria
+    mlStateRentable.stopLossActivado = false;
+  } else {
+    mlStateRentable.rachaDerrota++;
+    console.log(`📉 Racha de derrotas: ${mlStateRentable.rachaDerrota}`);
+  }
+
+  // Actualizar epsilon (reducir exploración gradualmente) usando función común
+  mlStateRentable.epsilon = degradeEpsilonCommon(
+    mlStateRentable.epsilon,
+    MIN_EPSILON,
+    EPSILON_DECAY
+  );
 
   // Incrementar contador de juegos
   mlStateRentable.totalGames++;
@@ -292,12 +389,67 @@ export async function saveMLStateRentable(): Promise<void> {
  */
 export async function loadMLStateRentable(): Promise<void> {
   try {
-    // Aquí se cargaría desde DB en producción
+    // CARGAR PARTIDAS REALES desde la base de datos
+    const games = await db.chickenGame.findMany({
+      where: { isSimulated: false }, // Solo partidas reales
+      orderBy: { createdAt: 'desc' },
+      take: 200,
+      include: { positions: true },
+    });
+
+    mlStateRentable.totalGames = games.length;
+
+    // Inicializar contadores para todas las posiciones
+    for (let pos = 1; pos <= 25; pos++) {
+      if (!mlStateRentable.positionSuccessRate[pos]) {
+        mlStateRentable.positionSuccessRate[pos] = { wins: 0, total: 0 };
+      }
+    }
+
+    // Procesar partidas para calcular tasas de éxito
+    games.forEach((game) => {
+      const revealed = game.positions
+        .filter((p) => p.revealed && p.revealOrder > 0)
+        .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0));
+
+      revealed.forEach((pos) => {
+        const position = pos.position;
+        const wasSuccess = pos.isChicken;
+
+        if (!mlStateRentable.positionSuccessRate[position]) {
+          mlStateRentable.positionSuccessRate[position] = { wins: 0, total: 0 };
+        }
+
+        mlStateRentable.positionSuccessRate[position].total++;
+        if (wasSuccess) {
+          mlStateRentable.positionSuccessRate[position].wins++;
+        }
+
+        // Calcular Q-value basado en tasa de éxito
+        const successRate =
+          mlStateRentable.positionSuccessRate[position].wins /
+          mlStateRentable.positionSuccessRate[position].total;
+        
+        mlStateRentable.positionQValues[position] = successRate;
+      });
+    });
+
+    // Degradar epsilon basado en partidas reales
+    mlStateRentable.epsilon = Math.max(
+      0.15,
+      0.25 * Math.pow(0.998, mlStateRentable.totalGames)
+    );
+
+    console.log(`ML RENTABLE State cargado: ${mlStateRentable.totalGames} partidas REALES, epsilon: ${mlStateRentable.epsilon.toFixed(3)}`);
+    console.log(`Posiciones con datos: ${Object.values(mlStateRentable.positionSuccessRate).filter(s => s.total > 0).length}/25`);
+    
+    mlStateRentable.initialized = true; // Marcar como inicializado
+    
     initializeMLStateRentable();
-    console.log('ML RENTABLE State loaded');
   } catch (error) {
     console.error('Error loading ML RENTABLE state:', error);
     initializeMLStateRentable();
+    mlStateRentable.initialized = true; // Marcar como inicializado incluso si falla
   }
 }
 
@@ -339,6 +491,11 @@ export function resetMLStateRentable(): void {
     positionSuccessRate: {},
     explorationCount: 0,
     objetivo: 2,
+    lastAdaptiveAnalysis: null,
+    adaptiveScores: {},
+    rachaDerrota: 0,
+    stopLossActivado: false,
+    initialized: false, // Resetear bandera
   };
   initializeMLStateRentable();
   console.log('ML RENTABLE State reset');
