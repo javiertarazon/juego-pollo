@@ -52,7 +52,9 @@ import {
   Wallet,
   TrendingUp as TrendingUpIcon,
   AlertTriangle,
+  Brain,
 } from 'lucide-react';
+import MLEnsembleDashboard from '@/components/MLEnsembleDashboard';
 
 const MULTIPLIERS = {
   1: 1.17,
@@ -163,8 +165,10 @@ export default function ChickenAIAdvisor() {
   const [advisorTrainingData, setAdvisorTrainingData] = useState<any>(null);
 
   // Asesor ML state
-  const [tipoAsesor, setTipoAsesor] = useState<'original' | 'rentable'>('original');
+  const [tipoAsesor, setTipoAsesor] = useState<'original' | 'rentable' | 'python-ensemble'>('original');
   const [objetivoRentable, setObjetivoRentable] = useState<2 | 3>(2);
+  const [pythonMLAvailable, setPythonMLAvailable] = useState<boolean>(false);
+  const [pythonMLData, setPythonMLData] = useState<any>(null);
 
   // ML Patterns state
   interface MLPatterns {
@@ -940,42 +944,7 @@ export default function ChickenAIAdvisor() {
       console.error('❌ Error al registrar ganancia:', error);
     }
 
-    // Save game with cashOutPosition = totalChickens (victory)
-    console.log('📊 Guardando partida como victoria:', {
-      revealedCount: totalChickens,
-      cashOutPosition: totalChickens,
-      hitBone: false,
-      multiplier: currentMultiplierValue,
-    });
-
-    try {
-      const response = await fetch('/api/chicken/result', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          boneCount,
-          revealedPositions: [...revealedChickens, ...revealedBones],
-          bonePositions: [],
-          cashOutPosition: totalChickens, // Guardar con el número de pollos descubiertos
-          hitBone: false,
-        }),
-      });
-
-      const result = await response.json();
-      console.log('✅ Partida guardada correctamente:', {
-        gameId: result.gameId,
-        revealedCount: totalChickens,
-        cashOutPosition: totalChickens,
-        hitBone: false,
-        isVictory: result.analysis?.isVictory,
-      });
-
-      if (result.success) {
-        console.log(`✅ Victoria! Retiro exitoso con ${totalChickens} pollos (${currentMultiplierValue.toFixed(2)}x)`);
-      }
-    } catch (error) {
-      console.error('❌ Error guardando partida:', error);
-    }
+    // Se guarda la partida solo cuando el usuario confirma TODAS las posiciones de huesos
 
     // Guardar valores para el mensaje
     (window as any).lastWithdrawStats = {
@@ -1569,12 +1538,16 @@ ${result.recomendacion}
         </div>
 
         <Tabs defaultValue="advisor" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
+          <TabsList className="grid w-full grid-cols-6 mb-6">
             <TabsTrigger value="advisor">Asesor</TabsTrigger>
             <TabsTrigger value="stats">Estadísticas</TabsTrigger>
-            <TabsTrigger value="strategy">Estrategia Avanzada</TabsTrigger>
+            <TabsTrigger value="ml-ensemble" className="flex items-center gap-1">
+              <Brain className="w-3 h-3" />
+              ML Ensemble
+            </TabsTrigger>
+            <TabsTrigger value="strategy">Estrategia</TabsTrigger>
             <TabsTrigger value="simulator">Simulador</TabsTrigger>
-            <TabsTrigger value="info">Información</TabsTrigger>
+            <TabsTrigger value="info">Info</TabsTrigger>
           </TabsList>
 
           <TabsContent value="advisor">
@@ -2306,6 +2279,11 @@ ${result.recomendacion}
                 </Button>
               </div>
             </div>
+          </TabsContent>
+
+          {/* ML Ensemble Dashboard Tab */}
+          <TabsContent value="ml-ensemble">
+            <MLEnsembleDashboard />
           </TabsContent>
 
           <TabsContent value="patterns">
@@ -3333,7 +3311,7 @@ ${result.recomendacion}
                   <div className="space-y-2">
                     <Select
                       value={tipoAsesor}
-                      onValueChange={(value: 'original' | 'rentable') => setTipoAsesor(value)}
+                      onValueChange={(value: 'original' | 'rentable' | 'python-ensemble') => setTipoAsesor(value)}
                     >
                       <SelectTrigger id="tipoAsesor" className="w-full">
                         <SelectValue placeholder="Selecciona el asesor" />
@@ -3349,6 +3327,12 @@ ${result.recomendacion}
                           <div className="flex flex-col items-start">
                             <span className="font-semibold">💰 Asesor Rentable</span>
                             <span className="text-xs text-gray-500">2-3 pos | 75-85% éxito</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="python-ensemble">
+                          <div className="flex flex-col items-start">
+                            <span className="font-semibold">🐍 Python ML Ensemble v2.0</span>
+                            <span className="text-xs text-gray-500">6 modelos | RF+XGB+LSTM+AR+MK+DP</span>
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -3402,6 +3386,21 @@ ${result.recomendacion}
                           <li>• Solo pos. seguras (93%+)</li>
                           <li>• Mult: {objetivoRentable === 2 ? '1.41x (+41%)' : '1.71x (+71%)'}</li>
                         </ul>
+                      </div>
+                    )}
+                    
+                    {tipoAsesor === 'python-ensemble' && (
+                      <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-xs h-full">
+                        <p className="font-semibold text-purple-700 dark:text-purple-300 mb-2">🐍 Python ML Ensemble v2.0:</p>
+                        <ul className="space-y-1 text-gray-700 dark:text-gray-300">
+                          <li>• Random Forest + XGBoost</li>
+                          <li>• LSTM bidireccional + atención</li>
+                          <li>• Anti-Repeat + Markov 2° orden</li>
+                          <li>• Dispersión espacial</li>
+                          <li>• 68 features + incertidumbre</li>
+                          <li>• Recall@5: ~86%</li>
+                        </ul>
+                        <p className="text-[10px] text-purple-500 mt-2">⚡ Requiere servidor Python en puerto 8100</p>
                       </div>
                     )}
                   </div>
