@@ -1,0 +1,26 @@
+# ML Python Microservice - Chicken Game Predictor
+# ================================================
+
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+pydantic==2.9.0
+
+# ML Core
+scikit-learn==1.5.0
+xgboost==2.1.0
+numpy==1.26.4
+pandas==2.2.2
+
+# Deep Learning (LSTM)
+torch==2.4.0
+--index-url https://download.pytorch.org/whl/cpu
+
+# Database
+aiosqlite==0.20.0
+
+# Utilities
+joblib==1.4.2
+python-dotenv==1.0.1
+loguru==0.7.2
+httpx==0.27.0

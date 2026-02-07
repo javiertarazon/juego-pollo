@@ -1,0 +1,1091 @@
+[
+  {
+    "game_index": 55,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      24
+    ],
+    "revealed_bones": [
+      6,
+      10,
+      12,
+      15
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 56,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      6,
+      11
+    ],
+    "revealed_bones": [
+      1,
+      4,
+      10,
+      18
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 57,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      2,
+      22
+    ],
+    "revealed_bones": [
+      1,
+      14,
+      17,
+      18
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 60,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      13
+    ],
+    "revealed_bones": [
+      5,
+      8,
+      11,
+      18
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 61,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      14,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 65,
+    "cash_out_after": 4,
+    "hit_bone": false,
+    "revealed_chickens": [
+      9,
+      25,
+      23,
+      10
+    ],
+    "revealed_bones": [
+      3,
+      11,
+      20,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 17,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 66,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      7,
+      25,
+      16
+    ],
+    "revealed_bones": [
+      4,
+      14,
+      15,
+      19
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 67,
+    "cash_out_after": 4,
+    "hit_bone": false,
+    "revealed_chickens": [
+      18,
+      15,
+      13,
+      12
+    ],
+    "revealed_bones": [
+      3,
+      5,
+      6,
+      9
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 17,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 69,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      13,
+      9,
+      6
+    ],
+    "revealed_bones": [
+      8,
+      14,
+      23,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 70,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      9,
+      15
+    ],
+    "revealed_bones": [
+      4,
+      7,
+      11,
+      21
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 72,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      3,
+      6
+    ],
+    "revealed_bones": [
+      11,
+      15,
+      16,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 73,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      16,
+      6,
+      22
+    ],
+    "revealed_bones": [
+      9,
+      10,
+      17,
+      25
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 74,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      16,
+      6,
+      22
+    ],
+    "revealed_bones": [
+      9,
+      10,
+      17,
+      25
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 76,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      24,
+      9,
+      15
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      16,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 79,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      15,
+      10,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      8,
+      12,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 81,
+    "cash_out_after": 6,
+    "hit_bone": false,
+    "revealed_chickens": [
+      5,
+      24,
+      10,
+      15,
+      20,
+      22
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      4,
+      17
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 15,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 83,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      15,
+      10,
+      1
+    ],
+    "revealed_bones": [
+      7,
+      8,
+      9,
+      13
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 86,
+    "cash_out_after": 7,
+    "hit_bone": false,
+    "revealed_chickens": [
+      13,
+      24,
+      10,
+      9,
+      19,
+      7,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      4,
+      17,
+      25
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 14,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 89,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      16,
+      22,
+      9
+    ],
+    "revealed_bones": [
+      6,
+      7,
+      12,
+      20
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 90,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      5,
+      22
+    ],
+    "revealed_bones": [
+      11,
+      16,
+      17,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 93,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      22,
+      3,
+      6
+    ],
+    "revealed_bones": [
+      12,
+      20,
+      21,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 94,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      22,
+      6
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      19,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 99,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      6,
+      9,
+      11
+    ],
+    "revealed_bones": [
+      1,
+      3,
+      21,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 100,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      4,
+      9,
+      6
+    ],
+    "revealed_bones": [
+      5,
+      8,
+      20,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 101,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      9,
+      21
+    ],
+    "revealed_bones": [
+      3,
+      10,
+      13,
+      20
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 102,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      25,
+      10,
+      9
+    ],
+    "revealed_bones": [
+      8,
+      11,
+      16,
+      17
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 105,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      9,
+      5,
+      20
+    ],
+    "revealed_bones": [
+      7,
+      12,
+      17,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 106,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      2,
+      20,
+      3
+    ],
+    "revealed_bones": [
+      4,
+      5,
+      8,
+      12
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 107,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      9,
+      20,
+      10
+    ],
+    "revealed_bones": [
+      5,
+      7,
+      14,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 109,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      5,
+      6,
+      4
+    ],
+    "revealed_bones": [
+      3,
+      8,
+      11,
+      16
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 110,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      12,
+      5,
+      6
+    ],
+    "revealed_bones": [
+      13,
+      18,
+      23,
+      21
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 111,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      22,
+      5,
+      6
+    ],
+    "revealed_bones": [
+      1,
+      2,
+      8,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 112,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      13,
+      5,
+      6
+    ],
+    "revealed_bones": [
+      1,
+      2,
+      16,
+      18
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 116,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      23,
+      1,
+      12
+    ],
+    "revealed_bones": [
+      13,
+      15,
+      18,
+      20
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 119,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      11,
+      6
+    ],
+    "revealed_bones": [
+      7,
+      10,
+      14,
+      18
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 120,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      19,
+      11,
+      6
+    ],
+    "revealed_bones": [
+      4,
+      7,
+      20,
+      25
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 121,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      4,
+      11
+    ],
+    "revealed_bones": [
+      10,
+      14,
+      15,
+      16
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 122,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      10,
+      4
+    ],
+    "revealed_bones": [
+      2,
+      9,
+      14,
+      18
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 123,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      25,
+      10,
+      1
+    ],
+    "revealed_bones": [
+      2,
+      7,
+      9,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 124,
+    "cash_out_after": 2,
+    "hit_bone": false,
+    "revealed_chickens": [
+      13,
+      1
+    ],
+    "revealed_bones": [
+      2,
+      8,
+      18,
+      25
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 19,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 125,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      10,
+      20,
+      5
+    ],
+    "revealed_bones": [
+      4,
+      13,
+      14,
+      17
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 126,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      11,
+      10,
+      5
+    ],
+    "revealed_bones": [
+      9,
+      12,
+      14,
+      16
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 127,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      5,
+      10
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      21,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 128,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      12,
+      1,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      7,
+      10,
+      16
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 129,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      21,
+      5,
+      1
+    ],
+    "revealed_bones": [
+      4,
+      13,
+      19,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 130,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      10,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      13,
+      14,
+      15,
+      20
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 131,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      20,
+      21,
+      13
+    ],
+    "revealed_bones": [
+      17,
+      18,
+      19,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 135,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      21,
+      5
+    ],
+    "revealed_bones": [
+      6,
+      11,
+      22,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 136,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      16,
+      5,
+      1
+    ],
+    "revealed_bones": [
+      10,
+      12,
+      22,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 137,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      21,
+      5,
+      1
+    ],
+    "revealed_bones": [
+      10,
+      11,
+      19,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 138,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      3,
+      1,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      14,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 139,
+    "cash_out_after": 7,
+    "hit_bone": false,
+    "revealed_chickens": [
+      21,
+      5,
+      1,
+      10,
+      6,
+      13,
+      4
+    ],
+    "revealed_bones": [
+      8,
+      11,
+      12,
+      15
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 14,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 141,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      4,
+      9,
+      13,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 142,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      10,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      20,
+      22
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 143,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      21,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      4,
+      13,
+      24
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 146,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      1,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      7,
+      14,
+      22,
+      23
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  },
+  {
+    "game_index": 149,
+    "cash_out_after": 3,
+    "hit_bone": false,
+    "revealed_chickens": [
+      5,
+      1,
+      6
+    ],
+    "revealed_bones": [
+      7,
+      10,
+      14,
+      20
+    ],
+    "unrevealed_bones": 0,
+    "unrevealed_chickens": 18,
+    "prob_next_bone": 0
+  }
+]

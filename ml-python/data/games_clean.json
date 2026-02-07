@@ -1,0 +1,12316 @@
+[
+  {
+    "game_index": 0,
+    "game_id": "cmlawlp7w019w29wo4mvkf42w",
+    "created_at": "2026-01-24T01:18:00.819Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      8,
+      16,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 2,
+    "revealed_chickens": [
+      2
+    ],
+    "revealed_bones": [
+      3
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "game_index": 1,
+    "game_id": "cmlawlp6q018c29wou6alw3jl",
+    "created_at": "2026-02-03T14:50:30.868Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      11,
+      18,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 2,
+    "revealed_chickens": [
+      2
+    ],
+    "revealed_bones": [
+      6
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "game_index": 2,
+    "game_id": "cmlawlp5k016s29wogiwrc2e5",
+    "created_at": "2026-02-03T14:51:45.802Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      19,
+      22,
+      24
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 1,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "game_index": 3,
+    "game_id": "cmlawlp4d015829woij2bjday",
+    "created_at": "2026-02-03T14:52:51.321Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      2,
+      12,
+      19
+    ],
+    "bone_map": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 1,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "game_index": 4,
+    "game_id": "cmlawlp35013o29wojqhf2lef",
+    "created_at": "2026-02-03T14:56:49.437Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      5,
+      7,
+      9
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 2,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      7,
+      9
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "game_index": 5,
+    "game_id": "cmlawlp1z012429wojnnhxubr",
+    "created_at": "2026-02-03T15:10:29.238Z",
+    "bone_count": 4,
+    "bone_positions": [
+      17,
+      21,
+      23,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      9,
+      6,
+      7,
+      4
+    ],
+    "revealed_bones": [
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 6,
+    "game_id": "cmlawlp1f011c29wol24zcgk3",
+    "created_at": "2026-02-03T19:46:01.096Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      10,
+      12,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      10,
+      12,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 7,
+    "game_id": "cmlawlp0v010k29woqowqkxpl",
+    "created_at": "2026-02-03T19:51:08.658Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      15,
+      23,
+      24
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      15,
+      23,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 8,
+    "game_id": "cmlawlp0800zs29womrd22zn9",
+    "created_at": "2026-02-03T19:52:31.067Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      5,
+      11,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      5,
+      11,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 9,
+    "game_id": "cmlawlozo00z029wofmzg6lr0",
+    "created_at": "2026-02-03T19:54:01.889Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      10,
+      17,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      10,
+      17,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 10,
+    "game_id": "cmlawloz500y829wo98hdstwy",
+    "created_at": "2026-02-03T19:55:11.092Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      14,
+      23,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      9,
+      6
+    ],
+    "revealed_bones": [
+      7,
+      14,
+      23,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 11,
+    "game_id": "cmlawloyk00xg29wo19y9ci4l",
+    "created_at": "2026-02-03T19:56:55.538Z",
+    "bone_count": 4,
+    "bone_positions": [
+      12,
+      14,
+      16,
+      18
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      14,
+      16,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 12,
+    "game_id": "cmlawloy000wo29wo8zo6a0t3",
+    "created_at": "2026-02-03T20:00:01.680Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      7,
+      8,
+      12
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      7,
+      8,
+      12
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 13,
+    "game_id": "cmlawloxd00vw29woyu33xw4j",
+    "created_at": "2026-02-03T20:00:51.135Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      8,
+      11,
+      23
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      8,
+      11,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 14,
+    "game_id": "cmlawlows00v429woqyhcegit",
+    "created_at": "2026-02-03T20:01:30.953Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      9,
+      16,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      8,
+      16,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 15,
+    "game_id": "cmlawlow900uc29woaurwb2m0",
+    "created_at": "2026-02-03T20:02:23.229Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      12,
+      16,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      7,
+      12,
+      16,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 16,
+    "game_id": "cmlawlovk00tk29wonn83uufd",
+    "created_at": "2026-02-03T20:11:46.324Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      9,
+      15,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      3,
+      15,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 17,
+    "game_id": "cmlawlov100ss29wo3cv1dt5r",
+    "created_at": "2026-02-03T20:12:34.090Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      6,
+      13,
+      14
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      13,
+      14
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 18,
+    "game_id": "cmlawloug00s029womrscy5qc",
+    "created_at": "2026-02-03T20:13:43.377Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      7,
+      14,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      2,
+      6
+    ],
+    "revealed_bones": [
+      7,
+      3,
+      14,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 19,
+    "game_id": "cmlawlotw00r829woxb4b0647",
+    "created_at": "2026-02-03T20:15:29.538Z",
+    "bone_count": 4,
+    "bone_positions": [
+      12,
+      17,
+      19,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      17,
+      19,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 20,
+    "game_id": "cmlawlot800qg29wopci6jike",
+    "created_at": "2026-02-03T20:22:38.222Z",
+    "bone_count": 4,
+    "bone_positions": [
+      11,
+      14,
+      18,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      14,
+      18,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 21,
+    "game_id": "cmlawloso00po29wo6o6n1f54",
+    "created_at": "2026-02-03T20:39:07.855Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      11,
+      14,
+      18
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      6,
+      2
+    ],
+    "revealed_bones": [
+      7,
+      11,
+      14,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 22,
+    "game_id": "cmlawlos400ow29wo0q1phfl7",
+    "created_at": "2026-02-03T20:40:44.939Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      5,
+      18,
+      21
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      5,
+      18,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 23,
+    "game_id": "cmlawlorn00o429woeorinsof",
+    "created_at": "2026-02-03T21:03:24.246Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      12,
+      13,
+      17
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      12,
+      13,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 24,
+    "game_id": "cmlawlor300nc29wo06w1ya33",
+    "created_at": "2026-02-03T22:28:18.124Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      8,
+      14,
+      23
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      8,
+      14,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 25,
+    "game_id": "cmlawloqf00mk29wopxkz5eey",
+    "created_at": "2026-02-03T22:29:47.559Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      15,
+      20,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      15,
+      20,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 26,
+    "game_id": "cmlawlops00ls29worm5h8xnn",
+    "created_at": "2026-02-03T22:31:14.721Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      10,
+      12,
+      17
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      10,
+      12,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 27,
+    "game_id": "cmlawlop800l029woomqdj00e",
+    "created_at": "2026-02-03T22:32:43.673Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      15,
+      19,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      9,
+      6,
+      7
+    ],
+    "revealed_bones": [
+      4,
+      15,
+      19,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 28,
+    "game_id": "cmlawloop00k829wobjvyz66t",
+    "created_at": "2026-02-04T10:21:09.652Z",
+    "bone_count": 4,
+    "bone_positions": [
+      19,
+      21,
+      24,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      1
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      21,
+      24,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 29,
+    "game_id": "cmlawloo500jg29woyn2zz7rn",
+    "created_at": "2026-02-04T10:23:17.742Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      4,
+      22,
+      23
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      4,
+      22,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 30,
+    "game_id": "cmlawlonm00io29wofzv6o342",
+    "created_at": "2026-02-04T10:27:52.874Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      8,
+      14,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      7,
+      8,
+      14,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 31,
+    "game_id": "cmlawlon100hw29woyexl75o0",
+    "created_at": "2026-02-04T10:29:31.189Z",
+    "bone_count": 4,
+    "bone_positions": [
+      12,
+      16,
+      20,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      18,
+      7
+    ],
+    "revealed_bones": [
+      20,
+      12,
+      16,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 18,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 7,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 32,
+    "game_id": "cmlawlomh00h429wof752q9nj",
+    "created_at": "2026-02-04T10:30:11.834Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      4,
+      9,
+      17
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      4,
+      9
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 33,
+    "game_id": "cmlawlolw00gc29wo4drt2osh",
+    "created_at": "2026-02-04T10:31:50.849Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      8,
+      19,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      8,
+      19,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 34,
+    "game_id": "cmlawlolc00fk29woedsjw5u5",
+    "created_at": "2026-02-04T10:36:34.707Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      14,
+      21,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      17,
+      13
+    ],
+    "revealed_bones": [
+      21,
+      8,
+      14,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 17,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 35,
+    "game_id": "cmlawlokt00es29wokf3j4m0x",
+    "created_at": "2026-02-04T10:38:26.093Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      11,
+      16,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      11,
+      16,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 36,
+    "game_id": "cmlawlok800e029wogbu2xq2j",
+    "created_at": "2026-02-04T10:39:56.439Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      6,
+      17,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      19,
+      13
+    ],
+    "revealed_bones": [
+      17,
+      4,
+      6,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 37,
+    "game_id": "cmlawlojn00d829wozjm7p0k2",
+    "created_at": "2026-02-04T10:41:26.655Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      13,
+      14,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      7,
+      19
+    ],
+    "revealed_bones": [
+      14,
+      9,
+      13,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 38,
+    "game_id": "cmlawloj000cg29woaolprp68",
+    "created_at": "2026-02-04T10:42:31.517Z",
+    "bone_count": 4,
+    "bone_positions": [
+      16,
+      18,
+      19,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      19,
+      16,
+      18,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 39,
+    "game_id": "cmlawloig00bo29womp77qyhg",
+    "created_at": "2026-02-04T10:43:35.942Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      12,
+      20,
+      21
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      10
+    ],
+    "revealed_bones": [
+      20,
+      2,
+      12,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 40,
+    "game_id": "cmlawlofj00aw29wo7wl35joz",
+    "created_at": "2026-02-04T10:45:02.379Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      2,
+      4,
+      9
+    ],
+    "bone_map": [
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      4,
+      9
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 41,
+    "game_id": "cmlawlo6x00a429wotafyv3q8",
+    "created_at": "2026-02-04T10:45:58.762Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      14,
+      17,
+      18
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      17,
+      3,
+      14,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 42,
+    "game_id": "cmlawlo1n009c29woniwtvfec",
+    "created_at": "2026-02-04T10:47:12.165Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      7,
+      15,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      7,
+      3,
+      15,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 43,
+    "game_id": "cmlawlnz2008k29wow46li2lc",
+    "created_at": "2026-02-04T10:47:53.713Z",
+    "bone_count": 4,
+    "bone_positions": [
+      12,
+      13,
+      15,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      12,
+      13,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 44,
+    "game_id": "cmlawlnw5007s29wo1i4ryg7h",
+    "created_at": "2026-02-04T10:49:37.496Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      5,
+      10,
+      15
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      5,
+      15
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 45,
+    "game_id": "cmlawlntj007029wouswprafe",
+    "created_at": "2026-02-04T10:51:03.281Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      16,
+      17,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      19,
+      14
+    ],
+    "revealed_bones": [
+      17,
+      6,
+      16,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 14,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 46,
+    "game_id": "cmlawlnrs006829wo5cnaywpi",
+    "created_at": "2026-02-04T10:51:40.331Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      4,
+      23,
+      25
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      4,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 47,
+    "game_id": "cmlawlnqd005g29wodkfh4ygr",
+    "created_at": "2026-02-04T10:53:21.863Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      13,
+      15,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      13,
+      15,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 48,
+    "game_id": "cmlawlnph004o29wopb2ng4ho",
+    "created_at": "2026-02-04T10:55:25.920Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      15,
+      16,
+      17
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      16,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 49,
+    "game_id": "cmlawlnos003w29wo9co3tnyl",
+    "created_at": "2026-02-04T10:56:06.383Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      10,
+      14,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      3,
+      14,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 50,
+    "game_id": "cmlawlnnj003429woinx9ysxa",
+    "created_at": "2026-02-04T10:57:10.569Z",
+    "bone_count": 4,
+    "bone_positions": [
+      18,
+      19,
+      20,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      19,
+      18,
+      20,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 51,
+    "game_id": "cmlawlnmv002c29wos78a3zop",
+    "created_at": "2026-02-04T10:59:01.166Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      6,
+      8,
+      14
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      6,
+      8,
+      14
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 52,
+    "game_id": "cmlawlnmc001k29wopgm2y79y",
+    "created_at": "2026-02-04T11:00:15.241Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      17,
+      20,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      18
+    ],
+    "revealed_bones": [
+      7,
+      17,
+      20,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 18,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 53,
+    "game_id": "cmlawlnlv000s29woibe17k79",
+    "created_at": "2026-02-04T11:01:03.072Z",
+    "bone_count": 4,
+    "bone_positions": [
+      13,
+      14,
+      16,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 3,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      13,
+      16,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "game_index": 54,
+    "game_id": "cmlawlnl5000029woesmvej8i",
+    "created_at": "2026-02-04T11:03:13.598Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      7,
+      15,
+      24
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      19,
+      13,
+      17
+    ],
+    "revealed_bones": [
+      7,
+      2,
+      15,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 55,
+    "game_id": "cmlawy3y4001g295oc91c47au",
+    "created_at": "2026-02-06T13:20:40.060Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      10,
+      12,
+      15
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      20,
+      24
+    ],
+    "revealed_bones": [
+      6,
+      10,
+      12,
+      15
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 24,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 56,
+    "game_id": "cmlb6tvke137929042ixm1yhf",
+    "created_at": "2026-02-06T17:57:18.734Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      4,
+      10,
+      18
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      6,
+      11
+    ],
+    "revealed_bones": [
+      1,
+      4,
+      10,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 57,
+    "game_id": "cmlb6vone138z2904fau9wodp",
+    "created_at": "2026-02-06T17:58:43.082Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      14,
+      17,
+      18
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      2,
+      22
+    ],
+    "revealed_bones": [
+      1,
+      14,
+      17,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 58,
+    "game_id": "cmlb6xmrs139y29041w5fsdt6",
+    "created_at": "2026-02-06T18:00:13.960Z",
+    "bone_count": 4,
+    "bone_positions": [
+      13,
+      22,
+      24,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      10
+    ],
+    "revealed_bones": [
+      22,
+      13,
+      24,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 59,
+    "game_id": "cmlb6zpb613av29043noi9dxb",
+    "created_at": "2026-02-06T18:01:50.562Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      5,
+      9,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 8,
+    "revealed_chickens": [
+      16,
+      25,
+      18,
+      17
+    ],
+    "revealed_bones": [
+      5,
+      4,
+      9,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 16,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 25,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 18,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 17,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 7
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 8
+      }
+    ]
+  },
+  {
+    "game_index": 60,
+    "game_id": "cmlb741x213cs2904b25fh2hv",
+    "created_at": "2026-02-06T18:05:13.526Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      8,
+      11,
+      18
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      20,
+      13
+    ],
+    "revealed_bones": [
+      5,
+      8,
+      11,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 61,
+    "game_id": "cmlb75gvr13ej2904rocgdomg",
+    "created_at": "2026-02-06T18:06:19.575Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      13,
+      14,
+      23
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      1,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      14,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 62,
+    "game_id": "cmlb769od13fi2904wksyri5z",
+    "created_at": "2026-02-06T18:06:56.893Z",
+    "bone_count": 4,
+    "bone_positions": [
+      11,
+      12,
+      14,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      12,
+      11,
+      14,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 63,
+    "game_id": "cmlb7icui13gc2904lz5yumif",
+    "created_at": "2026-02-06T18:16:20.873Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      17,
+      22,
+      24
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      24,
+      2,
+      17,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 64,
+    "game_id": "cmlb7kkj013h62904h18i02r1",
+    "created_at": "2026-02-06T18:18:04.140Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      2,
+      8,
+      22
+    ],
+    "bone_map": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "desconocido",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      23,
+      12,
+      4
+    ],
+    "revealed_bones": [
+      8,
+      1,
+      2,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 23,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 12,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 65,
+    "game_id": "cmlbagkir000u292snhvlv0no",
+    "created_at": "2026-02-06T19:38:56.355Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      11,
+      20,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 4,
+    "multiplier": 1.7,
+    "modo_juego": "real",
+    "revealed_count": 8,
+    "revealed_chickens": [
+      9,
+      25,
+      23,
+      10
+    ],
+    "revealed_bones": [
+      3,
+      11,
+      20,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 25,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 23,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 7
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 8
+      }
+    ]
+  },
+  {
+    "game_index": 66,
+    "game_id": "cmlbalx09002p292sd8nyttpq",
+    "created_at": "2026-02-06T19:43:05.817Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      14,
+      15,
+      19
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      7,
+      25,
+      16
+    ],
+    "revealed_bones": [
+      4,
+      14,
+      15,
+      19
+    ],
+    "reveal_order": [
+      {
+        "position": 7,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 25,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 16,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 67,
+    "game_id": "cmlbarzkn004l292svvkl77vf",
+    "created_at": "2026-02-06T19:47:49.079Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      5,
+      6,
+      9
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 4,
+    "multiplier": 1.7,
+    "modo_juego": "real",
+    "revealed_count": 8,
+    "revealed_chickens": [
+      18,
+      15,
+      13,
+      12
+    ],
+    "revealed_bones": [
+      3,
+      5,
+      6,
+      9
+    ],
+    "reveal_order": [
+      {
+        "position": 18,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 12,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 7
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 8
+      }
+    ]
+  },
+  {
+    "game_index": 68,
+    "game_id": "cmlcc77ha0000297gzerdwoiv",
+    "created_at": "2026-02-07T13:15:24.879Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      8,
+      13,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 8,
+    "revealed_chickens": [
+      9,
+      1,
+      15,
+      6
+    ],
+    "revealed_bones": [
+      20,
+      3,
+      8,
+      13
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 7
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 8
+      }
+    ]
+  },
+  {
+    "game_index": 69,
+    "game_id": "cmlcc92py001y297gni0l0yqm",
+    "created_at": "2026-02-07T13:16:52.102Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      14,
+      23,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      13,
+      9,
+      6
+    ],
+    "revealed_bones": [
+      8,
+      14,
+      23,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 70,
+    "game_id": "cmlccap68003s297gsr3e3dra",
+    "created_at": "2026-02-07T13:18:07.856Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      7,
+      11,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      9,
+      15
+    ],
+    "revealed_bones": [
+      4,
+      7,
+      11,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 71,
+    "game_id": "cmlccbi31004u297gbi6b3hol",
+    "created_at": "2026-02-07T13:18:45.325Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      6,
+      7,
+      24
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      6,
+      2,
+      7,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 72,
+    "game_id": "cmlccd6bp006f297gl91s5s2w",
+    "created_at": "2026-02-07T13:20:03.398Z",
+    "bone_count": 4,
+    "bone_positions": [
+      11,
+      15,
+      16,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      3,
+      6
+    ],
+    "revealed_bones": [
+      11,
+      15,
+      16,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 73,
+    "game_id": "cmlccfeia0088297g1jvpg3a4",
+    "created_at": "2026-02-07T13:21:47.314Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      10,
+      17,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      16,
+      6,
+      22
+    ],
+    "revealed_bones": [
+      9,
+      10,
+      17,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 16,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 74,
+    "game_id": "cmlccfeqw008y297gaw4wq7nd",
+    "created_at": "2026-02-07T13:21:47.624Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      10,
+      17,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      16,
+      6,
+      22
+    ],
+    "revealed_bones": [
+      9,
+      10,
+      17,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 16,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 75,
+    "game_id": "cmlcch06v00a9297gg88cc5ci",
+    "created_at": "2026-02-07T13:23:02.071Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      10,
+      18,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      5,
+      9
+    ],
+    "revealed_bones": [
+      10,
+      8,
+      18,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 76,
+    "game_id": "cmlccnhme00c0297gvuipi4i9",
+    "created_at": "2026-02-07T13:28:04.598Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      3,
+      16,
+      22
+    ],
+    "bone_map": [
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      24,
+      9,
+      15
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      16,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 24,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 77,
+    "game_id": "cmlccp59m00d1297g8b2fk249",
+    "created_at": "2026-02-07T13:29:21.898Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      3,
+      5,
+      19
+    ],
+    "bone_map": [
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      10,
+      9
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      5,
+      19
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 78,
+    "game_id": "cmlccqa6300dz297gvzuk7qje",
+    "created_at": "2026-02-07T13:30:14.907Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      14,
+      20,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      5,
+      14,
+      20,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 79,
+    "game_id": "cmlccrrzg00fl297gzlm3zoir",
+    "created_at": "2026-02-07T13:31:24.652Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      8,
+      12,
+      22
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      15,
+      10,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      8,
+      12,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 80,
+    "game_id": "cmlcct31u00gm297g6inn5pvr",
+    "created_at": "2026-02-07T13:32:25.651Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      2,
+      4,
+      10
+    ],
+    "bone_map": [
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      22,
+      24
+    ],
+    "revealed_bones": [
+      4,
+      1,
+      2,
+      10
+    ],
+    "reveal_order": [
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 24,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 81,
+    "game_id": "cmlccvjzl00il297ggt0i034d",
+    "created_at": "2026-02-07T13:34:20.913Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      3,
+      4,
+      17
+    ],
+    "bone_map": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 6,
+    "multiplier": 2.34,
+    "modo_juego": "real",
+    "revealed_count": 10,
+    "revealed_chickens": [
+      5,
+      24,
+      10,
+      15,
+      20,
+      22
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      4,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 24,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 6
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 7
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 8
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 9
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 10
+      }
+    ]
+  },
+  {
+    "game_index": 82,
+    "game_id": "cmlccwpou00jn297gwl7zdu3u",
+    "created_at": "2026-02-07T13:35:14.959Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      7,
+      15,
+      20
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      1,
+      10
+    ],
+    "revealed_bones": [
+      2,
+      7,
+      15,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 83,
+    "game_id": "cmlccybhj00ld297g5grrnpfa",
+    "created_at": "2026-02-07T13:36:29.863Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      8,
+      9,
+      13
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      15,
+      10,
+      1
+    ],
+    "revealed_bones": [
+      7,
+      8,
+      9,
+      13
+    ],
+    "reveal_order": [
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 84,
+    "game_id": "cmlccz8le00mf297gw8p9nncc",
+    "created_at": "2026-02-07T13:37:12.771Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      10,
+      19,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      13
+    ],
+    "revealed_bones": [
+      10,
+      4,
+      19,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 85,
+    "game_id": "cmlcd03a500nc297g4ic32p2g",
+    "created_at": "2026-02-07T13:37:52.541Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      11,
+      19,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      9,
+      11,
+      19,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 86,
+    "game_id": "cmlcd38c300p6297gyh9f7uyp",
+    "created_at": "2026-02-07T13:40:19.060Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      4,
+      17,
+      25
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": false,
+    "cash_out_position": 7,
+    "multiplier": 2.66,
+    "modo_juego": "real",
+    "revealed_count": 11,
+    "revealed_chickens": [
+      13,
+      24,
+      10,
+      9,
+      19,
+      7,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      4,
+      17,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 24,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 5
+      },
+      {
+        "position": 7,
+        "is_chicken": true,
+        "order": 6
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 7
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 8
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 9
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 10
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 11
+      }
+    ]
+  },
+  {
+    "game_index": 87,
+    "game_id": "cmlcd4bly00q8297gvd1i2r52",
+    "created_at": "2026-02-07T13:41:09.959Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      9,
+      16,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      25,
+      10
+    ],
+    "revealed_bones": [
+      9,
+      8,
+      16,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 25,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 88,
+    "game_id": "cmlcd72j900r7297gymya5glq",
+    "created_at": "2026-02-07T13:43:18.165Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      12,
+      18,
+      19
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 9,
+    "revealed_chickens": [
+      21,
+      22,
+      2,
+      5,
+      9
+    ],
+    "revealed_bones": [
+      19,
+      8,
+      12,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 7
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 8
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 9
+      }
+    ]
+  },
+  {
+    "game_index": 89,
+    "game_id": "cmlcd8myq00t4297gemr2jco4",
+    "created_at": "2026-02-07T13:44:31.298Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      7,
+      12,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      16,
+      22,
+      9
+    ],
+    "revealed_bones": [
+      6,
+      7,
+      12,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 16,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 90,
+    "game_id": "cmlcdaesl00uw297g1b7mpez0",
+    "created_at": "2026-02-07T13:45:54.021Z",
+    "bone_count": 4,
+    "bone_positions": [
+      11,
+      16,
+      17,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      5,
+      22
+    ],
+    "revealed_bones": [
+      11,
+      16,
+      17,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 91,
+    "game_id": "cmlcdb2iz00vy297g0r4705w9",
+    "created_at": "2026-02-07T13:46:24.780Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      6,
+      22,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      6,
+      5,
+      22,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 92,
+    "game_id": "cmlcdbzqj00wr297gpq4iw2zw",
+    "created_at": "2026-02-07T13:47:07.819Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      13,
+      22,
+      23
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      2,
+      13,
+      22,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 93,
+    "game_id": "cmlcdecd100yc297gdc0n7dkm",
+    "created_at": "2026-02-07T13:48:57.494Z",
+    "bone_count": 4,
+    "bone_positions": [
+      12,
+      20,
+      21,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      22,
+      3,
+      6
+    ],
+    "revealed_bones": [
+      12,
+      20,
+      21,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 94,
+    "game_id": "cmlcdhb450104297gpp864dfu",
+    "created_at": "2026-02-07T13:51:15.845Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      13,
+      19,
+      23
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      22,
+      6
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      19,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 95,
+    "game_id": "cmlcditr10114297gus4ofmmv",
+    "created_at": "2026-02-07T13:52:26.652Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      11,
+      19,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      2,
+      20
+    ],
+    "revealed_bones": [
+      6,
+      11,
+      19,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 96,
+    "game_id": "cmlcdjo270122297g3jhzktku",
+    "created_at": "2026-02-07T13:53:05.935Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      13,
+      15,
+      18
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      13,
+      9,
+      15,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 97,
+    "game_id": "cmlcdkj35012u297ghs4whbow",
+    "created_at": "2026-02-07T13:53:46.145Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      3,
+      5,
+      18
+    ],
+    "bone_map": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      20
+    ],
+    "revealed_bones": [
+      3,
+      1,
+      5,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 98,
+    "game_id": "cmlcdmaft013p297geavd9kpd",
+    "created_at": "2026-02-07T13:55:08.249Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      13,
+      21,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      9,
+      5
+    ],
+    "revealed_bones": [
+      13,
+      6,
+      21,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 99,
+    "game_id": "cmlcdnmtt015h297gmag4u57g",
+    "created_at": "2026-02-07T13:56:10.961Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      3,
+      21,
+      23
+    ],
+    "bone_map": [
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      6,
+      9,
+      11
+    ],
+    "revealed_bones": [
+      1,
+      3,
+      21,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 100,
+    "game_id": "cmlcdpg3i0177297g82vztgof",
+    "created_at": "2026-02-07T13:57:35.550Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      8,
+      20,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      4,
+      9,
+      6
+    ],
+    "revealed_bones": [
+      5,
+      8,
+      20,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 101,
+    "game_id": "cmlcdr8m0018y297g8oh53kc6",
+    "created_at": "2026-02-07T13:58:59.160Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      10,
+      13,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      9,
+      21
+    ],
+    "revealed_bones": [
+      3,
+      10,
+      13,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 102,
+    "game_id": "cmlceinht01aq297gwzij2uk9",
+    "created_at": "2026-02-07T14:20:18.159Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      11,
+      16,
+      17
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      25,
+      10,
+      9
+    ],
+    "revealed_bones": [
+      8,
+      11,
+      16,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 25,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 103,
+    "game_id": "cmlcejkej01bk297g990p0wlj",
+    "created_at": "2026-02-07T14:21:00.811Z",
+    "bone_count": 4,
+    "bone_positions": [
+      14,
+      15,
+      17,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      21,
+      14,
+      15,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 104,
+    "game_id": "cmlcekjrt01cd297gvtjiyw5m",
+    "created_at": "2026-02-07T14:21:46.649Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      5,
+      9,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      22
+    ],
+    "revealed_bones": [
+      20,
+      4,
+      5,
+      9
+    ],
+    "reveal_order": [
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 105,
+    "game_id": "cmlcembnx01e1297gz1i8uq78",
+    "created_at": "2026-02-07T14:23:09.453Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      12,
+      17,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      9,
+      5,
+      20
+    ],
+    "revealed_bones": [
+      7,
+      12,
+      17,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 106,
+    "game_id": "cmlcesn5601ft297gfmxz71ne",
+    "created_at": "2026-02-07T14:28:04.266Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      5,
+      8,
+      12
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      2,
+      20,
+      3
+    ],
+    "revealed_bones": [
+      4,
+      5,
+      8,
+      12
+    ],
+    "reveal_order": [
+      {
+        "position": 2,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 3,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 107,
+    "game_id": "cmlceuhkh01hj297ghl9nb3tz",
+    "created_at": "2026-02-07T14:29:30.353Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      7,
+      14,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      9,
+      20,
+      10
+    ],
+    "revealed_bones": [
+      5,
+      7,
+      14,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 9,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 108,
+    "game_id": "cmlcexxde01ik297g1qr32fid",
+    "created_at": "2026-02-07T14:32:10.802Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      12,
+      13,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      1
+    ],
+    "revealed_bones": [
+      5,
+      12,
+      13,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 109,
+    "game_id": "cmlch35o701jg297gaefano1x",
+    "created_at": "2026-02-07T15:32:14.047Z",
+    "bone_count": 4,
+    "bone_positions": [
+      3,
+      8,
+      11,
+      16
+    ],
+    "bone_map": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      5,
+      6,
+      4
+    ],
+    "revealed_bones": [
+      3,
+      8,
+      11,
+      16
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 110,
+    "game_id": "cmlch4kzq01kf297gvf2wfetk",
+    "created_at": "2026-02-07T15:33:20.582Z",
+    "bone_count": 4,
+    "bone_positions": [
+      13,
+      18,
+      21,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      12,
+      5,
+      6
+    ],
+    "revealed_bones": [
+      13,
+      18,
+      23,
+      21
+    ],
+    "reveal_order": [
+      {
+        "position": 12,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 111,
+    "game_id": "cmlch5rdt01lh297g6d6be2ob",
+    "created_at": "2026-02-07T15:34:15.522Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      2,
+      8,
+      23
+    ],
+    "bone_map": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      22,
+      5,
+      6
+    ],
+    "revealed_bones": [
+      1,
+      2,
+      8,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 22,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 112,
+    "game_id": "cmlch70ld01mh297gl14ycjw7",
+    "created_at": "2026-02-07T15:35:14.107Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      2,
+      16,
+      18
+    ],
+    "bone_map": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      13,
+      5,
+      6
+    ],
+    "revealed_bones": [
+      1,
+      2,
+      16,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 113,
+    "game_id": "cmlch7rq701nd297gertgslud",
+    "created_at": "2026-02-07T15:35:49.279Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      11,
+      22,
+      24
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      1,
+      11,
+      22,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 114,
+    "game_id": "cmlchfp4b01o7297guvkupahj",
+    "created_at": "2026-02-07T15:41:59.023Z",
+    "bone_count": 4,
+    "bone_positions": [
+      10,
+      12,
+      23,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      12,
+      10,
+      23,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 115,
+    "game_id": "cmlchgwwp01p1297g33w0evro",
+    "created_at": "2026-02-07T15:42:55.897Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      15,
+      17,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      1
+    ],
+    "revealed_bones": [
+      20,
+      6,
+      15,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 116,
+    "game_id": "cmlchinzx01px297ggbisuqgn",
+    "created_at": "2026-02-07T15:44:17.654Z",
+    "bone_count": 4,
+    "bone_positions": [
+      13,
+      15,
+      18,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      23,
+      1,
+      12
+    ],
+    "revealed_bones": [
+      13,
+      15,
+      18,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 23,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 12,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 117,
+    "game_id": "cmlchk1ww01qz297gy6jldvfi",
+    "created_at": "2026-02-07T15:45:22.352Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      7,
+      15,
+      17
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      19
+    ],
+    "revealed_bones": [
+      1,
+      7,
+      15,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 118,
+    "game_id": "cmlchlr8301ru297gvf1x2sxk",
+    "created_at": "2026-02-07T15:46:41.810Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      4,
+      23,
+      24
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      6
+    ],
+    "revealed_bones": [
+      1,
+      4,
+      23,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 119,
+    "game_id": "cmlchodjz01sp297gs97u1837",
+    "created_at": "2026-02-07T15:48:44.063Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      10,
+      14,
+      18
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      11,
+      6
+    ],
+    "revealed_bones": [
+      7,
+      10,
+      14,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 120,
+    "game_id": "cmlchqsgr01to297guis6ss4i",
+    "created_at": "2026-02-07T15:50:36.699Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      7,
+      20,
+      25
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      19,
+      11,
+      6
+    ],
+    "revealed_bones": [
+      4,
+      7,
+      20,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 19,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 121,
+    "game_id": "cmlcht4hs01uo297g1cvc88mo",
+    "created_at": "2026-02-07T15:52:25.601Z",
+    "bone_count": 4,
+    "bone_positions": [
+      10,
+      14,
+      15,
+      16
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      4,
+      11
+    ],
+    "revealed_bones": [
+      10,
+      14,
+      15,
+      16
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 122,
+    "game_id": "cmlchv8nc01vo297gje4tm6ka",
+    "created_at": "2026-02-07T15:54:04.296Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      9,
+      14,
+      18
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      10,
+      4
+    ],
+    "revealed_bones": [
+      2,
+      9,
+      14,
+      18
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 123,
+    "game_id": "cmlchy6bx01wp297gsuevs45a",
+    "created_at": "2026-02-07T15:56:21.262Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      7,
+      9,
+      22
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      25,
+      10,
+      1
+    ],
+    "revealed_bones": [
+      2,
+      7,
+      9,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 25,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 124,
+    "game_id": "cmlci0u0901xo297gtgk0u2gb",
+    "created_at": "2026-02-07T15:58:25.256Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      8,
+      18,
+      25
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": false,
+    "cash_out_position": 2,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      13,
+      1
+    ],
+    "revealed_bones": [
+      2,
+      8,
+      18,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 125,
+    "game_id": "cmlci2f9t01yk297g16i1v74d",
+    "created_at": "2026-02-07T15:59:39.473Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      13,
+      14,
+      17
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      10,
+      20,
+      5
+    ],
+    "revealed_bones": [
+      4,
+      13,
+      14,
+      17
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 126,
+    "game_id": "cmlci3qmc01zk297go7l667qa",
+    "created_at": "2026-02-07T16:00:40.836Z",
+    "bone_count": 4,
+    "bone_positions": [
+      9,
+      12,
+      14,
+      16
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      11,
+      10,
+      5
+    ],
+    "revealed_bones": [
+      9,
+      12,
+      14,
+      16
+    ],
+    "reveal_order": [
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 127,
+    "game_id": "cmlci55np020k297gu9sqznrz",
+    "created_at": "2026-02-07T16:01:46.979Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      13,
+      21,
+      22
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      5,
+      10
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      21,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 128,
+    "game_id": "cmlci7l2m021k297gdw0stps3",
+    "created_at": "2026-02-07T16:03:40.189Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      7,
+      10,
+      16
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      12,
+      1,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      7,
+      10,
+      16
+    ],
+    "reveal_order": [
+      {
+        "position": 12,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 129,
+    "game_id": "cmlci8y68022i297geywaajl3",
+    "created_at": "2026-02-07T16:04:43.904Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      13,
+      19,
+      22
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      21,
+      5,
+      1
+    ],
+    "revealed_bones": [
+      4,
+      13,
+      19,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 130,
+    "game_id": "cmlciag32023i297gd3bcg2a5",
+    "created_at": "2026-02-07T16:05:53.774Z",
+    "bone_count": 4,
+    "bone_positions": [
+      13,
+      14,
+      15,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      10,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      13,
+      14,
+      15,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 131,
+    "game_id": "cmlcibucs024i297gkgd8nr5y",
+    "created_at": "2026-02-07T16:06:58.924Z",
+    "bone_count": 4,
+    "bone_positions": [
+      17,
+      18,
+      19,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      21,
+      13
+    ],
+    "revealed_bones": [
+      17,
+      18,
+      19,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 17,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 18,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 132,
+    "game_id": "cmlcid0p4025j297gjt4bns87",
+    "created_at": "2026-02-07T16:07:53.801Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      9,
+      19,
+      21
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      15,
+      20
+    ],
+    "revealed_bones": [
+      21,
+      1,
+      9,
+      19
+    ],
+    "reveal_order": [
+      {
+        "position": 15,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 133,
+    "game_id": "cmlcie8w0026g297gh7ife7yr",
+    "created_at": "2026-02-07T16:08:51.072Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      10,
+      16,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 4,
+    "revealed_chickens": [],
+    "revealed_bones": [
+      5,
+      10,
+      16,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 1
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "game_index": 134,
+    "game_id": "cmlcif9aw0279297gmvqm527e",
+    "created_at": "2026-02-07T16:09:38.264Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      5,
+      16,
+      25
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      21
+    ],
+    "revealed_bones": [
+      5,
+      2,
+      16,
+      25
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 25,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 135,
+    "game_id": "cmlcigz8o0283297gf8wh837v",
+    "created_at": "2026-02-07T16:10:58.537Z",
+    "bone_count": 4,
+    "bone_positions": [
+      6,
+      11,
+      22,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      21,
+      5
+    ],
+    "revealed_bones": [
+      6,
+      11,
+      22,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 136,
+    "game_id": "cmlciiksq0291297gf6xs5kie",
+    "created_at": "2026-02-07T16:12:13.130Z",
+    "bone_count": 4,
+    "bone_positions": [
+      10,
+      12,
+      22,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      16,
+      5,
+      1
+    ],
+    "revealed_bones": [
+      10,
+      12,
+      22,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 16,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 137,
+    "game_id": "cmlcik2o302a1297gevkmo04h",
+    "created_at": "2026-02-07T16:13:22.947Z",
+    "bone_count": 4,
+    "bone_positions": [
+      10,
+      11,
+      19,
+      24
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      21,
+      5,
+      1
+    ],
+    "revealed_bones": [
+      10,
+      11,
+      19,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 19,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 138,
+    "game_id": "cmlcim76102ax297gquj7fnon",
+    "created_at": "2026-02-07T16:15:02.089Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      13,
+      14,
+      23
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      3,
+      1,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      13,
+      14,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 3,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 139,
+    "game_id": "cmlciq0bf02bo297g8ioyhsr7",
+    "created_at": "2026-02-07T16:17:59.835Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      11,
+      12,
+      15
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 7,
+    "multiplier": 2.66,
+    "modo_juego": "real",
+    "revealed_count": 11,
+    "revealed_chickens": [
+      21,
+      5,
+      1,
+      10,
+      6,
+      13,
+      4
+    ],
+    "revealed_bones": [
+      8,
+      11,
+      12,
+      15
+    ],
+    "reveal_order": [
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 4
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 5
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 6
+      },
+      {
+        "position": 4,
+        "is_chicken": true,
+        "order": 7
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 8
+      },
+      {
+        "position": 11,
+        "is_chicken": false,
+        "order": 9
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 10
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 11
+      }
+    ]
+  },
+  {
+    "game_index": 140,
+    "game_id": "cmlcitqas02cu297gpprjw0f8",
+    "created_at": "2026-02-07T16:20:53.476Z",
+    "bone_count": 4,
+    "bone_positions": [
+      5,
+      6,
+      9,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      11
+    ],
+    "revealed_bones": [
+      5,
+      6,
+      9,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 11,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 141,
+    "game_id": "cmlcivd3r02dp297gblkgis7i",
+    "created_at": "2026-02-07T16:22:09.687Z",
+    "bone_count": 4,
+    "bone_positions": [
+      4,
+      9,
+      13,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      4,
+      9,
+      13,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 9,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 142,
+    "game_id": "cmlciwq6q02ep297gc766lw7i",
+    "created_at": "2026-02-07T16:23:13.298Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      3,
+      20,
+      22
+    ],
+    "bone_map": [
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      10,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      2,
+      3,
+      20,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 10,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 3,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 143,
+    "game_id": "cmlciy9v202fo297g8vqgxpf8",
+    "created_at": "2026-02-07T16:24:25.454Z",
+    "bone_count": 4,
+    "bone_positions": [
+      2,
+      4,
+      13,
+      24
+    ],
+    "bone_map": [
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      21,
+      5
+    ],
+    "revealed_bones": [
+      2,
+      4,
+      13,
+      24
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 2,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 4,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 13,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 24,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 144,
+    "game_id": "cmlcizmfp02gj297gzqs5jsah",
+    "created_at": "2026-02-07T16:25:28.405Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      8,
+      15,
+      22
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 6,
+    "revealed_chickens": [
+      13,
+      5
+    ],
+    "revealed_bones": [
+      1,
+      8,
+      15,
+      22
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      }
+    ]
+  },
+  {
+    "game_index": 145,
+    "game_id": "cmlcj1jjf02hh297g4jaumbqp",
+    "created_at": "2026-02-07T16:26:57.963Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      10,
+      15,
+      21
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      20,
+      5,
+      13
+    ],
+    "revealed_bones": [
+      21,
+      7,
+      10,
+      15
+    ],
+    "reveal_order": [
+      {
+        "position": 20,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 21,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 15,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 146,
+    "game_id": "cmlcj389602ig297g28147nb2",
+    "created_at": "2026-02-07T16:28:16.649Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      14,
+      22,
+      23
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      5,
+      21
+    ],
+    "revealed_bones": [
+      7,
+      14,
+      22,
+      23
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 21,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 22,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 23,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 147,
+    "game_id": "cmlcj47z402je297g33aw8epk",
+    "created_at": "2026-02-07T16:29:02.944Z",
+    "bone_count": 4,
+    "bone_positions": [
+      1,
+      5,
+      7,
+      8
+    ],
+    "bone_map": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 5,
+    "revealed_chickens": [
+      13
+    ],
+    "revealed_bones": [
+      5,
+      1,
+      7,
+      8
+    ],
+    "reveal_order": [
+      {
+        "position": 13,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 5,
+        "is_chicken": false,
+        "order": 2
+      },
+      {
+        "position": 1,
+        "is_chicken": false,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "game_index": 148,
+    "game_id": "cmlckd14502k6297ghzafebju",
+    "created_at": "2026-02-07T17:03:53.373Z",
+    "bone_count": 4,
+    "bone_positions": [
+      8,
+      10,
+      12,
+      16
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": true,
+    "cash_out_position": 0,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      1,
+      3,
+      6
+    ],
+    "revealed_bones": [
+      16,
+      8,
+      10,
+      12
+    ],
+    "reveal_order": [
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 3,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 16,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 8,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 12,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  },
+  {
+    "game_index": 149,
+    "game_id": "cmlcklryz02l7297gpy34wbkn",
+    "created_at": "2026-02-07T17:10:41.627Z",
+    "bone_count": 4,
+    "bone_positions": [
+      7,
+      10,
+      14,
+      20
+    ],
+    "bone_map": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hit_bone": false,
+    "cash_out_position": 3,
+    "multiplier": 0,
+    "modo_juego": "real",
+    "revealed_count": 7,
+    "revealed_chickens": [
+      5,
+      1,
+      6
+    ],
+    "revealed_bones": [
+      7,
+      10,
+      14,
+      20
+    ],
+    "reveal_order": [
+      {
+        "position": 5,
+        "is_chicken": true,
+        "order": 1
+      },
+      {
+        "position": 1,
+        "is_chicken": true,
+        "order": 2
+      },
+      {
+        "position": 6,
+        "is_chicken": true,
+        "order": 3
+      },
+      {
+        "position": 7,
+        "is_chicken": false,
+        "order": 4
+      },
+      {
+        "position": 10,
+        "is_chicken": false,
+        "order": 5
+      },
+      {
+        "position": 14,
+        "is_chicken": false,
+        "order": 6
+      },
+      {
+        "position": 20,
+        "is_chicken": false,
+        "order": 7
+      }
+    ]
+  }
+]
