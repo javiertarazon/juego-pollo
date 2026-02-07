@@ -46,3 +46,19 @@ db/custom.db-journal
 
 # Cache
 .cache
+# Python ML
+ml-python/venv/
+ml-python/__pycache__/
+ml-python/**/__pycache__/
+ml-python/saved_models/
+ml-python/*.pyc
+ml-python/logs/
+ml-python/server_err.log
+ml-python/server_out.log
+ml-python/check_data*.py
+**/__pycache__/
+*.pyc
+
+# Logs
+next-err.log
+next-out.log
