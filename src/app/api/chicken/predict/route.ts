@@ -6,6 +6,8 @@ import {
   getMLStatsRentable 
 } from "@/lib/ml/reinforcement-learning-rentable";
 
+const PYTHON_ML_URL = process.env.PYTHON_ML_URL || "http://127.0.0.1:8100";
+
 // Schema de validación
 const requestSchema = z.object({
   revealedPositions: z
@@ -14,7 +16,7 @@ const requestSchema = z.object({
     .optional()
     .default([]),
   tipoAsesor: z
-    .enum(['original', 'rentable'])
+    .enum(['original', 'rentable', 'python-ensemble'])
     .optional()
     .default('original'),
   objetivoRentable: z
@@ -35,7 +37,66 @@ export async function POST(request: NextRequest) {
     let statistics;
 
     // Seleccionar asesor según configuración
-    if (tipoAsesor === 'rentable') {
+    if (tipoAsesor === 'python-ensemble') {
+      // ── Proxy al microservicio Python ML ──
+      try {
+        const pythonResponse = await fetch(`${PYTHON_ML_URL}/predict`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            revealedPositions: revealedPositions,
+            nPositions: 5,
+          }),
+          signal: AbortSignal.timeout(10000),
+        });
+
+        if (!pythonResponse.ok) {
+          throw new Error(`Python ML respondió con ${pythonResponse.status}`);
+        }
+
+        const pythonData = await pythonResponse.json();
+        console.log(`ML PYTHON Prediction - Position: ${pythonData.suggestion?.position} | Strategy: ENSEMBLE_ADAPTIVE`);
+
+        return NextResponse.json({
+          success: true,
+          tipoAsesor: 'python-ensemble',
+          suggestion: pythonData.suggestion || {
+            position: 0,
+            confidence: 0,
+            strategy: 'ENSEMBLE_ADAPTIVE',
+            zone: 'N/A',
+            qValue: 'N/A',
+          },
+          ml: pythonData.ml || {
+            epsilon: 'N/A',
+            totalGames: 0,
+            explorationRate: '0%',
+            lastZoneUsed: 'N/A',
+            consecutiveSafePositions: 0,
+            topPositions: [],
+            posicionesSeguras: 0,
+            posicionesPeligrosas: 0,
+          },
+          analysis: pythonData.analysis || {
+            version: 'Python ML Ensemble v1.0',
+            features: [],
+          },
+          pythonML: {
+            safePositions: pythonData.safe_positions || [],
+            dangerousPositions: pythonData.dangerous_positions || [],
+            modelContributions: pythonData.model_contributions || {},
+            ensembleWeights: pythonData.ensemble_weights || {},
+            inferenceTimeMs: pythonData.inference_time_ms || 0,
+          },
+        });
+      } catch (pythonError) {
+        console.error('Python ML no disponible, usando fallback original:', pythonError);
+        // Fallback al asesor original si Python no está disponible
+        prediction = await selectPositionML(revealedPositions);
+        statistics = getMLStats();
+        console.log("FALLBACK to ML ORIGINAL - Position:", prediction.position);
+      }
+    } else if (tipoAsesor === 'rentable') {
       prediction = await selectPositionMLRentable(revealedPositions, objetivoRentable);
       statistics = getMLStatsRentable();
       console.log(`ML RENTABLE Prediction - Position: ${prediction.position} | Strategy: ${prediction.strategy} | Objetivo: ${objetivoRentable} pos`);
