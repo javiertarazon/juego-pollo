@@ -96,21 +96,30 @@ class XGBoostModel(BaseModel):
         self.is_trained = True
         self.train_games_count = len(X) // 25
         
-        # Métricas
-        y_pred_proba = self._raw_predict(X)
-        y_pred = (y_pred_proba > 0.16).astype(int)
+        # Métricas: preferir validation set para métricas honestas
+        if X_val is not None and y_val is not None:
+            y_eval_proba = self._raw_predict(X_val)
+            y_eval = y_val
+            eval_label = 'val'
+        else:
+            y_eval_proba = self._raw_predict(X)
+            y_eval = y
+            eval_label = 'train'
+        
+        y_pred = (y_eval_proba > 0.16).astype(int)
         
         metrics = {
-            'auc_roc': roc_auc_score(y, y_pred_proba) if len(np.unique(y)) > 1 else 0.0,
-            'brier_score': brier_score_loss(y, y_pred_proba),
-            'log_loss': log_loss(y, np.clip(y_pred_proba, 1e-7, 1-1e-7)),
+            'auc_roc': roc_auc_score(y_eval, y_eval_proba) if len(np.unique(y_eval)) > 1 else 0.0,
+            'brier_score': brier_score_loss(y_eval, y_eval_proba),
+            'log_loss': log_loss(y_eval, np.clip(y_eval_proba, 1e-7, 1-1e-7)),
             'train_samples': len(X),
+            'eval_on': eval_label,
             'bone_rate': float(y.mean()),
             'using_xgboost': HAS_XGBOOST,
         }
         
-        # Métricas de validación si hay datos
-        if X_val is not None and y_val is not None:
+        # Métricas de validación adicionales si hay datos
+        if X_val is not None and y_val is not None and eval_label == 'train':
             y_val_proba = self._raw_predict(X_val)
             metrics['val_auc_roc'] = roc_auc_score(y_val, y_val_proba) if len(np.unique(y_val)) > 1 else 0.0
             metrics['val_brier'] = brier_score_loss(y_val, y_val_proba)
@@ -128,17 +137,11 @@ class XGBoostModel(BaseModel):
         return self.model.predict_proba(X)[:, 1]
     
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
-        """Predice P(hueso) normalizado para 4 huesos esperados."""
+        """Predice P(hueso) SIN normalización - el ensemble normaliza una sola vez."""
         if not self.is_trained:
             return np.full(25, 0.16)
         
         probs = self._raw_predict(X)
-        
-        # Normalizar suma a 4 (huesos esperados)
-        current_sum = probs.sum()
-        if current_sum > 0:
-            probs = probs * (4.0 / current_sum)
-        
         return np.clip(probs, 0.01, 0.99)
     
     def get_feature_importance(self, feature_names: list[str]) -> list[dict]:

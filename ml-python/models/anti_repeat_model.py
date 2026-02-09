@@ -160,11 +160,7 @@ class AntiRepeatModel(BaseModel):
             for pos in double_repeaters:
                 probs[pos] *= 0.5  # Muy improbable triple repetición
         
-        # Normalizar a suma = 4
-        s = probs.sum()
-        if s > 0:
-            probs = probs * (4.0 / s)
-        
+        # v2.2: SIN normalización a 4 - el ensemble normaliza una sola vez
         return np.clip(probs, 0.01, 0.99)
     
     def update_cache(self, new_bone_vector: np.ndarray):

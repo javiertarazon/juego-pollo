@@ -24,6 +24,8 @@ from config import (
     PERFORMANCE_WINDOW,
     MIN_GAMES_FOR_TRAINING,
     RETRAIN_EVERY_N_GAMES,
+    FEATURE_SELECTION_ENABLED,
+    FEATURE_SELECTION_TOP_K,
 )
 from models.base_model import BaseModel
 from models.random_forest_model import RandomForestModel
@@ -224,6 +226,10 @@ class EnsemblePredictor:
         
         self.training_metrics: dict = {}
         self.validation_metrics: dict = {}
+        
+        # Feature selection state
+        self.selected_feature_indices: Optional[np.ndarray] = None
+        self.selected_feature_names: Optional[list[str]] = None
     
     def train_all(self) -> dict:
         """
@@ -244,9 +250,9 @@ class EnsemblePredictor:
         self.last_game_id = games_df.iloc[-1]['game_id']
         n_games = len(self.bone_matrix)
         
-        # Split temporal: train (70%), val (15%), test (15%)
-        train_end = int(n_games * 0.70)
-        val_end = int(n_games * 0.85)
+        # Split temporal: train (65%), val (15%), test (20%)
+        train_end = int(n_games * 0.65)
+        val_end = int(n_games * 0.80)
         
         logger.info(
             f"Split temporal: train=0-{train_end}, "
@@ -258,6 +264,26 @@ class EnsemblePredictor:
         X_train, y_train, train_game_indices = build_dataset(self.bone_matrix, min_start, train_end)
         X_val, y_val, _ = build_dataset(self.bone_matrix, train_end, val_end)
         X_test, y_test, test_game_indices = build_dataset(self.bone_matrix, val_end, n_games)
+        
+        # ── Feature Selection: eliminar features ruidosas ──
+        if FEATURE_SELECTION_ENABLED and X_train.shape[1] > FEATURE_SELECTION_TOP_K:
+            from sklearn.feature_selection import mutual_info_classif
+            logger.info(f"Feature Selection: {X_train.shape[1]} features → top {FEATURE_SELECTION_TOP_K}")
+            mi_scores = mutual_info_classif(X_train, y_train, random_state=42, n_neighbors=5)
+            top_indices = np.argsort(mi_scores)[-FEATURE_SELECTION_TOP_K:]
+            top_indices = np.sort(top_indices)  # Mantener orden original
+            
+            self.selected_feature_indices = top_indices
+            self.selected_feature_names = [ALL_FEATURE_NAMES[i] for i in top_indices]
+            
+            X_train = X_train[:, top_indices]
+            X_val = X_val[:, top_indices]
+            X_test = X_test[:, top_indices]
+            
+            logger.info(f"Features seleccionadas: {self.selected_feature_names[:10]}...")
+        else:
+            self.selected_feature_indices = None
+            self.selected_feature_names = None
         
         # ── Generar sample_weight con recency bias ──
         # Las partidas más recientes pesan más para que el modelo se adapte
@@ -340,11 +366,15 @@ class EnsemblePredictor:
             logger.error(f"✗ Dispersion falló: {e}")
             all_metrics['dispersion'] = {'error': str(e)}
         
-        # ── Walk-Forward Validation en test set ──
+        # ── Evaluación individual de RF/XGB en test set ──
+        # Detectar modelos contraproducentes ANTES de walk-forward
+        self._evaluate_and_penalize_models(X_test, y_test)
+        
+        # ── Walk-Forward Validation en test set (con pesos ya ajustados) ──
         val_results = self._walk_forward_validate(val_end, n_games)
         all_metrics['validation'] = val_results
         
-        # ── Ajustar pesos basados en validación ──
+        # ── Ajustar pesos basados en validación walk-forward ──
         self._adapt_weights()
         
         self.is_trained = True
@@ -371,29 +401,38 @@ class EnsemblePredictor:
         total_games = 0
         position_accuracy = np.zeros(GRID_SIZE)
         
+        # Métricas por K (top K seguras = todas safe?)
+        safe_at_k = {k: 0 for k in [3, 5, 8, 10]}
+        # Simular juego: si evitas las 4 posiciones más peligrosas, ¿cuántas
+        # veces las 4 posiciones más peligrosas del modelo realmente contienen huesos?
+        bones_in_top = {k: 0 for k in [2, 3, 4, 5, 6]}
+        
+        per_game_results = []
+        
         for g in range(start_idx, end_idx):
             actual = self.bone_matrix[g]
             
             # Predecir con cada modelo
             X_pred = build_features_for_prediction(self.bone_matrix[:g])
+            X_pred_selected = X_pred[:, self.selected_feature_indices] if self.selected_feature_indices is not None else X_pred
             
             preds = {}
             if self.rf.is_trained:
-                preds['random_forest'] = self.rf.predict_proba(X_pred)
+                preds['random_forest'] = self.rf.predict_proba(X_pred_selected)
             if self.xgb.is_trained:
-                preds['xgboost'] = self.xgb.predict_proba(X_pred)
+                preds['xgboost'] = self.xgb.predict_proba(X_pred_selected)
             if self.lstm.is_trained:
                 self.lstm.bone_matrix_cache = self.bone_matrix[:g]
-                preds['lstm'] = self.lstm.predict_proba(X_pred)
+                preds['lstm'] = self.lstm.predict_proba(X_pred_selected)
             if self.anti_repeat.is_trained:
                 self.anti_repeat.bone_matrix_cache = self.bone_matrix[:g]
-                preds['anti_repeat'] = self.anti_repeat.predict_proba(X_pred)
+                preds['anti_repeat'] = self.anti_repeat.predict_proba(X_pred_selected)
             if self.markov.is_trained:
                 self.markov.bone_matrix_cache = self.bone_matrix[:g]
-                preds['markov'] = self.markov.predict_proba(X_pred)
+                preds['markov'] = self.markov.predict_proba(X_pred_selected)
             if self.dispersion.is_trained:
                 self.dispersion.bone_matrix_cache = self.bone_matrix[:g]
-                preds['dispersion'] = self.dispersion.predict_proba(X_pred)
+                preds['dispersion'] = self.dispersion.predict_proba(X_pred_selected)
             
             if not preds:
                 continue
@@ -411,6 +450,23 @@ class EnsemblePredictor:
             pred_binary = (ensemble_pred > 0.16).astype(float)
             position_accuracy += (pred_binary == actual).astype(float)
             
+            # Métricas adicionales: ¿cuántos huesos hay en el top K peligrosas?
+            sorted_danger = np.argsort(ensemble_pred)[::-1]  # desc = más peligroso primero
+            for k in bones_in_top:
+                bones_in_top[k] += sum(1 for p in sorted_danger[:k] if actual[p] == 1)
+            
+            # Safe at K: ¿las K posiciones más seguras son ALL safe?
+            sorted_safe = np.argsort(ensemble_pred)  # asc = más seguro primero
+            for k in safe_at_k:
+                all_safe = all(actual[p] == 0 for p in sorted_safe[:k])
+                safe_at_k[k] += int(all_safe)
+            
+            per_game_results.append({
+                'game': g,
+                'bones_in_top4': bones_found,
+                'top4_safe_all': all(actual[p] == 0 for p in sorted_safe[:4]),
+            })
+            
             # Registrar para error tracking
             self.error_tracker.record(preds, actual, ensemble_pred, g)
         
@@ -420,11 +476,19 @@ class EnsemblePredictor:
         avg_bones_found = total_bones_found / total_games
         position_accuracy /= total_games
         
+        # Calcular win rates simulados
+        # Si el usuario evita las top 4 peligrosas del modelo y elige K posiciones seguras
+        win_rate_simulated = {}
+        for k in safe_at_k:
+            win_rate_simulated[f'win_rate_{k}_clicks'] = safe_at_k[k] / total_games
+        
         results = {
             'total_games_validated': total_games,
             'avg_bones_identified': avg_bones_found,
             'bone_identification_rate': avg_bones_found / 4.0,
             'avg_position_accuracy': float(position_accuracy.mean()),
+            'win_rate_simulated': win_rate_simulated,
+            'bones_in_top_k': {f'top_{k}': bones_in_top[k] / total_games for k in bones_in_top},
             'best_positions': [
                 int(p + 1) for p in np.argsort(position_accuracy)[-5:][::-1]
             ],
@@ -436,19 +500,73 @@ class EnsemblePredictor:
         
         self.validation_metrics = results
         logger.info(
-            f"Walk-Forward Validation: "
-            f"Huesos identificados {avg_bones_found:.2f}/4, "
-            f"Accuracy por posición: {position_accuracy.mean():.3f}"
+            f"Walk-Forward Validation ({total_games} partidas): "
+            f"Huesos identificados {avg_bones_found:.2f}/4 = {avg_bones_found/4*100:.1f}%, "
+            f"Win rate 3 clicks: {win_rate_simulated.get('win_rate_3_clicks', 0)*100:.1f}%, "
+            f"Win rate 5 clicks: {win_rate_simulated.get('win_rate_5_clicks', 0)*100:.1f}%"
         )
         
         return results
+    
+    def _evaluate_and_penalize_models(self, X_test: np.ndarray, y_test: np.ndarray):
+        """
+        Evalúa cada modelo RF/XGBoost individualmente en el test set.
+        Si un modelo tiene AUC < 0.5 (peor que azar), reduce su peso a casi 0.
+        """
+        from sklearn.metrics import roc_auc_score
+        
+        model_aucs = {}
+        
+        # Evaluar modelos basados en features
+        for model_name, model in [('random_forest', self.rf), ('xgboost', self.xgb)]:
+            if model.is_trained and len(X_test) > 0:
+                try:
+                    preds = model.predict_proba(X_test)
+                    if len(np.unique(y_test)) > 1:
+                        auc = roc_auc_score(y_test, preds)
+                        model_aucs[model_name] = auc
+                        logger.info(f"[{model_name}] Test AUC: {auc:.4f}")
+                except Exception as e:
+                    logger.warning(f"[{model_name}] Error evaluando: {e}")
+        
+        # Penalizar modelos con AUC < 0.5 (predicen peor que azar)
+        for model_name, auc in model_aucs.items():
+            if auc < 0.5:
+                old_weight = self.weights.get(model_name, 0.1)
+                # Reducir peso AGRESIVAMENTE — modelo predice al revés
+                # AUC 0.45 → peso *= 0.01, AUC 0.48 → peso *= 0.05
+                new_weight = old_weight * max(0.01, (auc - 0.4) / 2)
+                self.weights[model_name] = new_weight
+                logger.warning(
+                    f"[{model_name}] AUC={auc:.4f} < 0.5 → peso DRÁSTICAMENTE reducido "
+                    f"{old_weight:.3f} → {new_weight:.3f} (modelo contraproducente)"
+                )
+            elif auc > 0.55:
+                # Bonus para modelos que rinden bien
+                old_weight = self.weights.get(model_name, 0.1)
+                bonus = (auc - 0.5) * 2  # 0 a 1 de bonus
+                new_weight = old_weight * (1.0 + bonus)
+                self.weights[model_name] = new_weight
+                logger.info(
+                    f"[{model_name}] AUC={auc:.4f} > 0.55 → peso aumentado "
+                    f"{old_weight:.3f} → {new_weight:.3f}"
+                )
+        
+        # Renormalizar pesos a sum=1
+        total = sum(self.weights.values())
+        if total > 0:
+            for k in self.weights:
+                self.weights[k] /= total
+        
+        logger.info(f"Pesos post-evaluación: {self.weights}")
     
     def _combine_predictions(self, preds: dict[str, np.ndarray]) -> np.ndarray:
         """
         Combina predicciones de modelos con pesos adaptativos.
         
-        Mejora v2.1: Aplica corrección por frecuencia reciente de huesos
-        para evitar sugerir posiciones que recientemente han sido peligrosas.
+        v2.2: Eliminada doble normalización y recency_boost contradictorio.
+        Los modelos individuales ya NO normalizan a sum=4.
+        La única normalización ocurre AQUÍ.
         """
         combined = np.zeros(GRID_SIZE, dtype=np.float32)
         total_weight = 0
@@ -461,18 +579,7 @@ class EnsemblePredictor:
         if total_weight > 0:
             combined /= total_weight
         
-        # Corrección por frecuencia reciente: si una posición ha tenido
-        # muchos huesos en las últimas N partidas, aumentar su probabilidad
-        if self.bone_matrix is not None and len(self.bone_matrix) >= 10:
-            recent_n = min(30, len(self.bone_matrix))
-            recent_freq = self.bone_matrix[-recent_n:].mean(axis=0)  # freq de hueso en últimas N
-            base_freq = 4.0 / GRID_SIZE  # 0.16 para 4 huesos en 25
-            
-            # Boost: si recent_freq > base, aumentar probabilidad proporcionalmente
-            recency_boost = np.clip((recent_freq - base_freq) * 2.0, -0.05, 0.15)
-            combined += recency_boost
-        
-        # Normalizar suma a 4 (conservar ranking pero ajustar escala)
+        # Única normalización: suma a 4 (conservar ranking, ajustar escala)
         s = combined.sum()
         if s > 0:
             combined = combined * (4.0 / s)
@@ -529,6 +636,7 @@ class EnsemblePredictor:
         
         # Features para la próxima partida
         X_pred = build_features_for_prediction(self.bone_matrix)
+        X_pred_selected = X_pred[:, self.selected_feature_indices] if self.selected_feature_indices is not None else X_pred
         
         # Predicciones individuales
         preds = {}
@@ -537,7 +645,7 @@ class EnsemblePredictor:
         # Modelos basados en features
         for model_name, model in [('random_forest', self.rf), ('xgboost', self.xgb)]:
             if model.is_trained:
-                preds[model_name] = model.predict_proba(X_pred)
+                preds[model_name] = model.predict_proba(X_pred_selected)
                 model_details[model_name] = {
                     'weight': self.weights.get(model_name, 0.1),
                     'top_dangerous': [
@@ -547,7 +655,7 @@ class EnsemblePredictor:
         
         # Modelos basados en secuencia/patrón
         if self.lstm.is_trained:
-            preds['lstm'] = self.lstm.predict_proba(X_pred)
+            preds['lstm'] = self.lstm.predict_proba(X_pred_selected)
             model_details['lstm'] = {
                 'weight': self.weights.get('lstm', 0.1),
                 'top_dangerous': [
@@ -556,7 +664,7 @@ class EnsemblePredictor:
             }
         
         if self.anti_repeat.is_trained:
-            preds['anti_repeat'] = self.anti_repeat.predict_proba(X_pred)
+            preds['anti_repeat'] = self.anti_repeat.predict_proba(X_pred_selected)
             model_details['anti_repeat'] = {
                 'weight': self.weights.get('anti_repeat', 0.1),
                 'top_dangerous': [
@@ -565,7 +673,7 @@ class EnsemblePredictor:
             }
         
         if self.markov.is_trained:
-            preds['markov'] = self.markov.predict_proba(X_pred)
+            preds['markov'] = self.markov.predict_proba(X_pred_selected)
             model_details['markov'] = {
                 'weight': self.weights.get('markov', 0.1),
                 'top_dangerous': [
@@ -574,7 +682,7 @@ class EnsemblePredictor:
             }
         
         if self.dispersion.is_trained:
-            preds['dispersion'] = self.dispersion.predict_proba(X_pred)
+            preds['dispersion'] = self.dispersion.predict_proba(X_pred_selected)
             model_details['dispersion'] = {
                 'weight': self.weights.get('dispersion', 0.1),
                 'top_dangerous': [
@@ -706,19 +814,20 @@ class EnsemblePredictor:
         # Evaluar predicciones anteriores contra realidad
         if self.is_trained:
             X_pred = build_features_for_prediction(self.bone_matrix[:-1])
+            X_pred_selected = X_pred[:, self.selected_feature_indices] if self.selected_feature_indices is not None else X_pred
             preds = {}
             if self.rf.is_trained:
-                preds['random_forest'] = self.rf.predict_proba(X_pred)
+                preds['random_forest'] = self.rf.predict_proba(X_pred_selected)
             if self.xgb.is_trained:
-                preds['xgboost'] = self.xgb.predict_proba(X_pred)
+                preds['xgboost'] = self.xgb.predict_proba(X_pred_selected)
             if self.lstm.is_trained:
-                preds['lstm'] = self.lstm.predict_proba(X_pred)
+                preds['lstm'] = self.lstm.predict_proba(X_pred_selected)
             if self.anti_repeat.is_trained:
-                preds['anti_repeat'] = self.anti_repeat.predict_proba(X_pred)
+                preds['anti_repeat'] = self.anti_repeat.predict_proba(X_pred_selected)
             if self.markov.is_trained:
-                preds['markov'] = self.markov.predict_proba(X_pred)
+                preds['markov'] = self.markov.predict_proba(X_pred_selected)
             if self.dispersion.is_trained:
-                preds['dispersion'] = self.dispersion.predict_proba(X_pred)
+                preds['dispersion'] = self.dispersion.predict_proba(X_pred_selected)
             
             if preds:
                 ensemble = self._combine_predictions(preds)
@@ -797,8 +906,8 @@ class EnsemblePredictor:
             'ensemble_weights': dict(self.weights),
             'model_scores': scores,
             'feature_importance': {
-                'random_forest': self.rf.get_feature_importance(ALL_FEATURE_NAMES) if self.rf.is_trained else [],
-                'xgboost': self.xgb.get_feature_importance(ALL_FEATURE_NAMES) if self.xgb.is_trained else [],
+                'random_forest': self.rf.get_feature_importance(self.selected_feature_names or ALL_FEATURE_NAMES) if self.rf.is_trained else [],
+                'xgboost': self.xgb.get_feature_importance(self.selected_feature_names or ALL_FEATURE_NAMES) if self.xgb.is_trained else [],
             },
             'error_analysis': {
                 'problematic_positions': self.error_tracker.get_problematic_positions(10),
@@ -833,12 +942,16 @@ class EnsemblePredictor:
             'error_tracker': self.error_tracker.to_dict(),
             'training_metrics': self.training_metrics,
             'validation_metrics': self.validation_metrics,
+            'selected_feature_names': self.selected_feature_names,
         }
         with open(path / "ensemble_state.json", 'w') as f:
             json.dump(state, f, indent=2, default=str)
         
         if self.bone_matrix is not None:
             np.save(path / "bone_matrix.npy", self.bone_matrix)
+        
+        if self.selected_feature_indices is not None:
+            np.save(path / "selected_feature_indices.npy", self.selected_feature_indices)
         
         logger.info(f"Ensemble guardado en {path}")
     
@@ -861,10 +974,18 @@ class EnsemblePredictor:
             self.total_predictions = state.get('total_predictions', 0)
             self.training_metrics = state.get('training_metrics', {})
             self.validation_metrics = state.get('validation_metrics', {})
+            self.selected_feature_names = state.get('selected_feature_names', None)
             
             bone_path = path / "bone_matrix.npy"
             if bone_path.exists():
                 self.bone_matrix = np.load(bone_path)
+            
+            # Cargar feature selection indices
+            feat_idx_path = path / "selected_feature_indices.npy"
+            if feat_idx_path.exists():
+                self.selected_feature_indices = np.load(feat_idx_path)
+            else:
+                self.selected_feature_indices = None
             
             # Cargar modelos individuales
             rf_loaded = self.rf.load(path / "random_forest")

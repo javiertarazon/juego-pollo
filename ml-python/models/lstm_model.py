@@ -137,37 +137,16 @@ class ChickenSequenceDataset(Dataset):
     def _augment_data(self, bone_matrix: np.ndarray) -> np.ndarray:
         """
         Data augmentation para tablero 5x5:
-        - Reflexión horizontal
-        - Reflexión vertical  
-        - Rotación 180°
-        Multiplica los datos x4.
+        - Reflexión horizontal, vertical, rotación 180°
+        
+        v2.2: Cada transformación se aplica POR SECUENCIA en __getitem__,
+        no concatenando datos (evita secuencias basura en límites).
+        Se mantiene solo la data original aquí;
+        la augmentation aleatoria se aplica en __getitem__.
         """
-        n_games = len(bone_matrix)
-        augmented = [bone_matrix]
-        
-        for game_set in [bone_matrix]:
-            # Reflexión horizontal (invertir columnas)
-            h_flip = np.zeros_like(game_set)
-            for g in range(n_games):
-                grid = game_set[g].reshape(5, 5)
-                h_flip[g] = np.fliplr(grid).flatten()
-            augmented.append(h_flip)
-            
-            # Reflexión vertical (invertir filas)
-            v_flip = np.zeros_like(game_set)
-            for g in range(n_games):
-                grid = game_set[g].reshape(5, 5)
-                v_flip[g] = np.flipud(grid).flatten()
-            augmented.append(v_flip)
-            
-            # Rotación 180°
-            rot180 = np.zeros_like(game_set)
-            for g in range(n_games):
-                grid = game_set[g].reshape(5, 5)
-                rot180[g] = np.rot90(grid, 2).flatten()
-            augmented.append(rot180)
-        
-        return np.vstack(augmented)
+        # Retornar solo los datos originales.
+        # La augmentación se hace on-the-fly en __getitem__
+        return bone_matrix
     
     def _compute_sequence_features(self, bone_matrix: np.ndarray) -> np.ndarray:
         """
@@ -269,10 +248,10 @@ class LSTMModel(BaseModel):
             f"seq_len={seq_len}, device={self.device}"
         )
         
-        # Dataset — split temporal (80/20)
+        # Dataset — split temporal (80/20) SIN solapamiento
         split_idx = int(n_games * 0.8)
         train_dataset = ChickenSequenceDataset(bone_matrix[:split_idx], seq_len, augment=True)
-        val_dataset = ChickenSequenceDataset(bone_matrix[split_idx - seq_len:], seq_len, augment=False)
+        val_dataset = ChickenSequenceDataset(bone_matrix[split_idx:], seq_len, augment=False)
         
         if len(train_dataset) < 5 or len(val_dataset) < 2:
             logger.warning(f"[{self.name}] Datasets muy pequeños: train={len(train_dataset)}, val={len(val_dataset)}")
@@ -437,11 +416,7 @@ class LSTMModel(BaseModel):
         with torch.no_grad():
             probs = self.net(x).squeeze(0).cpu().numpy()
         
-        # Normalizar a 4 huesos esperados
-        s = probs.sum()
-        if s > 0:
-            probs = probs * (4.0 / s)
-        
+        # v2.2: SIN normalización a 4 - el ensemble normaliza una sola vez
         return np.clip(probs, 0.01, 0.99)
     
     def update_cache(self, new_bone_vector: np.ndarray):

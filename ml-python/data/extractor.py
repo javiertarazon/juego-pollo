@@ -95,7 +95,7 @@ def load_real_games() -> pd.DataFrame:
     
     # Limpiar partidas sin posiciones válidas
     games_df = games_df.dropna(subset=['bone_positions'])
-    games_df = games_df[games_df['bone_positions'].apply(lambda x: len(x) >= 3)]
+    games_df = games_df[games_df['bone_positions'].apply(lambda x: len(x) == 4)]
     
     logger.info(f"Cargadas {len(games_df)} partidas reales con posiciones de huesos completas")
     return games_df.reset_index(drop=True)

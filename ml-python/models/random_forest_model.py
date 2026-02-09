@@ -60,8 +60,10 @@ class RandomForestModel(BaseModel):
         # Calibración isotónica para mejores probabilidades
         if len(X) > 100:
             try:
+                from sklearn.model_selection import StratifiedKFold
+                cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
                 self.calibrated_model = CalibratedClassifierCV(
-                    self.model, method='isotonic', cv=3
+                    self.model, method='isotonic', cv=cv
                 )
                 self.calibrated_model.fit(X, y)
             except Exception as e:
@@ -71,8 +73,19 @@ class RandomForestModel(BaseModel):
         self.is_trained = True
         self.train_games_count = len(X) // 25
         
-        # Métricas
-        y_pred_proba = self.predict_proba_raw(X)
+        # Métricas: usar OOB predictions (out-of-bag = no vistas en training)
+        # Esto da métricas HONESTAS sin data leakage
+        try:
+            oob_pred_proba = np.zeros(len(y))
+            # OOB decision function gives honest predictions
+            for i, tree in enumerate(self.model.estimators_):
+                unsampled_indices = ~self.model.estimators_samples_[i] if hasattr(self.model, 'estimators_samples_') else np.ones(len(y), dtype=bool)
+            # Use sklearn's built-in OOB predictions for honest eval
+            y_pred_proba = self.model.oob_decision_function_[:, 1]
+        except (AttributeError, IndexError):
+            # Fallback to training data if OOB not available
+            y_pred_proba = self.predict_proba_raw(X)
+        
         y_pred = (y_pred_proba > 0.16).astype(int)
         
         metrics = {
@@ -106,16 +119,13 @@ class RandomForestModel(BaseModel):
         """
         Predice P(hueso) para cada posición.
         Input: (25, n_features) → Output: (25,)
+        v2.2: SIN normalización - el ensemble normaliza una sola vez.
         """
         if not self.is_trained:
             return np.full(25, 0.16)
         
         probs = self.predict_proba_raw(X)
-        
-        # Normalizar para que sumen ~4 huesos (restricción del juego)
-        probs = self._normalize_to_bone_count(probs, target_bones=4)
-        
-        return probs
+        return np.clip(probs, 0.01, 0.99)
     
     def _normalize_to_bone_count(
         self, probs: np.ndarray, target_bones: int = 4

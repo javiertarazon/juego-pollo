@@ -64,11 +64,12 @@ def compute_spatial_features() -> np.ndarray:
         dist_manhattan = (abs(r - center_r) + abs(c - center_c)) / 4.0
         dist_euclidean = np.sqrt((r - center_r)**2 + (c - center_c)**2) / (2 * np.sqrt(2))
         
-        # Cuadrante (one-hot: 4 features)
+        # Cuadrante (one-hot: 4 features) - top-left=0, top-right=1, bottom-left=2, bottom-right=3
         quad = [0.0, 0.0, 0.0, 0.0]
-        qi = (0 if r < 2 else (2 if r > 2 else -1)) + (0 if c < 2 else (1 if c > 2 else -1))
-        if qi >= 0 and qi < 4:
-            quad[qi] = 1.0
+        qi_r = 0 if r <= 2 else 1
+        qi_c = 0 if c <= 2 else 1
+        qi = qi_r * 2 + qi_c  # 0, 1, 2, 3
+        quad[qi] = 1.0
         
         # Diagonales
         on_main_diag = float(r == c)
@@ -121,8 +122,8 @@ def compute_temporal_features(bone_matrix: np.ndarray, game_idx: int) -> np.ndar
     feature_names = []
     
     if n_past == 0:
-        # Sin historial, retornar zeros
-        n_feats = len(WINDOW_SIZES) * 2 + 10  # Aproximación
+        # Sin historial, retornar zeros - conteo exacto: freq+trend per window (2*W), global_freq, games_since, streak_no, streak_bone, was_bone_last, bone_in_last_2, variance = 2*W + 7
+        n_feats = len(WINDOW_SIZES) * 2 + 7
         return np.zeros((GRID_SIZE, n_feats), dtype=np.float32)
     
     # ── Frecuencia de huesos en ventanas rolling ──
@@ -198,9 +199,9 @@ def compute_temporal_features(bone_matrix: np.ndarray, game_idx: int) -> np.ndar
     features = np.hstack([features, last_2])
     feature_names.append('bone_in_last_2_games')
     
-    # ── Varianza en ventana ──
+    # ── Varianza en ventana (normalizada a [0,1], max varianza Bernoulli = 0.25) ──
     if n_past >= 5:
-        variance = history[-min(20, n_past):].var(axis=0).reshape(-1, 1)
+        variance = history[-min(20, n_past):].var(axis=0).reshape(-1, 1) / 0.25
     else:
         variance = np.zeros((GRID_SIZE, 1), dtype=np.float32)
     features = np.hstack([features, variance])
@@ -277,11 +278,13 @@ def compute_neighbor_features(bone_matrix: np.ndarray, game_idx: int) -> np.ndar
                 for n in neighbors
             ])
             # Correlación promedio
-            if col.std() > 0 and neighbor_cols.std() > 0:
+            if col.std() > 0:
                 correlations = []
                 for nc in neighbor_cols:
                     if nc.std() > 0:
-                        correlations.append(np.corrcoef(col, nc)[0, 1])
+                        corr_val = np.corrcoef(col, nc)[0, 1]
+                        if not np.isnan(corr_val):
+                            correlations.append(corr_val)
                 neighbor_corr = np.mean(correlations) if correlations else 0.0
             else:
                 neighbor_corr = 0.0
@@ -409,14 +412,14 @@ def compute_global_features(bone_matrix: np.ndarray, game_idx: int) -> np.ndarra
         return np.zeros((GRID_SIZE, 8), dtype=np.float32)
     
     # Entropía global de la última partida (dispersión de huesos)
+    # Normalizada a [0,1]: max entropía para 4 huesos en 25 pos = log2(25) ≈ 4.64
     last = history[-1]
     bone_count = last.sum()
     positions_entropy = 0.0
     if bone_count > 0:
-        # Entropía de la distribución de huesos
         p = last / max(last.sum(), 1)
         p = p[p > 0]
-        positions_entropy = -np.sum(p * np.log2(p))
+        positions_entropy = -np.sum(p * np.log2(p)) / np.log2(GRID_SIZE)  # Normalizar a [0,1]
     
     # Similitud entre últimas partidas (¿los huesos se repiten?)
     if n_past >= 2:

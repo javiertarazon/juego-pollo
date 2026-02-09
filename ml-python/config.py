@@ -28,26 +28,30 @@ WINDOW_SIZES = [3, 5, 10, 20, 50]
 SEQUENCE_LENGTH = 5     # Últimas N partidas como input del LSTM (ajustado a 150 partidas limpias)
 
 # ── Modelos ───────────────────────────────────────────────
-# Random Forest (ajustado para evitar overfitting con 150 partidas)
-RF_N_ESTIMATORS = 200
-RF_MAX_DEPTH = 8
-RF_MIN_SAMPLES_LEAF = 10
+# Random Forest (más regularizado para 182 partidas)
+RF_N_ESTIMATORS = 300
+RF_MAX_DEPTH = 6
+RF_MIN_SAMPLES_LEAF = 15
 
-# XGBoost (ajustado para evitar overfitting con 150 partidas)
-XGB_N_ESTIMATORS = 200
-XGB_MAX_DEPTH = 5
-XGB_LEARNING_RATE = 0.03
-XGB_SUBSAMPLE = 0.7
-XGB_COLSAMPLE = 0.7
+# XGBoost (más regularizado para 182 partidas)
+XGB_N_ESTIMATORS = 250
+XGB_MAX_DEPTH = 4
+XGB_LEARNING_RATE = 0.02
+XGB_SUBSAMPLE = 0.6
+XGB_COLSAMPLE = 0.6
 
-# LSTM (ajustado para dataset pequeño ~150 partidas)
-LSTM_HIDDEN_SIZE = 64
+# LSTM (conservador para dataset pequeño)
+LSTM_HIDDEN_SIZE = 48
 LSTM_NUM_LAYERS = 1
-LSTM_DROPOUT = 0.4
-LSTM_EPOCHS = 80
+LSTM_DROPOUT = 0.5
+LSTM_EPOCHS = 100
 LSTM_BATCH_SIZE = 8
-LSTM_LEARNING_RATE = 0.0005
-LSTM_PATIENCE = 20      # Early stopping
+LSTM_LEARNING_RATE = 0.0003
+LSTM_PATIENCE = 25      # Early stopping
+
+# Feature Selection
+FEATURE_SELECTION_ENABLED = True
+FEATURE_SELECTION_TOP_K = 35  # Seleccionar top 35 features de ~68 total
 
 # Ensemble (6 modelos v2.0)
 ENSEMBLE_INITIAL_WEIGHTS = {

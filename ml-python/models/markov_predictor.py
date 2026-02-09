@@ -173,11 +173,7 @@ class MarkovPredictor(BaseModel):
             # Combinar: 70% Markov + 30% cross-transition
             probs[pos] = 0.7 * markov_prob + 0.3 * cross_prob
         
-        # Normalizar a 4 huesos
-        s = probs.sum()
-        if s > 0:
-            probs = probs * (4.0 / s)
-        
+        # v2.2: SIN normalización a 4 - el ensemble normaliza una sola vez
         return np.clip(probs, 0.01, 0.99)
     
     def predict_proba(self, X: np.ndarray) -> np.ndarray:

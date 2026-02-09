@@ -202,16 +202,15 @@ class DispersionPredictor(BaseModel):
         probs = np.copy(self.position_probs)
         last_bones = set(np.where(bone_matrix[-1] == 1)[0])
         
-        # Factor 1: Sesgo por zona/columna/fila
+        # Factor 1: Sesgo por columna y fila (no incluir zona, ya está en position_probs)
+        # Usamos solo col/row como ajuste multiplicativo suave
         for pos in range(GRID_SIZE):
             row, col = pos // 5, pos % 5
-            zone = _get_zone(pos)
-            
-            zone_factor = self.zone_probs[zone] / 0.16 if self.zone_probs[zone] > 0 else 1.0
-            col_factor = self.column_probs[col] / 0.16 if self.column_probs[col] > 0 else 1.0
-            row_factor = self.row_probs[row] / 0.16 if self.row_probs[row] > 0 else 1.0
-            
-            probs[pos] *= (zone_factor * 0.3 + col_factor * 0.4 + row_factor * 0.3)
+            col_factor = self.column_probs[col] / max(self.position_probs.mean(), 0.01)
+            row_factor = self.row_probs[row] / max(self.position_probs.mean(), 0.01)
+            # Media geométrica suave: sqrt(col * row) para evitar doble conteo
+            combined = np.sqrt(col_factor * row_factor)
+            probs[pos] *= combined
         
         # Factor 2: Migración desde zonas de huesos anteriores
         if last_bones:
@@ -223,7 +222,10 @@ class DispersionPredictor(BaseModel):
                     migration_score[pos] += self.zone_transition[source_zone, target_zone]
                 migration_score[pos] /= len(last_bones)
             
-            probs = probs * 0.6 + migration_score * 0.4
+            # Normalizar migration_score a misma escala que probs
+            if migration_score.sum() > 0:
+                migration_score = migration_score * (probs.sum() / migration_score.sum())
+            probs = probs * 0.7 + migration_score * 0.3
         
         # Factor 3: Adyacencia boost - si vecinos fueron hueso, esta pos es más probable
         adj_boost = np.zeros(GRID_SIZE, dtype=np.float32)
@@ -234,12 +236,7 @@ class DispersionPredictor(BaseModel):
         
         probs += adj_boost * 0.3
         
-        # Normalizar a 4 huesos
-        probs = np.clip(probs, 0.01, 0.99)
-        s = probs.sum()
-        if s > 0:
-            probs = probs * (4.0 / s)
-        
+        # v2.2: SIN normalización a 4 - el ensemble normaliza una sola vez
         return np.clip(probs, 0.01, 0.99)
     
     def update_cache(self, new_bone_vector: np.ndarray):
