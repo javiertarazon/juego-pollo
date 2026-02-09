@@ -49,19 +49,24 @@ LSTM_BATCH_SIZE = 8
 LSTM_LEARNING_RATE = 0.0005
 LSTM_PATIENCE = 20      # Early stopping
 
-# Ensemble
+# Ensemble (6 modelos v2.0)
 ENSEMBLE_INITIAL_WEIGHTS = {
-    "random_forest": 0.30,
-    "xgboost": 0.35,
-    "lstm": 0.35,
+    "random_forest": 0.20,
+    "xgboost": 0.25,
+    "lstm": 0.20,
+    "anti_repeat": 0.15,
+    "markov": 0.10,
+    "dispersion": 0.10,
 }
 
 # ── Auto-aprendizaje ─────────────────────────────────────
 RETRAIN_EVERY_N_GAMES = 10       # Reentrenar cada N partidas nuevas
 MIN_GAMES_FOR_TRAINING = 15      # Mínimo de partidas para entrenar (ajustado post-limpieza)
-PERFORMANCE_WINDOW = 50          # Ventana para evaluar rendimiento reciente
-WEIGHT_ADAPTATION_RATE = 0.05    # Velocidad de adaptación de pesos del ensemble
+PERFORMANCE_WINDOW = 30          # Ventana para evaluar rendimiento reciente (reducida para reaccionar más rápido)
+WEIGHT_ADAPTATION_RATE = 0.12    # Velocidad de adaptación de pesos del ensemble (aumentada)
 ERROR_MEMORY_SIZE = 200          # Cuántos errores recordar para auto-análisis
+RECENT_WEIGHT_BOOST = 2.0        # Multiplicador de peso para partidas recientes en entrenamiento
+RECENT_WINDOW = 30               # Cuántas partidas recientes pesar más
 
 # ── Servidor ──────────────────────────────────────────────
 HOST = os.getenv("ML_HOST", "127.0.0.1")

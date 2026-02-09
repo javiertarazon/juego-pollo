@@ -70,6 +70,9 @@ class XGBoostModel(BaseModel):
             )
             
             fit_params = {}
+            sample_weight = kwargs.get('sample_weight', None)
+            if sample_weight is not None:
+                fit_params['sample_weight'] = sample_weight
             if X_val is not None and y_val is not None:
                 fit_params['eval_set'] = [(X_val, y_val)]
                 # XGBoost nativo soporta early stopping

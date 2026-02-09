@@ -255,15 +255,29 @@ class EnsemblePredictor:
         
         # ── Construir datasets ──
         min_start = max(5, min(20, n_games // 10))
-        X_train, y_train, _ = build_dataset(self.bone_matrix, min_start, train_end)
+        X_train, y_train, train_game_indices = build_dataset(self.bone_matrix, min_start, train_end)
         X_val, y_val, _ = build_dataset(self.bone_matrix, train_end, val_end)
         X_test, y_test, test_game_indices = build_dataset(self.bone_matrix, val_end, n_games)
+        
+        # ── Generar sample_weight con recency bias ──
+        # Las partidas más recientes pesan más para que el modelo se adapte
+        from config import RECENT_WEIGHT_BOOST, RECENT_WINDOW
+        sample_weight = np.ones(len(y_train), dtype=np.float32)
+        if train_game_indices:
+            max_game = max(train_game_indices)
+            recent_cutoff = max_game - RECENT_WINDOW
+            for i, gidx in enumerate(train_game_indices):
+                if gidx >= recent_cutoff:
+                    # Progresivo: más reciente = más peso
+                    recency = (gidx - recent_cutoff) / max(RECENT_WINDOW, 1)
+                    sample_weight[i] = 1.0 + (RECENT_WEIGHT_BOOST - 1.0) * recency
+        logger.info(f"Sample weights: min={sample_weight.min():.2f}, max={sample_weight.max():.2f}, mean={sample_weight.mean():.2f}")
         
         all_metrics = {}
         
         # ── Entrenar Random Forest ──
         try:
-            rf_metrics = self.rf.train(X_train, y_train)
+            rf_metrics = self.rf.train(X_train, y_train, sample_weight=sample_weight)
             all_metrics['random_forest'] = rf_metrics
             logger.info(f"✓ Random Forest: AUC={rf_metrics.get('auc_roc', 0):.4f}")
         except Exception as e:
@@ -273,7 +287,8 @@ class EnsemblePredictor:
         # ── Entrenar XGBoost ──
         try:
             xgb_metrics = self.xgb.train(
-                X_train, y_train, X_val=X_val, y_val=y_val
+                X_train, y_train, X_val=X_val, y_val=y_val,
+                sample_weight=sample_weight
             )
             all_metrics['xgboost'] = xgb_metrics
             logger.info(f"✓ XGBoost: AUC={xgb_metrics.get('auc_roc', 0):.4f}")
@@ -429,7 +444,12 @@ class EnsemblePredictor:
         return results
     
     def _combine_predictions(self, preds: dict[str, np.ndarray]) -> np.ndarray:
-        """Combina predicciones de modelos con pesos adaptativos."""
+        """
+        Combina predicciones de modelos con pesos adaptativos.
+        
+        Mejora v2.1: Aplica corrección por frecuencia reciente de huesos
+        para evitar sugerir posiciones que recientemente han sido peligrosas.
+        """
         combined = np.zeros(GRID_SIZE, dtype=np.float32)
         total_weight = 0
         
@@ -441,7 +461,18 @@ class EnsemblePredictor:
         if total_weight > 0:
             combined /= total_weight
         
-        # Normalizar suma a 4
+        # Corrección por frecuencia reciente: si una posición ha tenido
+        # muchos huesos en las últimas N partidas, aumentar su probabilidad
+        if self.bone_matrix is not None and len(self.bone_matrix) >= 10:
+            recent_n = min(30, len(self.bone_matrix))
+            recent_freq = self.bone_matrix[-recent_n:].mean(axis=0)  # freq de hueso en últimas N
+            base_freq = 4.0 / GRID_SIZE  # 0.16 para 4 huesos en 25
+            
+            # Boost: si recent_freq > base, aumentar probabilidad proporcionalmente
+            recency_boost = np.clip((recent_freq - base_freq) * 2.0, -0.05, 0.15)
+            combined += recency_boost
+        
+        # Normalizar suma a 4 (conservar ranking pero ajustar escala)
         s = combined.sum()
         if s > 0:
             combined = combined * (4.0 / s)
@@ -565,6 +596,10 @@ class EnsemblePredictor:
             uncertainty = np.full(GRID_SIZE, 0.5)
         
         # Ranking de seguridad con confianza calibrada
+        # Umbral dinámico: la mediana de las probabilidades marca el corte
+        all_probs = [ensemble[i] for i in range(GRID_SIZE) if (i + 1) not in revealed_set]
+        dynamic_threshold = np.percentile(all_probs, 40) if all_probs else 0.16  # Top 40% más seguras
+        
         positions = []
         for i in range(GRID_SIZE):
             pos = i + 1
@@ -580,7 +615,7 @@ class EnsemblePredictor:
                 'bone_probability': round(float(ensemble[i]), 4),
                 'confidence': round(float(calibrated_confidence), 1),
                 'uncertainty': round(float(uncertainty[i]), 4),
-                'is_safe': ensemble[i] < 0.16,
+                'is_safe': ensemble[i] < dynamic_threshold,
                 'risk_level': (
                     'BAJO' if ensemble[i] < 0.12 else
                     'MEDIO' if ensemble[i] < 0.20 else

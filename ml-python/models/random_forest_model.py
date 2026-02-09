@@ -53,7 +53,8 @@ class RandomForestModel(BaseModel):
             oob_score=True,
         )
         
-        self.model.fit(X, y)
+        sample_weight = kwargs.get('sample_weight', None)
+        self.model.fit(X, y, sample_weight=sample_weight)
         self.feature_importances_ = self.model.feature_importances_
         
         # Calibración isotónica para mejores probabilidades
