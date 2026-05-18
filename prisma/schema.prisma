@@ -133,3 +133,27 @@ model AnalysisReport {
   @@index([timestamp])
 }
 
+// Sesión persistente del jugador (reemplaza almacenamiento en memoria)
+model GameSession {
+  id                String   @id @default(cuid())
+  sessionId         String   @unique
+  balanceActual     Float    @default(100.0)
+  balanceInicial    Float    @default(100.0)
+  apuestaActual     Float    @default(0.2)
+  rachaVictorias    Int      @default(0)
+  rachaDerrotas     Int      @default(0)
+  totalVictorias    Int      @default(0)
+  totalDerrotas     Int      @default(0)
+  ganado            Float    @default(0.0)
+  perdido           Float    @default(0.0)
+  tipoAsesor        String   @default("original") // "original" | "rentable"
+  objetivoRentable  Int      @default(2)
+  boneCount         Int      @default(4)
+  activa            Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([activa])
+}
+

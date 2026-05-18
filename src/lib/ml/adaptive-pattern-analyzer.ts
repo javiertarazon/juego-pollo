@@ -8,9 +8,7 @@
  * - Patrones de comportamiento de Mystake según historial
  */
 
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Caché para análisis adaptativo
 let cacheAnalisis: AnalisisAdaptativo | null = null;
@@ -66,7 +64,7 @@ export async function analizarUltimasPartidas(limite: number = 10): Promise<Anal
   console.log('🔄 Calculando nuevo análisis adaptativo...');
   
   // Obtener últimas partidas reales
-  const partidas = await prisma.chickenGame.findMany({
+  const partidas = await db.chickenGame.findMany({
     where: {
       isSimulated: false,
     },

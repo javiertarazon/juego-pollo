@@ -10,7 +10,11 @@
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:reset": "prisma migrate reset"
+    "db:reset": "prisma migrate reset",
+    "ml:start": "cd ml-python && python3 main.py",
+    "ml:train": "cd ml-python && python3 train_from_db.py 150",
+    "ml:train:all": "cd ml-python && python3 train_from_db.py 150 --all",
+    "dev:full": "concurrently \"next dev -p 3000\" \"cd ml-python && python3 main.py\""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

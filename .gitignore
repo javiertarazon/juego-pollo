@@ -46,3 +46,13 @@ db/custom.db-journal
 
 # Cache
 .cache
+
+# Skills directory (unrelated scaffold)
+skills/
+
+# Python ML models cache
+ml-python/models/
+ml-python/data/
+ml-python/__pycache__/
+ml-python/**/__pycache__/
+*.pyc

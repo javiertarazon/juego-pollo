@@ -2,27 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
+import { MULTIPLICADORES_4_HUESOS } from '@/lib/multipliers';
 
-const MULTIPLIERS = {
-  4: 1.7,
-  5: 1.99,
-  6: 2.34,
-  7: 2.66,
-  8: 3.0,
-  9: 3.4,
-  10: 3.84,
-  11: 4.35,
-  12: 4.96,
-  13: 5.65,
-  14: 6.44,
-  15: 7.35,
-  16: 8.4,
-  17: 9.6,
-  18: 10.96,
-  19: 12.52,
-  20: 14.32,
-  21: 16.37,
-} as const;
+// Usar multiplicadores centralizados desde multipliers.ts (coherentes con frontend)
+const MULTIPLIERS = MULTIPLICADORES_4_HUESOS;
 
 // Tipos de comportamiento del jugador simulado
 type BehaviorType = 'conservador' | 'rentable' | 'agresivo';
