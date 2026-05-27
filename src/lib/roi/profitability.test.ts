@@ -26,6 +26,10 @@ describe('Rentabilidad - ROI / Win Rate / Profit', () => {
     assert.ok(rentable.winRate > baseline.winRate, `winRate rentable=${rentable.winRate} baseline=${baseline.winRate}`);
     assert.ok(rentable.roi > baseline.roi, `roi rentable=${rentable.roi} baseline=${baseline.roi}`);
     assert.ok(rentable.profit > baseline.profit, `profit rentable=${rentable.profit} baseline=${baseline.profit}`);
+
+    // Comprobación de rentabilidad (según config actual + multiplicadores)
+    assert.ok(rentable.roi > 0, `roi rentable=${rentable.roi}`);
+    assert.ok(rentable.profit > 0, `profit rentable=${rentable.profit}`);
   });
 
   it('rentable_3 debe ser >= rentable_2 en profit por victoria (tradeoff riesgo)', () => {
@@ -43,4 +47,3 @@ describe('Rentabilidad - ROI / Win Rate / Profit', () => {
     assert.ok(rentable3.avgProfitPerWin >= rentable2.avgProfitPerWin);
   });
 });
-
