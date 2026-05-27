@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
 import { monitoring, logError } from '@/lib/monitoring';
 import { validatePositions, validateBoneCount } from '@/lib/validation';
 
@@ -38,22 +37,11 @@ export async function POST(req: NextRequest) {
 
     await Promise.all(updatePromises);
 
-    // Calculate accuracy for this game
-    const predictions = await db.predictionLog.findMany({
-      where: { gameId },
-    });
-
-    let correctPredictions = 0;
-    let totalPredictions = predictions.length;
-
-    predictions.forEach(pred => {
-      const actualResult = actualResults.find((r: any) => r.position === pred.position);
-      if (actualResult && pred.actualResult === actualResult.isChicken) {
-        correctPredictions++;
-      }
-    });
-
-    const gameAccuracy = totalPredictions > 0 ? correctPredictions / totalPredictions : 0;
+    // Nota: El repositorio no tiene tabla de persistencia de predicciones (predictionLog).
+    // Se reportan métricas agregadas vía `monitoring.calculateAccuracy`.
+    const correctPredictions = 0;
+    const totalPredictions = 0;
+    const gameAccuracy = 0;
 
     // Log game accuracy metric
     await monitoring.logMetric('game_accuracy', gameAccuracy, validatedBoneCount, {
@@ -68,7 +56,7 @@ export async function POST(req: NextRequest) {
       accuracy: Math.round(gameAccuracy * 100) / 100,
       totalPredictions,
       correctPredictions,
-      message: `Validated ${totalPredictions} predictions with ${Math.round(gameAccuracy * 100)}% accuracy`,
+      message: 'Validación registrada (sin logs de predicción persistidos)',
     });
 
   } catch (error) {
@@ -93,49 +81,12 @@ export async function GET(req: NextRequest) {
     // Get recent validation metrics
     const metrics = await monitoring.calculateAccuracy(hoursBack, validatedBoneCount);
 
-    // Get recent prediction logs for analysis
-    const since = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
-    const recentPredictions = await db.predictionLog.findMany({
-      where: {
-        timestamp: { gte: since },
-        boneCount: validatedBoneCount || undefined,
-      },
-      orderBy: { timestamp: 'desc' },
-      take: 100,
-    });
-
-    // Analyze prediction distribution
-    const scoreDistribution = {
-      high: recentPredictions.filter(p => p.predictedScore > 80).length,
-      medium: recentPredictions.filter(p => p.predictedScore >= 60 && p.predictedScore <= 80).length,
-      low: recentPredictions.filter(p => p.predictedScore < 60).length,
-    };
-
-    // Position accuracy analysis
-    const positionAccuracy: Record<number, { correct: number; total: number; accuracy: number }> = {};
-    
-    for (let pos = 1; pos <= 25; pos++) {
-      const positionPreds = recentPredictions.filter(p => p.position === pos);
-      const correct = positionPreds.filter(p => {
-        const predicted = p.predictedScore > 65;
-        return predicted === p.actualResult;
-      }).length;
-      
-      positionAccuracy[pos] = {
-        correct,
-        total: positionPreds.length,
-        accuracy: positionPreds.length > 0 ? correct / positionPreds.length : 0,
-      };
-    }
-
     return NextResponse.json({
       success: true,
       timeframe: `${hoursBack} hours`,
       boneCount: validatedBoneCount,
       overall: metrics,
-      distribution: scoreDistribution,
-      positionAccuracy,
-      recentPredictionsCount: recentPredictions.length,
+      note: 'Desglose por predicción no disponible (sin tabla predictionLog)',
     });
 
   } catch (error) {

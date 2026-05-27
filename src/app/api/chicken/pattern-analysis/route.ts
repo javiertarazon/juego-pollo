@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     // Analyze bone positions
     const bonePositionFrequency = new Array(25).fill(0);
     const bonePositionWinRate = new Array(25).fill(0);
-    const bonePositionLastSeen = new Array(25).fill<Date | null>(null);
+    const bonePositionLastSeen: Array<Date | null> = new Array(25).fill(null);
 
     recentGames.forEach((game) => {
       const bones = game.positions.filter(p => !p.isChicken).map(p => p.position);
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
       .slice(0, 10);
 
     // Analyze "hot streaks" (consecutive games with bones in similar positions)
-    let hotStreaks: { position: number; consecutiveBones: number; streakLength: number }[] = [];
+    let hotStreaks: { position: number; streakLength: number }[] = [];
     let currentStreak: { position: number; streakLength: number }[] = [];
 
     recentGames.slice(0, 50).forEach((game, idx) => {
@@ -140,7 +140,13 @@ export async function POST(req: NextRequest) {
       .slice(0, 10);
 
     // Calculate predictive insights
-    const insights = [];
+    const insights: Array<{
+      type: string;
+      severity: string;
+      message: string;
+      data?: unknown;
+      [key: string]: unknown;
+    }> = [];
 
     if (riskyPositions.length > 0) {
       const topRisk = riskyPositions[0];

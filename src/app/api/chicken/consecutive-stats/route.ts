@@ -102,11 +102,14 @@ export async function GET(req: NextRequest) {
     // Find best starting positions for 3-in-a-row
     const bestStartingPositions = Object.entries(consecutiveSequences)
       .filter(([_, stats]) => stats.totalSequences >= 5)
-      .map(([pos, stats]) => ({
-        position: parseInt(pos),
-        ...stats,
-        overallScore: stats.winRate * 60 + stats.successfulSequences * 10,
-      }))
+      .map(([pos, stats]) => {
+        const { position: _position, ...rest } = stats;
+        return {
+          position: parseInt(pos),
+          ...rest,
+          overallScore: stats.winRate * 60 + stats.successfulSequences * 10,
+        };
+      })
       .sort((a, b) => b.overallScore - a.overallScore)
       .slice(0, 10);
 

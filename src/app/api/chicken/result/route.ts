@@ -38,7 +38,8 @@ export async function POST(req: NextRequest) {
       streakStateId = 'default',
     } = body;
 
-    const safeCashOutPosition = cashOutPosition ?? 0;
+    const safeCashOutPosition =
+      cashOutPosition ?? (Array.isArray(revealedPositions) ? revealedPositions.length : 0);
 
     // Create the game
     const game = await db.chickenGame.create({
@@ -88,8 +89,9 @@ export async function POST(req: NextRequest) {
     // 🤖 ML V5: Auto-update after each game
     if (revealedPositions.length > 0) {
       const firstPosition = revealedPositions[0];
-      const wasSuccess = !hitBone && cashOutPosition !== undefined && cashOutPosition >= 4;
-      const reward = cashOutPosition ? (cashOutPosition / 21) : 0.5; // Reward proporcional a pollos revelados
+      const target = objetivo && objetivo > 0 ? objetivo : 4;
+      const wasSuccess = !hitBone && safeCashOutPosition >= target;
+      const reward = Math.max(0.1, safeCashOutPosition / 21); // Reward proporcional a pollos revelados (mínimo para aprendizaje)
       
       await updateMLFromGame(firstPosition, wasSuccess, reward);
       console.log(`ML V5 auto-actualizado: Pos ${firstPosition} | ${wasSuccess ? 'EXITO' : 'FALLO'} | Reward: ${reward.toFixed(2)}`);
@@ -103,8 +105,7 @@ export async function POST(req: NextRequest) {
         revealedCount: game.revealedCount,
         hitBone: game.hitBone,
         multiplier: game.multiplier,
-        isVictory:
-          !hitBone && cashOutPosition !== undefined && cashOutPosition >= 4,
+        isVictory: !hitBone && safeCashOutPosition > 0,
       },
       mlUpdated: revealedPositions.length > 0, // Indica si se actualizó el ML
     });

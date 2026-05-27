@@ -146,6 +146,39 @@ export class GestorBalance {
     };
     this.historial = [];
   }
+
+  restaurarDesdePersistencia(params: {
+    balanceActual: number;
+    balanceInicial: number;
+    ganado: number;
+    perdido: number;
+    totalVictorias: number;
+    totalDerrotas: number;
+    rachaVictorias: number;
+    rachaDerrotas: number;
+  }): void {
+    const partidas_jugadas = params.totalVictorias + params.totalDerrotas;
+
+    this.balance = {
+      actual: params.balanceActual,
+      inicial: params.balanceInicial,
+      ganado: params.ganado,
+      perdido: params.perdido,
+      partidas_jugadas,
+      partidas_ganadas: params.totalVictorias,
+      partidas_perdidas: params.totalDerrotas,
+      racha_actual:
+        params.rachaVictorias > 0
+          ? params.rachaVictorias
+          : params.rachaDerrotas > 0
+            ? -params.rachaDerrotas
+            : 0,
+      mejor_racha: Math.max(this.balance.mejor_racha, params.rachaVictorias),
+      peor_racha: Math.min(this.balance.peor_racha, -params.rachaDerrotas),
+    };
+
+    this.historial = [];
+  }
   
   /**
    * Registra una ganancia

@@ -173,18 +173,27 @@ export async function selectPositionMLRentable(
   await actualizarAnalisisAdaptativoRentable();
 
   // 🔍 Detectar si Mystake se está adaptando (>60% pérdidas recientes)
-  const mystakeAdapting = await detectMystakeAdaptationCommon();
+  let mystakeAdapting = false;
+  if (mlStateRentable.totalGames >= 5) {
+    const recentGames = await db.chickenGame.findMany({
+      where: { isSimulated: false },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+      select: { hitBone: true },
+    });
+    mystakeAdapting = detectMystakeAdaptationCommon(recentGames);
+  }
   if (mystakeAdapting) {
     console.log('⚠️ MYSTAKE ADAPTÁNDOSE - Aumentando exploración +20%');
     mlStateRentable.epsilon = Math.min(0.80, mlStateRentable.epsilon + 0.20);
   }
 
   // 🔄 EXPLORACIÓN FORZADA cada 20 partidas para posiciones no exploradas
-  const unexploredPositions = await getUnexploredPositionsCommon();
+  const unexploredPositions = getUnexploredPositionsCommon(mlStateRentable.positionSuccessRate, 0);
   if (mlStateRentable.totalGames > 0 && mlStateRentable.totalGames % 20 === 0 && unexploredPositions.length > 0) {
     const unexploredAvailable = unexploredPositions.filter(p => !revealedPositions.includes(p));
     if (unexploredAvailable.length > 0) {
-      const position = await selectRandomPositionCommon(unexploredAvailable);
+      const position = selectRandomPositionCommon(unexploredAvailable);
       console.log(`🔄 EXPLORACIÓN FORZADA (cada 20 juegos) - Pos ${position} (no explorada)`);
       
       // Actualizar memoria

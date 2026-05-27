@@ -90,11 +90,11 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     // Manejo de errores de validación
     if (err instanceof z.ZodError) {
-      console.error('Error de validación:', err.errors);
+      console.error('Error de validación:', err.issues);
       return NextResponse.json(
         { 
           error: 'Validación fallida', 
-          details: err.errors,
+          details: err.issues,
           message: 'Los parámetros de entrada no son válidos'
         },
         { status: 400 }

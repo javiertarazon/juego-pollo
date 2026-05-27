@@ -7,7 +7,8 @@
  * Configuración: Mínimo 100 iteraciones por property test
  */
 
-import { describe, it, expect, beforeAll } from 'bun:test';
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import fc from 'fast-check';
 import {
   type PartidaAnalizada,
@@ -23,6 +24,39 @@ import {
   guardarReporte,
   analizarHistorialCompleto,
 } from './complete-history-analyzer';
+
+// ============================================================================
+// EXPECT MINIMALISTA (compatibilidad con suite existente)
+// ============================================================================
+function expect<T>(actual: T) {
+  return {
+    toBe(expected: unknown) {
+      assert.equal(actual, expected);
+    },
+    toEqual(expected: unknown) {
+      assert.deepEqual(actual, expected);
+    },
+    toBeDefined() {
+      assert.notEqual(actual, undefined);
+    },
+    toBeInstanceOf(ctor: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      assert.ok(actual instanceof (ctor as any));
+    },
+    toBeGreaterThanOrEqual(expected: number) {
+      assert.ok(Number(actual) >= expected);
+    },
+    toBeLessThanOrEqual(expected: number) {
+      assert.ok(Number(actual) <= expected);
+    },
+    toBeGreaterThan(expected: number) {
+      assert.ok(Number(actual) > expected);
+    },
+    toBeLessThan(expected: number) {
+      assert.ok(Number(actual) < expected);
+    },
+  };
+}
 
 // ============================================================================
 // GENERADORES DE DATOS PARA PROPERTY TESTS

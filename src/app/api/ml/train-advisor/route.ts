@@ -166,7 +166,12 @@ export async function POST(req: NextRequest) {
     console.log(`📍 Promedio posiciones: ${promedioPosiciones.toFixed(2)}`);
 
     // 5. Validación opcional
-    let validationResults = null;
+    let validationResults: null | {
+      games: number;
+      victorias: number;
+      derrotas: number;
+      tasaExito: number;
+    } = null;
     if (validateAfter) {
       console.log('🔍 Ejecutando validación...');
       

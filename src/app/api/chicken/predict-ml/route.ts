@@ -32,6 +32,12 @@ const requestSchema = z.object({
   usePythonML: z.boolean().optional().default(true),
 });
 
+function formatMaybeNumber(value: unknown, digits: number): string {
+  if (typeof value === "number" && Number.isFinite(value)) return value.toFixed(digits);
+  if (typeof value === "string" && value.length > 0) return value;
+  return "N/A";
+}
+
 export async function POST(request: NextRequest) {
   try {
     const requestBody = await request.json();
@@ -58,9 +64,21 @@ export async function POST(request: NextRequest) {
           recentBonePositions,
         });
 
-        if (pythonResult && pythonResult.success) {
-          const tsStats =
-            tipoAsesor === "rentable" ? getMLStatsRentable() : getMLStats();
+          if (pythonResult && pythonResult.success) {
+            const tsStats =
+              tipoAsesor === "rentable" ? getMLStatsRentable() : getMLStats();
+            const lastZoneUsed =
+              tsStats && typeof tsStats === "object" && "lastZoneUsed" in tsStats
+                ? (tsStats as { lastZoneUsed?: unknown }).lastZoneUsed
+                : undefined;
+            const consecutiveSafePositions =
+              tsStats && typeof tsStats === "object" && "consecutiveSafePositions" in tsStats
+                ? (tsStats as { consecutiveSafePositions?: unknown }).consecutiveSafePositions
+                : undefined;
+            const topPositions =
+              tsStats && typeof tsStats === "object" && "topPositions" in tsStats
+                ? (tsStats as { topPositions?: unknown }).topPositions
+                : undefined;
 
           return NextResponse.json({
             success: true,
@@ -83,14 +101,18 @@ export async function POST(request: NextRequest) {
               modelsContributions: pythonResult.models_contributions,
             },
             ml: {
-              epsilon: tsStats.epsilon?.toFixed(3) || "N/A",
+              epsilon: formatMaybeNumber(tsStats.epsilon, 3),
               totalGames: tsStats.totalGames,
               explorationRate: tsStats.explorationCount > 0
                 ? ((tsStats.explorationCount / tsStats.totalGames) * 100).toFixed(1) + "%"
                 : "0%",
-              lastZoneUsed: tsStats.lastZoneUsed || "N/A",
-              consecutiveSafePositions: tsStats.consecutiveSafePositions || 0,
-              topPositions: tsStats.topPositions?.slice(0, 5) || [],
+              lastZoneUsed: typeof lastZoneUsed === "string" ? lastZoneUsed : "N/A",
+              consecutiveSafePositions: Array.isArray(consecutiveSafePositions)
+                ? consecutiveSafePositions.length
+                : typeof consecutiveSafePositions === "number"
+                  ? consecutiveSafePositions
+                  : 0,
+              topPositions: Array.isArray(topPositions) ? topPositions.slice(0, 5) : [],
             },
             analysis: {
               version: "PYTHON_V2_ENSEMBLE",
@@ -161,7 +183,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json({ error: "Validación fallida", details: err.errors }, { status: 400 });
+      return NextResponse.json({ error: "Validación fallida", details: err.issues }, { status: 400 });
     }
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: "Prediction failed", details: errorMessage }, { status: 500 });

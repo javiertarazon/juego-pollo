@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       count: number;
       from: string;
       to: string;
-      examples: Array<{ gameId: number; from: number[]; to: number[] }>;
+      examples: Array<{ gameId: string; from: number[]; to: number[] }>;
     }> = new Map();
 
     for (let i = 0; i < games.length - 1; i++) {
@@ -409,18 +409,23 @@ export async function POST(request: NextRequest) {
         .slice(0, 5),
       positionTransitions: Array.from(positionTransitions.entries())
         .filter(([_, t]) => t.safeToBone + t.boneToSafe + t.safeToSafe + t.boneToBone > 0)
-        .map(([pos, transitions]) => ({
-          position: pos,
-          ...transitions,
-          total: transitions.safeToBone + transitions.boneToSafe + transitions.safeToSafe + transitions.boneToBone,
-          boneProbability: Math.round(
-            ((transitions.safeToBone + transitions.boneToBone) / transitions.total) * 1000
-          ) / 10,
-          transitionProbability: {
-            safeToBone: Math.round((transitions.safeToBone / transitions.total) * 1000) / 10,
-            boneToSafe: Math.round((transitions.boneToSafe / transitions.total) * 1000) / 10,
-          },
-        }))
+        .map(([pos, transitions]) => {
+          const total =
+            transitions.safeToBone + transitions.boneToSafe + transitions.safeToSafe + transitions.boneToBone;
+
+          return {
+            position: pos,
+            ...transitions,
+            total,
+            boneProbability: total > 0
+              ? Math.round(((transitions.safeToBone + transitions.boneToBone) / total) * 1000) / 10
+              : 0,
+            transitionProbability: {
+              safeToBone: total > 0 ? Math.round((transitions.safeToBone / total) * 1000) / 10 : 0,
+              boneToSafe: total > 0 ? Math.round((transitions.boneToSafe / total) * 1000) / 10 : 0,
+            },
+          };
+        })
         .sort((a, b) => b.boneProbability - a.boneProbability)
         .slice(0, 10),
       proximityAnalysis,

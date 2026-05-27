@@ -12,7 +12,7 @@
 import { db } from '@/lib/db';
 
 interface AnalisisPartida {
-  id: number;
+  id: string;
   fecha: Date;
   boneCount: number;
   victoria: boolean;

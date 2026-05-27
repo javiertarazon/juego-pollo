@@ -11,7 +11,7 @@
 import { db } from '@/lib/db';
 
 interface DecisionRetiro {
-  gameId: number;
+  gameId: string;
   fecha: Date;
   pollosDescubiertos: number;
   multiplicador: number;

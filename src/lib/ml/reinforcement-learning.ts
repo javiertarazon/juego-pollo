@@ -181,6 +181,15 @@ export async function loadMLState() {
       if (persistedState.positionQValues && persistedState.positionSuccessRate) {
         // Combinar estado base con persistido para asegurar integridad
         mlState = { ...mlState, ...persistedState, initialized: true };
+
+        // Normalizar fechas (JSON -> string)
+        const last = (mlState as unknown as { lastAdaptiveAnalysis?: unknown }).lastAdaptiveAnalysis;
+        if (typeof last === 'string') {
+          const parsed = new Date(last);
+          mlState.lastAdaptiveAnalysis = Number.isNaN(parsed.getTime()) ? null : parsed;
+        } else if (last !== null && last !== undefined && !(last instanceof Date)) {
+          mlState.lastAdaptiveAnalysis = null;
+        }
         
         // RESET DE SEGURIDAD: Resetear contadores de racha al cargar
         // Esto evita que el sistema arranque bloqueado por un Stop-Loss previo
@@ -699,6 +708,11 @@ export function resetMLState() {
     positionQValues: {},
     positionSuccessRate: {},
     explorationCount: 0,
+    lastAdaptiveAnalysis: null,
+    adaptiveScores: {},
+    rachaDerrota: 0,
+    stopLossActivado: false,
+    initialized: false,
   };
   initializeMLState();
 }

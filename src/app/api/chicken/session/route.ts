@@ -29,11 +29,16 @@ async function getOrCreateSession(sessionId: string, balanceInicial: number = 10
     
     if (dbSession) {
       const gestor = new GestorBalance(dbSession.balanceInicial);
-      // Restaurar estado desde BD
-      const balance = gestor.obtenerBalance();
-      // El gestor se crea nuevo, pero actualizamos con los datos de BD
-      // usando registrarGanancia/registrarPerdida no es práctico para restaurar,
-      // así que usamos el gestor fresco y sincronizamos
+      gestor.restaurarDesdePersistencia({
+        balanceActual: dbSession.balanceActual,
+        balanceInicial: dbSession.balanceInicial,
+        ganado: dbSession.ganado,
+        perdido: dbSession.perdido,
+        totalVictorias: dbSession.totalVictorias,
+        totalDerrotas: dbSession.totalDerrotas,
+        rachaVictorias: dbSession.rachaVictorias,
+        rachaDerrotas: dbSession.rachaDerrotas,
+      });
       sesiones.set(sessionId, gestor);
       return gestor;
     }

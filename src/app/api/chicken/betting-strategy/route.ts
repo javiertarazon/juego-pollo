@@ -92,8 +92,8 @@ function calculateCurrentStreak(games: any[]): StreakData {
   let consecutiveLosses = 0;
 
   for (const game of games) {
-    const isWin = game.cashOutPosition !== null && game.cashOutPosition >= 3;
-    const isLoss = game.hitBone || (game.cashOutPosition !== null && game.cashOutPosition < 3);
+    const isWin = !game.hitBone && game.cashOutPosition !== null && game.cashOutPosition > 0;
+    const isLoss = game.hitBone || game.cashOutPosition === 0;
 
     if (isWin) {
       consecutiveLosses = 0;
@@ -107,7 +107,7 @@ function calculateCurrentStreak(games: any[]): StreakData {
   // Calculate last 5 and 10 games
   const last5Games = games.slice(0, 5).reduce(
     (acc: any, game: any) => {
-      const isWin = game.cashOutPosition !== null && game.cashOutPosition >= 3;
+      const isWin = !game.hitBone && game.cashOutPosition !== null && game.cashOutPosition > 0;
       if (isWin) acc.wins++;
       else acc.losses++;
       return acc;
@@ -117,7 +117,7 @@ function calculateCurrentStreak(games: any[]): StreakData {
 
   const last10Games = games.slice(0, 10).reduce(
     (acc: any, game: any) => {
-      const isWin = game.cashOutPosition !== null && game.cashOutPosition >= 3;
+      const isWin = !game.hitBone && game.cashOutPosition !== null && game.cashOutPosition > 0;
       if (isWin) acc.wins++;
       else acc.losses++;
       return acc;

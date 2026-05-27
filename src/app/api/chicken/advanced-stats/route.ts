@@ -497,7 +497,13 @@ function analizarZonasCalientesFrias(partidas: any[]) {
  * Identifica ventajas estadísticas capitalizables
  */
 function identificarVentajasEstadisticas(partidas: any[]) {
-  const ventajas = [];
+  const ventajas: Array<{
+    tipo: string;
+    descripcion: string;
+    // Estructura varía por tipo (lista de posiciones o lista de objetos)
+    posiciones: unknown;
+    confianza: string;
+  }> = [];
   
   // Analizar frecuencias
   const freq = analizarFrecuenciasPosiciones(partidas);
@@ -559,7 +565,12 @@ function generarRecomendaciones(partidas: any[]) {
   const zonas = analizarZonasCalientesFrias(partidas);
   const ventajas = identificarVentajasEstadisticas(partidas);
   
-  const recomendaciones = [];
+  const recomendaciones: Array<{
+    momento: string;
+    estrategia: string;
+    razon: string;
+    [key: string]: unknown;
+  }> = [];
   
   // Recomendación 1: Posiciones iniciales
   recomendaciones.push({
