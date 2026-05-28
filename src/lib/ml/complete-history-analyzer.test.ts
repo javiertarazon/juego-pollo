@@ -40,8 +40,7 @@ function expect<T>(actual: T) {
       assert.notEqual(actual, undefined);
     },
     toBeInstanceOf(ctor: unknown) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      assert.ok(actual instanceof (ctor as any));
+      assert.ok(actual instanceof (ctor as Function));
     },
     toBeGreaterThanOrEqual(expected: number) {
       assert.ok(Number(actual) >= expected);

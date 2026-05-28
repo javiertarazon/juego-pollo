@@ -10,6 +10,10 @@
 
 import { db as prisma } from '@/lib/db';
 
+function isDatabaseConfigured(): boolean {
+  return typeof process.env.DATABASE_URL === 'string' && process.env.DATABASE_URL.trim().length > 0;
+}
+
 // ============================================================================
 // INTERFACES
 // ============================================================================
@@ -80,18 +84,33 @@ export interface ReporteAnalisis {
  */
 export async function recuperarTodasLasPartidas(): Promise<PartidaAnalizada[]> {
   console.log('[CompleteHistoryAnalyzer] Recuperando todas las partidas reales...');
+
+  if (!isDatabaseConfigured()) {
+    const msg = 'DATABASE_URL no configurado; no se puede acceder a la base de datos.';
+    if (process.env.NODE_ENV === 'production') throw new Error(msg);
+    console.warn(`[CompleteHistoryAnalyzer] ${msg} Devolviendo 0 partidas.`);
+    return [];
+  }
   
-  const partidas = await prisma.chickenGame.findMany({
-    where: {
-      isSimulated: false,
-    },
-    include: {
-      positions: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  let partidas: Awaited<ReturnType<typeof prisma.chickenGame.findMany>>;
+  try {
+    partidas = await prisma.chickenGame.findMany({
+      where: {
+        isSimulated: false,
+      },
+      include: {
+        positions: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  } catch (error) {
+    const msg = 'No se pudo recuperar partidas desde la base de datos.';
+    if (process.env.NODE_ENV === 'production') throw error;
+    console.warn(`[CompleteHistoryAnalyzer] ${msg} Devolviendo 0 partidas.`);
+    return [];
+  }
 
   console.log(`[CompleteHistoryAnalyzer] Total de partidas recuperadas: ${partidas.length}`);
 
@@ -465,20 +484,34 @@ export async function generarRecomendacionesBasadasEnHistorial(
 export async function guardarReporte(reporte: ReporteAnalisis): Promise<void> {
   console.log('[CompleteHistoryAnalyzer] Guardando reporte en base de datos...');
 
-  await prisma.analysisReport.create({
-    data: {
-      id: reporte.id,
-      timestamp: reporte.timestamp,
-      partidasAnalizadas: reporte.partidasAnalizadas,
-      tasaAcierto: reporte.metricas.tasaAcierto,
-      tasaExito: reporte.metricas.tasaExito,
-      promedioRetiro: reporte.metricas.promedioRetiro,
-      mejorRacha: reporte.metricas.mejorRacha,
-      patrones: JSON.stringify(reporte.patrones),
-      recomendaciones: JSON.stringify(reporte.recomendaciones),
-      comparacionData: JSON.stringify(reporte.comparacionPredicciones),
-    },
-  });
+  if (!isDatabaseConfigured()) {
+    const msg = 'DATABASE_URL no configurado; no se puede guardar el reporte.';
+    if (process.env.NODE_ENV === 'production') throw new Error(msg);
+    console.warn(`[CompleteHistoryAnalyzer] ${msg} Operación omitida.`);
+    return;
+  }
+
+  try {
+    await prisma.analysisReport.create({
+      data: {
+        id: reporte.id,
+        timestamp: reporte.timestamp,
+        partidasAnalizadas: reporte.partidasAnalizadas,
+        tasaAcierto: reporte.metricas.tasaAcierto,
+        tasaExito: reporte.metricas.tasaExito,
+        promedioRetiro: reporte.metricas.promedioRetiro,
+        mejorRacha: reporte.metricas.mejorRacha,
+        patrones: JSON.stringify(reporte.patrones),
+        recomendaciones: JSON.stringify(reporte.recomendaciones),
+        comparacionData: JSON.stringify(reporte.comparacionPredicciones),
+      },
+    });
+  } catch (error) {
+    const msg = 'No se pudo guardar el reporte en la base de datos.';
+    if (process.env.NODE_ENV === 'production') throw error;
+    console.warn(`[CompleteHistoryAnalyzer] ${msg} Operación omitida.`);
+    return;
+  }
 
   console.log(`[CompleteHistoryAnalyzer] Reporte guardado con ID: ${reporte.id}`);
 }
