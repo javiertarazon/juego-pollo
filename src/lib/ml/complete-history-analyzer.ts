@@ -91,10 +91,9 @@ export async function recuperarTodasLasPartidas(): Promise<PartidaAnalizada[]> {
     console.warn(`[CompleteHistoryAnalyzer] ${msg} Devolviendo 0 partidas.`);
     return [];
   }
-  
-  let partidas: Awaited<ReturnType<typeof prisma.chickenGame.findMany>>;
+
   try {
-    partidas = await prisma.chickenGame.findMany({
+    const partidas = await prisma.chickenGame.findMany({
       where: {
         isSimulated: false,
       },
@@ -105,42 +104,42 @@ export async function recuperarTodasLasPartidas(): Promise<PartidaAnalizada[]> {
         createdAt: 'desc',
       },
     });
+
+    console.log(`[CompleteHistoryAnalyzer] Total de partidas recuperadas: ${partidas.length}`);
+
+    const partidasAnalizadas: PartidaAnalizada[] = partidas.map((partida) => {
+      const posicionesHuesos = partida.positions
+        .filter((p) => !p.isChicken)
+        .map((p) => p.position);
+      
+      const posicionesPollos = partida.positions
+        .filter((p) => p.isChicken)
+        .map((p) => p.position);
+      
+      const secuenciaJugadas = partida.positions
+        .filter((p) => p.revealed && p.revealOrder > 0)
+        .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))
+        .map((p) => p.position);
+
+      return {
+        id: partida.id,
+        fecha: partida.createdAt,
+        posicionesHuesos,
+        posicionesPollos,
+        secuenciaJugadas,
+        objetivo: partida.objetivo || 2,
+        exitosa: !partida.hitBone && partida.cashOutPosition !== null,
+        cashOutPosition: partida.cashOutPosition,
+      };
+    });
+
+    return partidasAnalizadas;
   } catch (error) {
     const msg = 'No se pudo recuperar partidas desde la base de datos.';
     if (process.env.NODE_ENV === 'production') throw error;
     console.warn(`[CompleteHistoryAnalyzer] ${msg} Devolviendo 0 partidas.`);
     return [];
   }
-
-  console.log(`[CompleteHistoryAnalyzer] Total de partidas recuperadas: ${partidas.length}`);
-
-  const partidasAnalizadas: PartidaAnalizada[] = partidas.map((partida) => {
-    const posicionesHuesos = partida.positions
-      .filter((p) => !p.isChicken)
-      .map((p) => p.position);
-    
-    const posicionesPollos = partida.positions
-      .filter((p) => p.isChicken)
-      .map((p) => p.position);
-    
-    const secuenciaJugadas = partida.positions
-      .filter((p) => p.revealed && p.revealOrder > 0)
-      .sort((a, b) => (a.revealOrder || 0) - (b.revealOrder || 0))
-      .map((p) => p.position);
-
-    return {
-      id: partida.id,
-      fecha: partida.createdAt,
-      posicionesHuesos,
-      posicionesPollos,
-      secuenciaJugadas,
-      objetivo: partida.objetivo || 2,
-      exitosa: !partida.hitBone && partida.cashOutPosition !== null,
-      cashOutPosition: partida.cashOutPosition,
-    };
-  });
-
-  return partidasAnalizadas;
 }
 
 /**
